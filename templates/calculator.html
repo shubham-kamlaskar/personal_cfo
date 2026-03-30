@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<title>Calculator | Personal CFO</title>
+</head>
+
+<body>
+{% include 'header.html' %}
+
+Income Tax Calculator
+Calculate your tax liability for FY 2025-26 (AY 2026-27)
+
+<div class="row align-items-center text-center">
+    <div class="col-3">
+        Enter Details
+        Age Category <br>
+        <select name="age_category">
+            <option value="Below_60">Below 60 years</option>
+            <option value="60_80">60 to 80 years</option>
+            <option value="Above_80">Above 80 years</option>
+        </select>
+        <br>
+        Tax Regime <br>
+        <select name="tax_regime">
+            <option value="old_regime">Old Regime</option>
+            <option value="new_regime">New Regime</option>
+        </select>
+        <br>
+        Gross Anuual Income <br>
+        <input type="number" name="gross_annual_income">
+        <hr>
+        Deductions <br> <input type="number" name="gross_annual_income"> <br>
+        Section 80C (Max 1.5L) <br> <input type="number" name="gross_annual_income"> <br>
+        Section 80D <br> <input type="number" name="gross_annual_income"> <br>
+        HRA Exemption <br> <input type="number" name="gross_annual_income"> <br>
+        Home Loan Interest <br> <input type="number" name="gross_annual_income"> <br>
+        NPS (80CCD1B) <br> <input type="number" name="gross_annual_income"> <br>
+
+    </div>
+
+    <div class="col-9">
+        <div class="row border mt-2">
+            Tax Calculation Summary
+            Old Tax Regime
+            <div class="row">
+                <div class="col">Gross Income</div>
+                <div class="col">Total Deductions</div>
+                <div class="col">Taxable Income</div>
+                <div class="col">Total Tax</div>
+            </div>
+
+            <div class="row">
+                <div class="col">Tax Before Cess</div>
+                <div class="col">0</div>
+            </div>
+            <hr>
+        </div>
+        <div class="row">
+            <div class="col">Health & Education Cess (4%)</div>
+            <div class="col">0</div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col">Total Tax Payable</div>
+            <div class="col">0</div>
+        </div>
+
+        <div>
+            Old vs New Regime Comparison <br>
+            Which regime is better for you?
+            <div class="row">
+                <div class="col">Old Regime</div>
+                <div class="col">New Regime</div>
+            </div>
+        </div>
+
+        <div class="border mt-2">
+            Deduction Breakdown <br>
+Total deductions: ₹818,000
+        </div>
+    </div>
+</div>
+</body>
+</html>
