@@ -8,3 +8,4 @@ langchain-ollama
 ollama
 flask
 flask-cors
+ddgs

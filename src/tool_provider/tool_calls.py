@@ -1,5 +1,6 @@
 from langchain.tools import tool
-from src.tool_provider.pydantic_class import CalculateNetPayableTax, SuggestTaxSavingInvestments
+from langchain_community.tools import DuckDuckGoSearchResults
+from src.tool_provider.pydantic_class import CalculateNetPayableTax, SuggestTaxSavingInvestments, InternetBasedTaxResearch
 from typing import Optional
 from src.util.calculation_helper import calculate_net_tax
 
@@ -40,6 +41,14 @@ def future_tax_planning_for_user():
 def check_any_penalties_or_interest_for_user():
     pass
 
+@tool('internet_based_tax_research', args_schema=InternetBasedTaxResearch)
+def internet_based_tax_research(query: str) -> str:
+    """This tool is used to perform internet based reasearch for up-to-date information on tax laws, regulations and best practices in real time."""
+    search = DuckDuckGoSearchResults(output_format="list", num_results=2)
+
+    response = search.invoke(query)
+    return response
+
     
 
-tools = [ calculate_net_payable_tax, suggest_tax_saving_investments]
+tools = [ calculate_net_payable_tax, suggest_tax_saving_investments, internet_based_tax_research]

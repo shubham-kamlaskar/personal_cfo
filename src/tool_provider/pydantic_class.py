@@ -9,3 +9,6 @@ class CalculateNetPayableTax(BaseModel):
     tax_regime: Optional[str] = Field(default="new", description="Tax regime applicable for the fiscal year, either 'new' or 'old'") 
 class SuggestTaxSavingInvestments(BaseModel):
     query: Optional[str] = Field(default=None, description="User query for suggesting best tax saving options.")
+    
+class InternetBasedTaxResearch(BaseModel):
+    query: Optional[str] = Field(default=None, description="User query for performing real time internet based research on tax and saving related queries.")

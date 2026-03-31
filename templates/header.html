@@ -3,12 +3,12 @@
         <svg class="bi me-2" width="40" height="40" role="img" aria-label="Bootstrap">
             <use xlink:href="#bootstrap"></use></svg> </a> 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"> 
-                <li><a href="{{ url_for('dashboard') }}" class="nav-link px-2 link-secondary">Dashboard</a></li> 
-                <li><a href="{{ url_for('tax_filling') }}" class="nav-link px-2 link-body-emphasis">Tax Filling</a></li> 
-                <li><a href="{{ url_for('investments') }}" class="nav-link px-2 link-body-emphasis">Investments</a></li> 
-                <li><a href="{{ url_for('documents') }}" class="nav-link px-2 link-body-emphasis">Documents</a></li>
-                <li><a href="{{ url_for('calculator') }}" class="nav-link px-2 link-body-emphasis">Calculator</a></li>
-                <li><a href="{{ url_for('assistant') }}" class="nav-link px-2 link-body-emphasis">Assistant</a></li> </ul> 
+                <li><a href="{{ url_for('dashboard_bp.dashboard') }}" class="nav-link px-2 link-secondary">Dashboard</a></li> 
+                <li><a href="{{ url_for('tax_filling_bp.tax_filling') }}" class="nav-link px-2 link-body-emphasis">Tax Filling</a></li> 
+                <li><a href="{{ url_for('investments_bp.investments') }}" class="nav-link px-2 link-body-emphasis">Investments</a></li> 
+                <li><a href="{{ url_for('documents_bp.documents') }}" class="nav-link px-2 link-body-emphasis">Documents</a></li>
+                <li><a href="{{ url_for('calculator_bp.calculator') }}" class="nav-link px-2 link-body-emphasis">Calculator</a></li>
+                <li><a href="{{ url_for('assistant_bp.assistant') }}" class="nav-link px-2 link-body-emphasis">Assistant</a></li> </ul> 
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search"> 
                     <input type="search" class="form-control" placeholder="Search..." aria-label="Search"> </form> 
                     <div class="dropdown text-end"> 

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+<title>Login | AI Tax Assistant</title>
+
+<style>
+
+:root{
+--primary:#1a56db;
+--surface:#ffffff;
+--surface-2:#f8fafc;
+--border:#e2e8f0;
+--text:#0f172a;
+--text-muted:#64748b;
+--radius:14px;
+--shadow:0 6px 22px rgba(0,0,0,0.06);
+}
+
+body{
+font-family:'DM Sans',sans-serif;
+background:#f1f5f9;
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.login-container{
+width:100%;
+max-width:420px;
+}
+
+.login-card{
+background:var(--surface);
+border:1px solid var(--border);
+border-radius:var(--radius);
+box-shadow:var(--shadow);
+padding:2rem 2rem;
+}
+
+.login-header{
+text-align:center;
+margin-bottom:1.5rem;
+}
+
+.login-avatar{
+width:60px;
+height:60px;
+border-radius:14px;
+background:linear-gradient(135deg,#1a56db,#3b82f6);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:1.8rem;
+margin:auto;
+margin-bottom:0.8rem;
+color:white;
+}
+
+.login-title{
+font-family:'Sora',sans-serif;
+font-weight:700;
+font-size:1.3rem;
+}
+
+.login-sub{
+font-size:0.85rem;
+color:var(--text-muted);
+}
+
+.form-label{
+font-size:0.8rem;
+font-weight:600;
+color:var(--text);
+}
+
+.form-control{
+border-radius:10px;
+border:1px solid var(--border);
+padding:0.65rem 0.8rem;
+font-size:0.9rem;
+}
+
+.form-control:focus{
+border-color:var(--primary);
+box-shadow:0 0 0 3px rgba(26,86,219,0.1);
+}
+
+.btn-login{
+background:var(--primary);
+border:none;
+width:100%;
+border-radius:10px;
+padding:0.65rem;
+font-size:0.9rem;
+font-weight:600;
+margin-top:0.5rem;
+}
+
+.btn-login:hover{
+background:#1e40af;
+}
+
+.login-footer{
+text-align:center;
+font-size:0.8rem;
+margin-top:1rem;
+color:var(--text-muted);
+}
+
+.login-footer a{
+color:var(--primary);
+text-decoration:none;
+font-weight:600;
+}
+
+.agent-status{
+display:inline-flex;
+align-items:center;
+gap:0.4rem;
+background:#e8f0fe;
+border-radius:999px;
+padding:4px 10px;
+font-size:0.7rem;
+font-weight:600;
+margin-top:0.5rem;
+}
+
+.dot{
+width:7px;
+height:7px;
+border-radius:50%;
+background:#4ade80;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="login-container">
+
+<div class="login-card">
+
+<div class="login-header">
+
+<div class="login-avatar">🤖</div>
+
+<div class="login-title">AI Tax Assistant</div>
+
+<div class="login-sub">Secure access to your personal CFO agent</div>
+
+<div class="agent-status">
+<span class="dot"></span>Secure Login
+</div>
+
+</div>
+
+<form method="POST" action="/login">
+
+<div class="mb-3">
+<label class="form-label">Email</label>
+<input type="email" name="email" class="form-control" placeholder="you@example.com" required>
+</div>
+
+<div class="mb-3">
+<label class="form-label">Password</label>
+<input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+</div>
+
+<button class="btn btn-login">Login</button>
+
+</form>
+
+<div class="login-footer">
+Don't have an account? <a href="{{ url_for('authentication_bp.signup')}}">Sign up</a> <br>
+Forgot password? <a href="{{ url_for('authentication_bp.forgot_password')}}"> Forgot </a>
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
