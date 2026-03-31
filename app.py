@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, render_template
+import html
 import os
 import logging
 from dotenv import load_dotenv
@@ -35,6 +36,22 @@ def documents():
 def calculator():
     return render_template("calculator.html")
 
+@app.route("/tax_calculator", methods=["POST"])
+def tax_calculator():
+    if request.method == "POST":
+        data = request.get_json(silent=True)
+        if data:
+            age = int(data.get('age'))
+            regime = str(data.get('regime'))
+            gross_income = float(data.get('gross'))
+            standard_deduction = int(data.get('std'))
+            d80c = float(data.get('d80c'))
+            d80d = float(data.get('d80d'))
+            hra = float(data.get('hra'))
+            hl = float(data.get('hl'))
+            nps = float(data.get('nps'))
+    return jsonify({'response':144484})
+
 @app.route("/assistant", methods=["GET"])
 def assistant():
     return render_template("assistant.html")
@@ -49,13 +66,17 @@ def query():
         if not data or "query" not in data:
             return jsonify({"error": "query field required"}), 400
 
-        user_query = data["query"]
+        user_query = data.get("query")
         logging.info(f"Query received: {user_query}")
         response = agent.invoke(
-            {"messages": [{"role": "user", "content": user_query}]}
-        )
+                {
+                    "messages": [{"role": "user", "content": user_query}],
+                    "user_id": "user_123",
+                    "preferences": {"theme": "dark"}
+                },
+                {"configurable": {"thread_id": "1"}})
         logging.info("Agent response received")
-        answer = response["messages"][-1].content
+        answer = html.escape(response["messages"][-1].content)
         logging.info(f"Answer generated: {answer}")
         return jsonify({
             "query": user_query,

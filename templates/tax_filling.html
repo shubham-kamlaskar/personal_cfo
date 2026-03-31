@@ -4,12 +4,982 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-<title>Tax Filling | Personal CFO</title>
+<title>ITR Filing | Personal CFO</title>
+<style>
+  :root {
+    --primary: #1a56db;
+    --primary-light: #e8f0fe;
+    --accent: #16a34a;
+    --accent-light: #dcfce7;
+    --warning: #d97706;
+    --warning-light: #fef3c7;
+    --danger: #dc2626;
+    --danger-light: #fee2e2;
+    --surface: #ffffff;
+    --surface-2: #f8fafc;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-hover: 0 8px 24px rgba(26,86,219,0.12);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f1f5f9;
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, .heading { font-family: 'Sora', sans-serif; }
+
+  /* ── Page Banner ── */
+  .page-banner {
+    background: linear-gradient(135deg, #1a56db 0%, #1e40af 100%);
+    border-radius: var(--radius);
+    color: white;
+    padding: 1.5rem 1.75rem;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+  }
+  .page-banner::after {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+  .page-banner .banner-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+  .page-banner .banner-sub {
+    font-size: 0.875rem;
+    opacity: 0.82;
+    margin: 0 0 1.25rem;
+  }
+
+  /* ── Progress Steps ── */
+  .steps-row {
+    display: flex;
+    gap: 0;
+    position: relative;
+  }
+  .steps-row::before {
+    content: '';
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    right: 16px;
+    height: 2px;
+    background: rgba(255,255,255,0.25);
+    z-index: 0;
+  }
+  .step-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .step-circle {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.4rem;
+    transition: background 0.2s;
+  }
+  .step-item.active .step-circle {
+    background: white;
+    color: var(--primary);
+    border-color: white;
+  }
+  .step-item.done .step-circle {
+    background: rgba(255,255,255,0.35);
+    border-color: rgba(255,255,255,0.6);
+  }
+  .step-label {
+    font-size: 0.68rem;
+    opacity: 0.8;
+    text-align: center;
+    line-height: 1.2;
+  }
+  .step-item.active .step-label { opacity: 1; font-weight: 600; }
+
+  /* ── Section Cards ── */
+  .section-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    box-shadow: var(--shadow);
+  }
+  .section-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+  .section-sub {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  /* ── Form Controls ── */
+  .form-label-custom {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.35rem;
+    display: block;
+  }
+  .form-control, .form-select {
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    padding: 0.6rem 0.9rem;
+    background: var(--surface-2);
+    color: var(--text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-control:focus, .form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(26,86,219,0.1);
+    background: white;
+  }
+  .form-control::placeholder { color: #b0bec5; }
+  .input-wrap { position: relative; }
+  .input-wrap .rupee {
+    position: absolute; left: 0.9rem; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted); font-size: 0.85rem; pointer-events: none;
+  }
+  .input-wrap .form-control { padding-left: 1.75rem; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 1.1rem 0; }
+
+  /* ── ITR Form Type Cards ── */
+  .itr-type-card {
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+  .itr-type-card:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-hover);
+  }
+  .itr-type-card.selected {
+    border-color: var(--primary);
+    background: var(--primary-light);
+  }
+  .itr-type-card .itr-name {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+  .itr-type-card .itr-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+  .itr-type-card .itr-badge {
+    position: absolute;
+    top: 8px; right: 10px;
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .badge-recommended { background: var(--primary-light); color: var(--primary); }
+  .badge-business    { background: var(--warning-light); color: var(--warning); }
+  .itr-type-card .check-icon {
+    display: none;
+    position: absolute;
+    top: 8px; right: 10px;
+    color: var(--primary);
+    font-size: 1rem;
+  }
+  .itr-type-card.selected .check-icon { display: block; }
+  .itr-type-card.selected .itr-badge  { display: none; }
+
+  /* ── Income Source Toggles ── */
+  .income-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    cursor: pointer;
+    transition: background 0.18s, border-color 0.18s;
+    margin-bottom: 0.5rem;
+  }
+  .income-toggle.active {
+    background: var(--primary-light);
+    border-color: #93b8f8;
+  }
+  .income-toggle .it-left {
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .income-toggle .it-icon {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+  }
+  .income-toggle .it-title {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--text);
+  }
+  .income-toggle .it-sub {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 1px;
+  }
+  /* Bootstrap-style toggle switch */
+  .toggle-switch {
+    width: 36px; height: 20px;
+    border-radius: 99px;
+    background: var(--border);
+    position: relative;
+    flex-shrink: 0;
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+  .toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: white;
+    transition: transform 0.2s;
+  }
+  .toggle-switch.on {
+    background: var(--primary);
+  }
+  .toggle-switch.on::after { transform: translateX(16px); }
+
+  /* ── Income Input Panel ── */
+  .income-panel {
+    display: none;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+    margin-top: -0.25rem;
+    margin-bottom: 0.5rem;
+  }
+  .income-panel.show { display: block; }
+
+  /* ── Summary Sidebar ── */
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.875rem;
+  }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-row .sr-label { color: var(--text-muted); }
+  .summary-row .sr-value { font-weight: 600; color: var(--text); }
+  .summary-row.total .sr-label {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+  .summary-row.total .sr-value {
+    font-family: 'Sora', sans-serif;
+    font-size: 1rem;
+    color: var(--primary);
+  }
+
+  /* ── Status Badge ── */
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 99px;
+  }
+  .status-pill.pending  { background: var(--warning-light); color: var(--warning); }
+  .status-pill.complete { background: var(--accent-light);  color: var(--accent); }
+  .status-pill.error    { background: var(--danger-light);  color: var(--danger); }
+  .status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  /* ── Checklist ── */
+  .checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.875rem;
+  }
+  .checklist-item:last-child { border-bottom: none; }
+  .check-box {
+    width: 20px; height: 20px;
+    border-radius: 5px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+  }
+  .check-box.done    { background: var(--accent-light); color: var(--accent); }
+  .check-box.pending { background: var(--warning-light); color: var(--warning); }
+  .check-box.missing { background: var(--danger-light); color: var(--danger); }
+  .checklist-item .ci-label { flex: 1; color: var(--text); }
+  .checklist-item .ci-status {
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+  .ci-done    { color: var(--accent); }
+  .ci-pending { color: var(--warning); }
+  .ci-missing { color: var(--danger); }
+
+  /* ── Buttons ── */
+  .btn-primary-custom {
+    background: var(--primary);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.65rem 1.4rem;
+    transition: background 0.2s, transform 0.15s;
+    cursor: pointer;
+  }
+  .btn-primary-custom:hover { background: #1e40af; transform: translateY(-1px); color: white; }
+  .btn-outline-custom {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-muted);
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.65rem 1.4rem;
+    transition: border-color 0.2s, color 0.2s;
+    cursor: pointer;
+  }
+  .btn-outline-custom:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* ── Responsive ── */
+  @media (max-width: 767.98px) {
+    .section-card { padding: 1.1rem 1rem; }
+    .page-banner  { padding: 1.1rem 1rem; }
+    .page-banner .banner-title { font-size: 1.05rem; }
+    .steps-row::before { display: none; }
+    .step-label { font-size: 0.6rem; }
+  }
+  @media (min-width: 992px) {
+    .page-banner { padding: 2rem 2.25rem; }
+    .page-banner .banner-title { font-size: 1.5rem; }
+    .section-card { padding: 1.75rem 2rem; }
+  }
+</style>
 </head>
 
 <body>
 {% include 'header.html' %}
+
+<div class="container-fluid px-3 px-md-4 py-3 py-md-4" style="max-width:1250px; margin:0 auto">
+
+  <!-- ── Page Banner with Steps ── -->
+  <div class="page-banner">
+    <div class="banner-title">📄 File Your ITR</div>
+    <p class="banner-sub">Income Tax Return Filing — FY 2025-26 (AY 2026-27)</p>
+
+    <div class="steps-row">
+      <div class="step-item active" id="step-indicator-1">
+        <div class="step-circle">1</div>
+        <div class="step-label">Select ITR<br>Form</div>
+      </div>
+      <div class="step-item" id="step-indicator-2">
+        <div class="step-circle">2</div>
+        <div class="step-label">Personal<br>Details</div>
+      </div>
+      <div class="step-item" id="step-indicator-3">
+        <div class="step-circle">3</div>
+        <div class="step-label">Income<br>Details</div>
+      </div>
+      <div class="step-item" id="step-indicator-4">
+        <div class="step-circle">4</div>
+        <div class="step-label">Deductions</div>
+      </div>
+      <div class="step-item" id="step-indicator-5">
+        <div class="step-circle">5</div>
+        <div class="step-label">Review &<br>Submit</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 align-items-start">
+
+    <!-- ══ LEFT — Main Form ══ -->
+    <div class="col-12 col-lg-8">
+
+      <!-- Step 1: Select ITR Form -->
+      <div class="section-card mb-3" id="section-step1">
+        <div class="section-title">Step 1 — Select ITR Form</div>
+        <div class="section-sub">Choose the correct form based on your income sources</div>
+
+        <div class="row g-2">
+          <div class="col-12 col-sm-6">
+            <div class="itr-type-card selected" onclick="selectITR(this, 'ITR-1')">
+              <span class="itr-badge badge-recommended">Recommended</span>
+              <span class="check-icon">✓</span>
+              <div class="itr-name">ITR-1 (Sahaj)</div>
+              <div class="itr-desc">For salaried individuals with income up to ₹50L. Salary, one house property, other sources.</div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <div class="itr-type-card" onclick="selectITR(this, 'ITR-2')">
+              <span class="itr-badge" style="background:var(--surface-2);color:var(--text-muted)">Multiple Sources</span>
+              <span class="check-icon">✓</span>
+              <div class="itr-name">ITR-2</div>
+              <div class="itr-desc">For individuals with capital gains, foreign income, or more than one house property.</div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <div class="itr-type-card" onclick="selectITR(this, 'ITR-3')">
+              <span class="itr-badge badge-business">Business</span>
+              <span class="check-icon">✓</span>
+              <div class="itr-name">ITR-3</div>
+              <div class="itr-desc">For individuals with income from business or profession (non-presumptive).</div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <div class="itr-type-card" onclick="selectITR(this, 'ITR-4')">
+              <span class="itr-badge badge-business">Presumptive</span>
+              <span class="check-icon">✓</span>
+              <div class="itr-name">ITR-4 (Sugam)</div>
+              <div class="itr-desc">For individuals opting for presumptive taxation under Sec 44AD, 44ADA, or 44AE.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-3">
+          <button class="btn-primary-custom" onclick="goToStep(2)">Next: Personal Details →</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Personal Details -->
+      <div class="section-card mb-3" id="section-step2" style="display:none">
+        <div class="section-title">Step 2 — Personal Details</div>
+        <div class="section-sub">Basic information as per your PAN card</div>
+
+        <div class="row g-3">
+          <div class="col-12 col-sm-6">
+            <label class="form-label-custom">Full Name</label>
+            <input type="text" class="form-control" placeholder="As per PAN card">
+          </div>
+          <div class="col-12 col-sm-6">
+            <label class="form-label-custom">PAN Number</label>
+            <input type="text" class="form-control" placeholder="ABCDE1234F" maxlength="10" style="text-transform:uppercase">
+          </div>
+          <div class="col-12 col-sm-6">
+            <label class="form-label-custom">Aadhaar Number</label>
+            <input type="text" class="form-control" placeholder="1234 5678 9012" maxlength="14">
+          </div>
+          <div class="col-12 col-sm-6">
+            <label class="form-label-custom">Date of Birth</label>
+            <input type="date" class="form-control">
+          </div>
+          <div class="col-12 col-sm-6">
+            <label class="form-label-custom">Mobile Number</label>
+            <input type="tel" class="form-control" placeholder="+91 00000 00000">
+          </div>
+          <div class="col-12 col-sm-6">
+            <label class="form-label-custom">Email Address</label>
+            <input type="email" class="form-control" placeholder="you@email.com">
+          </div>
+          <div class="col-12">
+            <label class="form-label-custom">Residential Status</label>
+            <select class="form-select">
+              <option>Resident Individual</option>
+              <option>Non-Resident Indian (NRI)</option>
+              <option>Resident but Not Ordinarily Resident (RNOR)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-3">
+          <button class="btn-outline-custom" onclick="goToStep(1)">← Back</button>
+          <button class="btn-primary-custom" onclick="goToStep(3)">Next: Income Details →</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Income Details -->
+      <div class="section-card mb-3" id="section-step3" style="display:none">
+        <div class="section-title">Step 3 — Income Details</div>
+        <div class="section-sub">Toggle the income sources that apply to you</div>
+
+        <!-- Salary -->
+        <div class="income-toggle active" onclick="toggleIncome(this, 'panel-salary')">
+          <div class="it-left">
+            <div class="it-icon" style="background:#e8f0fe">💼</div>
+            <div>
+              <div class="it-title">Salary / Pension</div>
+              <div class="it-sub">Income from employer or pension</div>
+            </div>
+          </div>
+          <div class="toggle-switch on" id="ts-salary"></div>
+        </div>
+        <div class="income-panel show" id="panel-salary">
+          <div class="row g-2">
+            <div class="col-12 col-sm-6">
+              <label class="form-label-custom">Gross Salary</label>
+              <div class="input-wrap"><span class="rupee">₹</span>
+                <input type="number" class="form-control" id="inc-salary" placeholder="0" oninput="updateSummary()">
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <label class="form-label-custom">Employer Name</label>
+              <input type="text" class="form-control" placeholder="Company Ltd.">
+            </div>
+            <div class="col-12 col-sm-6">
+              <label class="form-label-custom">TDS Deducted</label>
+              <div class="input-wrap"><span class="rupee">₹</span>
+                <input type="number" class="form-control" id="tds-salary" placeholder="0" oninput="updateSummary()">
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <label class="form-label-custom">Form 16 Available?</label>
+              <select class="form-select">
+                <option>Yes</option><option>No</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- House Property -->
+        <div class="income-toggle" onclick="toggleIncome(this, 'panel-house')">
+          <div class="it-left">
+            <div class="it-icon" style="background:#dcfce7">🏠</div>
+            <div>
+              <div class="it-title">House Property</div>
+              <div class="it-sub">Rental income or self-occupied</div>
+            </div>
+          </div>
+          <div class="toggle-switch" id="ts-house"></div>
+        </div>
+        <div class="income-panel" id="panel-house">
+          <div class="row g-2">
+            <div class="col-12 col-sm-6">
+              <label class="form-label-custom">Annual Rental Income</label>
+              <div class="input-wrap"><span class="rupee">₹</span>
+                <input type="number" class="form-control" id="inc-house" placeholder="0" oninput="updateSummary()">
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <label class="form-label-custom">Home Loan Interest</label>
+              <div class="input-wrap"><span class="rupee">₹</span>
+                <input type="number" class="form-control" placeholder="0">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Capital Gains -->
+        <div class="income-toggle" onclick="toggleIncome(this, 'panel-cg')">
+          <div class="it-left">
+            <div class="it-icon" style="background:#fef3c7">📈</div>
+            <div>
+              <div class="it-title">Capital Gains</div>
+              <div class="it-sub">Stocks, mutual funds, property</div>
+            </div>
+          </div>
+          <div class="toggle-switch" id="ts-cg"></div>
+        </div>
+        <div class="income-panel" id="panel-cg">
+          <div class="row g-2">
+            <div class="col-12 col-sm-6">
+              <label class="form-label-custom">Short Term Capital Gains (STCG)</label>
+              <div class="input-wrap"><span class="rupee">₹</span>
+                <input type="number" class="form-control" id="inc-stcg" placeholder="0" oninput="updateSummary()">
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <label class="form-label-custom">Long Term Capital Gains (LTCG)</label>
+              <div class="input-wrap"><span class="rupee">₹</span>
+                <input type="number" class="form-control" id="inc-ltcg" placeholder="0" oninput="updateSummary()">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Other Sources -->
+        <div class="income-toggle" onclick="toggleIncome(this, 'panel-other')">
+          <div class="it-left">
+            <div class="it-icon" style="background:#f3e8ff">💰</div>
+            <div>
+              <div class="it-title">Other Sources</div>
+              <div class="it-sub">Interest, dividends, freelance</div>
+            </div>
+          </div>
+          <div class="toggle-switch" id="ts-other"></div>
+        </div>
+        <div class="income-panel" id="panel-other">
+          <div class="row g-2">
+            <div class="col-12 col-sm-6">
+              <label class="form-label-custom">Interest Income (FD/Savings)</label>
+              <div class="input-wrap"><span class="rupee">₹</span>
+                <input type="number" class="form-control" id="inc-interest" placeholder="0" oninput="updateSummary()">
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <label class="form-label-custom">Dividend Income</label>
+              <div class="input-wrap"><span class="rupee">₹</span>
+                <input type="number" class="form-control" id="inc-dividend" placeholder="0" oninput="updateSummary()">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-3">
+          <button class="btn-outline-custom" onclick="goToStep(2)">← Back</button>
+          <button class="btn-primary-custom" onclick="goToStep(4)">Next: Deductions →</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Deductions -->
+      <div class="section-card mb-3" id="section-step4" style="display:none">
+        <div class="section-title">Step 4 — Deductions</div>
+        <div class="section-sub">Enter deductions applicable under Old Regime</div>
+
+        <div class="row g-3">
+          <div class="col-12 col-sm-6">
+            <label class="form-label-custom">Section 80C <span style="font-weight:400">(Max ₹1.5L)</span></label>
+            <div class="input-wrap"><span class="rupee">₹</span>
+              <input type="number" class="form-control" id="ded-80c" placeholder="0" oninput="updateSummary()">
+            </div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <label class="form-label-custom">Section 80D — Health Insurance</label>
+            <div class="input-wrap"><span class="rupee">₹</span>
+              <input type="number" class="form-control" id="ded-80d" placeholder="0" oninput="updateSummary()">
+            </div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <label class="form-label-custom">HRA Exemption</label>
+            <div class="input-wrap"><span class="rupee">₹</span>
+              <input type="number" class="form-control" id="ded-hra" placeholder="0" oninput="updateSummary()">
+            </div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <label class="form-label-custom">NPS — 80CCD(1B)</label>
+            <div class="input-wrap"><span class="rupee">₹</span>
+              <input type="number" class="form-control" id="ded-nps" placeholder="0" oninput="updateSummary()">
+            </div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <label class="form-label-custom">Home Loan Interest — Sec 24(b)</label>
+            <div class="input-wrap"><span class="rupee">₹</span>
+              <input type="number" class="form-control" id="ded-hl" placeholder="0" oninput="updateSummary()">
+            </div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <label class="form-label-custom">Other Deductions</label>
+            <div class="input-wrap"><span class="rupee">₹</span>
+              <input type="number" class="form-control" id="ded-other" placeholder="0" oninput="updateSummary()">
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-3">
+          <button class="btn-outline-custom" onclick="goToStep(3)">← Back</button>
+          <button class="btn-primary-custom" onclick="goToStep(5)">Next: Review & Submit →</button>
+        </div>
+      </div>
+
+      <!-- Step 5: Review & Submit -->
+      <div class="section-card mb-3" id="section-step5" style="display:none">
+        <div class="section-title">Step 5 — Review & Submit</div>
+        <div class="section-sub">Verify your details before filing</div>
+
+        <!-- Document Checklist -->
+        <div class="mb-3">
+          <div class="section-title" style="font-size:0.9rem; margin-bottom:0.75rem">📎 Document Checklist</div>
+          <div class="checklist-item">
+            <div class="check-box done">✓</div>
+            <span class="ci-label">PAN Card</span>
+            <span class="ci-status ci-done">Verified</span>
+          </div>
+          <div class="checklist-item">
+            <div class="check-box done">✓</div>
+            <span class="ci-label">Aadhaar Card</span>
+            <span class="ci-status ci-done">Linked</span>
+          </div>
+          <div class="checklist-item">
+            <div class="check-box pending">!</div>
+            <span class="ci-label">Form 16 (from employer)</span>
+            <span class="ci-status ci-pending">Pending upload</span>
+          </div>
+          <div class="checklist-item">
+            <div class="check-box pending">!</div>
+            <span class="ci-label">Bank Account Statement</span>
+            <span class="ci-status ci-pending">Pending upload</span>
+          </div>
+          <div class="checklist-item">
+            <div class="check-box done">✓</div>
+            <span class="ci-label">Form 26AS / AIS</span>
+            <span class="ci-status ci-done">Downloaded</span>
+          </div>
+          <div class="checklist-item">
+            <div class="check-box missing">✗</div>
+            <span class="ci-label">Investment Proofs (80C)</span>
+            <span class="ci-status ci-missing">Missing</span>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="mb-3">
+          <div class="section-title" style="font-size:0.9rem; margin-bottom:0.5rem">⚠️ Declaration</div>
+          <div class="form-check" style="font-size:0.875rem">
+            <input class="form-check-input" type="checkbox" id="declaration">
+            <label class="form-check-label" for="declaration" style="color:var(--text-muted)">
+              I hereby declare that the information furnished above is correct and complete to the best of my knowledge and belief.
+            </label>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-3 flex-wrap gap-2">
+          <button class="btn-outline-custom" onclick="goToStep(4)">← Back</button>
+          <div class="d-flex gap-2">
+            <button class="btn-outline-custom">💾 Save Draft</button>
+            <button class="btn-primary-custom" onclick="submitITR()">🚀 Submit ITR</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /left col -->
+
+    <!-- ══ RIGHT — Summary Sidebar ══ -->
+    <div class="col-12 col-lg-4">
+
+      <!-- Filing Status -->
+      <div class="section-card mb-3">
+        <div class="section-title mb-2">Filing Status</div>
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <span class="status-pill pending"><span class="status-dot"></span>In Progress</span>
+          <span style="font-size:0.78rem; color:var(--text-muted)">Step <span id="current-step-label">1</span> of 5</span>
+        </div>
+        <!-- Progress bar -->
+        <div style="height:6px; background:var(--border); border-radius:99px; overflow:hidden">
+          <div id="progress-bar" style="height:100%; width:20%; background:linear-gradient(90deg, var(--primary), #60a5fa); border-radius:99px; transition:width 0.4s ease"></div>
+        </div>
+        <div style="font-size:0.72rem; color:var(--text-muted); margin-top:0.4rem" id="progress-label">20% complete</div>
+      </div>
+
+      <!-- Income Summary -->
+      <div class="section-card mb-3">
+        <div class="section-title">Income Summary</div>
+        <div class="section-sub">Live totals from your entries</div>
+
+        <div class="summary-row">
+          <span class="sr-label">Salary Income</span>
+          <span class="sr-value" id="sum-salary">₹ 0</span>
+        </div>
+        <div class="summary-row">
+          <span class="sr-label">House Property</span>
+          <span class="sr-value" id="sum-house">₹ 0</span>
+        </div>
+        <div class="summary-row">
+          <span class="sr-label">Capital Gains</span>
+          <span class="sr-value" id="sum-cg">₹ 0</span>
+        </div>
+        <div class="summary-row">
+          <span class="sr-label">Other Sources</span>
+          <span class="sr-value" id="sum-other">₹ 0</span>
+        </div>
+        <div class="summary-row total">
+          <span class="sr-label">Gross Total Income</span>
+          <span class="sr-value" id="sum-gross">₹ 0</span>
+        </div>
+      </div>
+
+      <!-- Tax Summary -->
+      <div class="section-card mb-3">
+        <div class="section-title">Tax Summary</div>
+        <div class="section-sub">Estimated liability</div>
+
+        <div class="summary-row">
+          <span class="sr-label">Total Deductions</span>
+          <span class="sr-value" id="sum-deductions">₹ 0</span>
+        </div>
+        <div class="summary-row">
+          <span class="sr-label">Taxable Income</span>
+          <span class="sr-value" id="sum-taxable">₹ 0</span>
+        </div>
+        <div class="summary-row">
+          <span class="sr-label">TDS Already Paid</span>
+          <span class="sr-value" id="sum-tds">₹ 0</span>
+        </div>
+        <div class="summary-row total">
+          <span class="sr-label">Tax Payable / Refund</span>
+          <span class="sr-value" id="sum-taxpayable" style="color:var(--accent)">₹ 0</span>
+        </div>
+      </div>
+
+      <!-- Selected ITR Form -->
+      <div class="section-card">
+        <div class="section-title mb-2">Selected Form</div>
+        <div style="display:flex; align-items:center; gap:0.75rem">
+          <div style="width:42px;height:42px;border-radius:10px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:1.1rem">📄</div>
+          <div>
+            <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:0.95rem" id="selected-itr-display">ITR-1 (Sahaj)</div>
+            <div style="font-size:0.75rem;color:var(--text-muted)">FY 2025-26 · AY 2026-27</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /right col -->
+  </div><!-- /row -->
+</div>
+
+<script>
+  let currentStep = 1;
+  let selectedITR = 'ITR-1';
+
+  function fmt(n) {
+    return '₹ ' + Math.round(n).toLocaleString('en-IN');
+  }
+
+  function v(id) {
+    return parseFloat(document.getElementById(id)?.value) || 0;
+  }
+
+  /* ── Step Navigation ── */
+  function goToStep(step) {
+    for (let i = 1; i <= 5; i++) {
+      const sec = document.getElementById('section-step' + i);
+      const ind = document.getElementById('step-indicator-' + i);
+      if (sec) sec.style.display = (i === step) ? 'block' : 'none';
+      if (ind) {
+        ind.classList.remove('active', 'done');
+        if (i === step) ind.classList.add('active');
+        else if (i < step) ind.classList.add('done');
+      }
+    }
+    currentStep = step;
+    document.getElementById('current-step-label').textContent = step;
+    const pct = (step / 5 * 100).toFixed(0);
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = pct + '% complete';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ── ITR Form Selection ── */
+  function selectITR(card, type) {
+    document.querySelectorAll('.itr-type-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedITR = type;
+    document.getElementById('selected-itr-display').textContent = type + (type === 'ITR-1' ? ' (Sahaj)' : type === 'ITR-4' ? ' (Sugam)' : '');
+  }
+
+  /* ── Income Toggle ── */
+  function toggleIncome(toggle, panelId) {
+    const ts    = toggle.querySelector('.toggle-switch');
+    const panel = document.getElementById(panelId);
+    const isOn  = ts.classList.contains('on');
+    ts.classList.toggle('on', !isOn);
+    toggle.classList.toggle('active', !isOn);
+    panel.classList.toggle('show', !isOn);
+    updateSummary();
+  }
+
+  /* ── Live Summary ── */
+  function updateSummary() {
+    const salary   = v('inc-salary');
+    const house    = v('inc-house');
+    const stcg     = v('inc-stcg');
+    const ltcg     = v('inc-ltcg');
+    const interest = v('inc-interest');
+    const dividend = v('inc-dividend');
+    const tds      = v('tds-salary');
+
+    const cg     = stcg + ltcg;
+    const other  = interest + dividend;
+    const gross  = salary + house + cg + other;
+
+    const d80c   = Math.min(v('ded-80c'), 150000);
+    const d80d   = v('ded-80d');
+    const hra    = v('ded-hra');
+    const nps    = v('ded-nps');
+    const hl     = v('ded-hl');
+    const dother = v('ded-other');
+    const totalDed = 50000 + d80c + d80d + hra + nps + hl + dother; // 50k std deduction
+
+    const taxable = Math.max(0, gross - totalDed);
+
+    // Simple slab (below 60, old regime)
+    let tax = 0;
+    if (taxable > 250000 && taxable <= 500000) tax = (taxable - 250000) * 0.05;
+    else if (taxable > 500000 && taxable <= 1000000) tax = 12500 + (taxable - 500000) * 0.20;
+    else if (taxable > 1000000) tax = 112500 + (taxable - 1000000) * 0.30;
+    if (taxable <= 500000) tax = 0;
+    const totalTax   = tax * 1.04;
+    const netPayable = totalTax - tds;
+
+    document.getElementById('sum-salary').textContent  = fmt(salary);
+    document.getElementById('sum-house').textContent   = fmt(house);
+    document.getElementById('sum-cg').textContent      = fmt(cg);
+    document.getElementById('sum-other').textContent   = fmt(other);
+    document.getElementById('sum-gross').textContent   = fmt(gross);
+    document.getElementById('sum-deductions').textContent = fmt(totalDed);
+    document.getElementById('sum-taxable').textContent = fmt(taxable);
+    document.getElementById('sum-tds').textContent     = fmt(tds);
+
+    const payEl = document.getElementById('sum-taxpayable');
+    payEl.textContent = (netPayable < 0 ? '− ' : '') + fmt(Math.abs(netPayable));
+    payEl.style.color = netPayable <= 0 ? 'var(--accent)' : 'var(--danger)';
+  }
+
+  /* ── Submit ── */
+  function submitITR() {
+    const decl = document.getElementById('declaration');
+    if (!decl.checked) {
+      alert('Please accept the declaration before submitting.');
+      return;
+    }
+    alert('✅ Your ITR has been submitted successfully!\n\nAcknowledgement No: ITR2526' + Math.floor(Math.random()*900000+100000));
+  }
+</script>
 
 </body>
 </html>

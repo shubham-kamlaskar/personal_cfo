@@ -510,6 +510,49 @@
 </div>
 
 <script>
+  function fmt(n) {
+    return '₹ ' + Math.round(n).toLocaleString('en-IN');
+  }
+
+  function pct(val, total) {
+    return total > 0 ? Math.min(100, (val / total) * 100).toFixed(1) + '%' : '0%';
+  }
+
+  function calcOldRegimeTax(taxable, age) {
+    let tax = 0;
+    if (age === 'Below_60') {
+      if (taxable <= 250000) tax = 0;
+      else if (taxable <= 500000) tax = (taxable - 250000) * 0.05;
+      else if (taxable <= 1000000) tax = 12500 + (taxable - 500000) * 0.20;
+      else tax = 112500 + (taxable - 1000000) * 0.30;
+    } else if (age === '60_80') {
+      if (taxable <= 300000) tax = 0;
+      else if (taxable <= 500000) tax = (taxable - 300000) * 0.05;
+      else if (taxable <= 1000000) tax = 10000 + (taxable - 500000) * 0.20;
+      else tax = 110000 + (taxable - 1000000) * 0.30;
+    } else {
+      if (taxable <= 500000) tax = 0;
+      else if (taxable <= 1000000) tax = (taxable - 500000) * 0.20;
+      else tax = 100000 + (taxable - 1000000) * 0.30;
+    }
+    // Rebate u/s 87A (old: taxable ≤ 5L)
+    if (taxable <= 500000) tax = 0;
+    return tax;
+  }
+
+  function calcNewRegimeTax(taxable) {
+    let tax = 0;
+    if (taxable <= 300000) tax = 0;
+    else if (taxable <= 600000) tax = (taxable - 300000) * 0.05;
+    else if (taxable <= 900000) tax = 15000 + (taxable - 600000) * 0.10;
+    else if (taxable <= 1200000) tax = 45000 + (taxable - 900000) * 0.15;
+    else if (taxable <= 1500000) tax = 90000 + (taxable - 1200000) * 0.20;
+    else tax = 150000 + (taxable - 1500000) * 0.30;
+    // Rebate u/s 87A (new: taxable ≤ 7L)
+    if (taxable <= 700000) tax = 0;
+    return tax;
+  }
+
   document.getElementById('calcBtn').addEventListener('click', function () {
     const age    = document.getElementById('age_category').value;
     const regime = document.getElementById('tax_regime').value;
@@ -520,6 +563,24 @@
     const hra    = parseFloat(document.getElementById('hra').value)        || 0;
     const hl     = parseFloat(document.getElementById('home_loan').value)  || 0;
     const nps    = parseFloat(document.getElementById('nps').value)        || 0;
+
+    const totalDeductions = std + d80c + d80d + hra + hl + nps;
+    const taxableOld = Math.max(0, gross - totalDeductions);
+    const taxableNew = Math.max(0, gross - 75000); // std deduction for new regime FY26
+
+    const taxBeforeCessOld = calcOldRegimeTax(taxableOld, age);
+    const cessOld          = taxBeforeCessOld * 0.04;
+    const totalOld         = taxBeforeCessOld + cessOld;
+
+    const taxBeforeCessNew = calcNewRegimeTax(taxableNew);
+    const cessNew          = taxBeforeCessNew * 0.04;
+    const totalNew         = taxBeforeCessNew + cessNew;
+
+    const isOld   = regime === 'old_regime';
+    const taxable = isOld ? taxableOld : taxableNew;
+    const tbc     = isOld ? taxBeforeCessOld : taxBeforeCessNew;
+    const cess    = isOld ? cessOld : cessNew;
+    const total   = isOld ? totalOld : totalNew;
 
     // Update summary
     document.getElementById('regime-label').textContent = isOld ? 'Old Tax Regime' : 'New Tax Regime';
