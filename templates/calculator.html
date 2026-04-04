@@ -318,6 +318,7 @@
         <div class="section-title">Enter Details</div>
         <div class="section-sub">Fill in your income & deductions</div>
 
+        <form onsubmit="TaxCalculator(event)">
         <!-- Age Category -->
         <div class="mb-3">
           <label class="form-label-custom">Age Category</label>
@@ -398,7 +399,10 @@
           </div>
         </div>
 
-        <button class="btn-calc" id="calcBtn">Calculate Tax →</button>
+        <button type="submit" class="btn-calc" id="calcBtn">
+Calculate Tax →
+</button>
+        </form>
       </div>
     </div>
 
@@ -408,7 +412,7 @@
       <!-- Summary Stats -->
       <div class="section-card mb-3">
         <div class="section-title">Tax Calculation Summary</div>
-        <div class="section-sub" id="regime-label">Old Tax Regime</div>
+        <div class="section-sub" id="regime-label"><span class="t-value" id="tax-regime">Tax Regime</span></div>
 
         <div class="d-flex gap-2 flex-wrap summary-stats-row mb-3">
           <div class="summary-stat">
@@ -510,30 +514,82 @@
 </div>
 
 <script>
-  document.getElementById('calcBtn').addEventListener('click', function () {
+
+  function fmt(value) {
+  return "₹ " + Math.round(value).toLocaleString("en-IN");
+}
+
+function pct(value, total) {
+  if (total === 0) return "0%";
+  return ((value / total) * 100) + "%";
+}
+
+
+  async function TaxCalculator(event) {
+    event.preventDefault();
+
     const age    = document.getElementById('age_category').value;
     const regime = document.getElementById('tax_regime').value;
     const gross  = parseFloat(document.getElementById('gross_annual_income').value) || 0;
-    const std    = parseFloat(document.getElementById('std_deduction').value)  || 50000;
+    const std = parseFloat(document.getElementById('std_deduction').value) 
+            || (regime === "new_regime" ? 75000 : 50000);
     const d80c   = Math.min(parseFloat(document.getElementById('sec_80c').value)  || 0, 150000);
     const d80d   = parseFloat(document.getElementById('sec_80d').value)   || 0;
     const hra    = parseFloat(document.getElementById('hra').value)        || 0;
     const hl     = parseFloat(document.getElementById('home_loan').value)  || 0;
     const nps    = parseFloat(document.getElementById('nps').value)        || 0;
 
-    // Update summary
-    document.getElementById('regime-label').textContent = isOld ? 'Old Tax Regime' : 'New Tax Regime';
-    document.getElementById('s-gross').textContent       = fmt(gross);
-    document.getElementById('s-deductions').textContent  = fmt(isOld ? totalDeductions : 75000);
-    document.getElementById('s-taxable').textContent     = fmt(taxable);
-    document.getElementById('s-totaltax').textContent    = fmt(total);
-    document.getElementById('tax-before-cess').textContent = fmt(tbc);
-    document.getElementById('cess-amount').textContent     = fmt(cess);
-    document.getElementById('total-tax-payable').textContent = fmt(total);
 
-    // Regime comparison
-    document.getElementById('old-regime-tax').textContent = fmt(totalOld);
-    document.getElementById('new-regime-tax').textContent = fmt(totalNew);
+    try {
+
+            const response = await fetch("/tax_calculator", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    age : age,
+                    regime: regime,
+                    gross: gross,
+                    std: std,
+                    d80c: d80c,
+                    d80d: d80d,
+                    hra: hra,
+                    hl: hl,
+                    nps: nps
+                })
+            });
+
+            const data =await response.json();
+
+            if (response.ok) {
+
+                document.getElementById("s-gross").textContent = "₹ " + data.gross;
+                document.getElementById("s-deductions").textContent = "₹ " + data.total_deductions;
+                document.getElementById("s-taxable").textContent = "₹ " + data.taxable_income;
+                document.getElementById("s-totaltax").textContent = "₹ " + data.total_tax;
+
+                document.getElementById("tax-before-cess").textContent = "₹ " + data.tax_before_cess;
+                document.getElementById("cess-amount").textContent = "₹ " + data.cess;
+                document.getElementById("total-tax-payable").textContent = "₹ " + data.total_tax;
+
+                // Regime comparison
+                document.getElementById('old-regime-tax').textContent = data.old_regime_tax;
+                document.getElementById('new-regime-tax').textContent = data.new_regime_tax;
+
+                document.getElementById('tax-regime').textContent = data.selected_regime;
+
+            }
+            else {
+                alert("Something went wrong while calculating tax.");
+            }
+
+        }catch (error) {
+            console.error("Tax calculation error:", error);
+            alert("Tax calculation failed. Please try again.");
+        }
+
+
 
     const oldCard = document.getElementById('old-regime-card');
     const newCard = document.getElementById('new-regime-card');
@@ -544,23 +600,23 @@
     document.getElementById('old-regime-note').style.color = 'var(--text-muted)';
     document.getElementById('new-regime-note').style.color = 'var(--text-muted)';
 
-    if (totalOld < totalNew) {
+    if (data.old_regime_tax < data.new_regime_tax) {
       oldCard.classList.add('better');
       const badge = document.createElement('span');
       badge.className = 'better-badge';
       badge.textContent = '✓ Better';
       oldCard.appendChild(badge);
-      const saving = totalNew - totalOld;
+      const saving = data.new_regime_tax - data.old_regime_tax;
       document.getElementById('old-regime-note').textContent  = `Save ₹${Math.round(saving).toLocaleString('en-IN')} vs New`;
       document.getElementById('old-regime-note').style.color  = 'var(--accent)';
       document.getElementById('new-regime-note').textContent  = `₹${Math.round(saving).toLocaleString('en-IN')} more than Old`;
-    } else if (totalNew < totalOld) {
+    } else if (data.new_regime_tax < data.old_regime_tax) {
       newCard.classList.add('better');
       const badge = document.createElement('span');
       badge.className = 'better-badge';
       badge.textContent = '✓ Better';
       newCard.appendChild(badge);
-      const saving = totalOld - totalNew;
+      const saving = data.old_regime_tax - data.new_regime_tax ;
       document.getElementById('new-regime-note').textContent  = `Save ₹${Math.round(saving).toLocaleString('en-IN')} vs Old`;
       document.getElementById('new-regime-note').style.color  = 'var(--accent)';
       document.getElementById('old-regime-note').textContent  = `₹${Math.round(saving).toLocaleString('en-IN')} more than New`;
@@ -568,6 +624,8 @@
       document.getElementById('old-regime-note').textContent = 'Same tax as New';
       document.getElementById('new-regime-note').textContent = 'Same tax as Old';
     }
+
+
 
     // Deduction breakdown
     const dedList = [
@@ -580,10 +638,11 @@
     ];
     dedList.forEach(d => {
       document.getElementById(d.id).textContent        = fmt(d.val);
-      document.getElementById(d.bar).style.width       = pct(d.val, totalDeductions);
+      document.getElementById(d.bar).style.width       = pct(d.val, data.total_deductions);
     });
-    document.getElementById('total-deductions-label').textContent = fmt(totalDeductions);
-  });
+    document.getElementById('total-deductions-label').textContent = data.total_deductions;
+  }
+
 </script>
 
 </body>

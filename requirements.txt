@@ -9,3 +9,5 @@ ollama
 flask
 flask-cors
 ddgs
+markdown
+flask[async]

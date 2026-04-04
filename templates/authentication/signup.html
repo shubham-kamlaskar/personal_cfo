@@ -109,22 +109,22 @@ color:#1a56db;
 <div class="title">Create Account</div>
 <div class="subtitle">Start using your AI CFO assistant</div>
 
-<form method="POST" action="/signup">
+<form onsubmit="SignUpUser(event)">
 
 <div class="mb-2">
-<input class="form-control" name="name" placeholder="Full Name" required>
+<input class="form-control" name="name" id="name" placeholder="Full Name" required>
 </div>
 
 <div class="mb-2">
-<input class="form-control" type="email" name="email" placeholder="Email" required>
+<input class="form-control" type="email" id="email" name="email" placeholder="Email" required>
 </div>
 
 <div class="mb-2">
-<input class="form-control" type="password" name="password" placeholder="Password" required>
+<input class="form-control" type="password" id="password" name="password" placeholder="Password" required>
 </div>
 
 <div class="mb-2">
-<input class="form-control" type="password" name="confirm_password" placeholder="Confirm Password" required>
+<input class="form-control" type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
 </div>
 
 <button class="btn-main">Create Account</button>
@@ -138,4 +138,49 @@ Already have an account? <a href="{{ url_for('authentication_bp.login') }}">Logi
 </div>
 
 </body>
+<script>
+async function SignUpUser(event) {
+
+    event.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const repassword = document.getElementById("confirm_password").value;
+
+    if (password !== repassword) {
+        alert("Passwords do not match");
+        return;
+    }
+
+    try {
+
+        const response = await fetch("/signup_user", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                password: password,
+                repassword: repassword
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            window.location.href = data.redirect;
+        }
+        else {
+            alert(data.message || "Signup failed");
+        }
+
+    } catch (error) {
+        console.error("Signup error:", error);
+        alert("Something went wrong");
+    }
+}
+</script>
 </html>

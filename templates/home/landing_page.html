@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal CFO — India's Smartest Tax Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:     #05080f;
+  --ink-2:   #1a2236;
+  --ink-3:   #3d4d6a;
+  --muted:   #7a8aa8;
+  --line:    rgba(255,255,255,0.08);
+  --surface: #0b1120;
+  --card:    #0f1929;
+  --card-2:  #131f32;
+  --blue:    #2563eb;
+  --blue-2:  #3b82f6;
+  --cyan:    #06b6d4;
+  --emerald: #10b981;
+  --amber:   #f59e0b;
+  --rose:    #f43f5e;
+  --white:   #ffffff;
+  --off:     #e8edf5;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--ink);
+  color: var(--off);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ── NOISE GRAIN OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+/* ── TYPOGRAPHY ── */
+.display {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+.heading {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 0 2rem;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  background: rgba(5,8,15,0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.nav-logo {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--white);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.nav-logo .logo-mark {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.875rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+  font-weight: 500;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-cta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.btn-ghost {
+  font-size: 0.875rem;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  transition: color 0.2s;
+  text-decoration: none;
+}
+.btn-ghost:hover { color: var(--white); }
+.btn-nav {
+  background: var(--white);
+  color: var(--ink);
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  text-decoration: none;
+}
+.btn-nav:hover { background: var(--off); transform: translateY(-1px); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 2rem 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Radial glow behind hero */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 600px;
+  background: radial-gradient(ellipse at center,
+    rgba(37,99,235,0.22) 0%,
+    rgba(6,182,212,0.08) 40%,
+    transparent 70%);
+  pointer-events: none;
+}
+
+/* Floating grid lines */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(37,99,235,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37,99,235,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent);
+  pointer-events: none;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(37,99,235,0.12);
+  border: 1px solid rgba(37,99,235,0.3);
+  border-radius: 99px;
+  padding: 0.35rem 1rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--blue-2);
+  margin-bottom: 2rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  animation: fadeUp 0.6s ease both;
+}
+.hero-badge .pulse-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--emerald);
+  box-shadow: 0 0 0 0 rgba(16,185,129,0.6);
+  animation: pulse-ring 2s infinite;
+}
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(16,185,129,0.5); }
+  70%  { box-shadow: 0 0 0 8px rgba(16,185,129,0); }
+  100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+}
+
+.hero-title {
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  max-width: 900px;
+  color: var(--white);
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.7s 0.1s ease both;
+  position: relative;
+}
+.hero-title .gradient-word {
+  background: linear-gradient(90deg, var(--blue-2), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-title .outline-word {
+  -webkit-text-stroke: 2px rgba(255,255,255,0.3);
+  color: transparent;
+}
+
+.hero-sub {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--muted);
+  max-width: 560px;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+  animation: fadeUp 0.7s 0.2s ease both;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 4rem;
+  animation: fadeUp 0.7s 0.3s ease both;
+}
+
+.btn-primary {
+  background: var(--blue);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.85rem 2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  box-shadow: 0 0 0 0 rgba(37,99,235,0.5);
+}
+.btn-primary:hover {
+  background: var(--blue-2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(37,99,235,0.35);
+}
+
+.btn-secondary {
+  background: rgba(255,255,255,0.06);
+  color: var(--off);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  padding: 0.85rem 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
+}
+
+/* Trust bar */
+.trust-bar {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  animation: fadeUp 0.7s 0.4s ease both;
+}
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+.trust-item span { color: var(--emerald); font-size: 0.9rem; }
+.trust-sep { width: 1px; height: 16px; background: rgba(255,255,255,0.1); }
+
+/* ── HERO DASHBOARD PREVIEW ── */
+.hero-visual {
+  margin-top: 5rem;
+  width: 100%;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 2rem;
+  position: relative;
+  animation: fadeUp 0.9s 0.5s ease both;
+}
+.dashboard-preview {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.04),
+    0 40px 80px rgba(0,0,0,0.6),
+    0 0 120px rgba(37,99,235,0.08);
+}
+.dp-topbar {
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.dp-dot { width: 10px; height: 10px; border-radius: 50%; }
+.dp-body {
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem;
+}
+.dp-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 1.1rem;
+}
+.dp-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+.dp-value { font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--white); }
+.dp-change { font-size: 0.7rem; margin-top: 0.25rem; }
+.dp-change.up { color: var(--emerald); }
+.dp-change.down { color: var(--rose); }
+.dp-chart-row {
+  grid-column: 1 / -1;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  height: 80px;
+}
+.dp-bar {
+  flex: 1;
+  border-radius: 4px 4px 0 0;
+  background: rgba(37,99,235,0.3);
+  transition: background 0.2s;
+  position: relative;
+}
+.dp-bar.active { background: linear-gradient(180deg, var(--blue-2), var(--blue)); }
+.dp-bar:hover { background: rgba(37,99,235,0.5); }
+
+/* Glow under preview */
+.hero-visual::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 80px;
+  background: radial-gradient(ellipse, rgba(37,99,235,0.2), transparent 70%);
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+/* ── LOGOS STRIP ── */
+.logos-section {
+  padding: 4rem 2rem;
+  text-align: center;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.logos-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 2rem;
+  font-weight: 600;
+}
+.logos-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+  opacity: 0.4;
+}
+.logo-item {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--off);
+  letter-spacing: -0.02em;
+}
+
+/* ── SECTION WRAPPER ── */
+.section {
+  padding: 7rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-eyebrow {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--blue-2);
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+.section-title {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  color: var(--white);
+  margin-bottom: 1.25rem;
+  max-width: 700px;
+}
+.section-sub {
+  font-size: 1.05rem;
+  color: var(--muted);
+  max-width: 560px;
+  line-height: 1.75;
+  font-weight: 300;
+}
+
+/* ── FEATURES BENTO GRID ── */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto;
+  gap: 1rem;
+  margin-top: 4rem;
+}
+
+.bento-card {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.bento-card:hover {
+  border-color: rgba(37,99,235,0.3);
+  transform: translateY(-3px);
+}
+.bento-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(37,99,235,0.4), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.bento-card:hover::before { opacity: 1; }
+
+.bc-1 { grid-column: span 7; }
+.bc-2 { grid-column: span 5; }
+.bc-3 { grid-column: span 4; }
+.bc-4 { grid-column: span 4; }
+.bc-5 { grid-column: span 4; }
+.bc-6 { grid-column: span 12; }
+
+.bento-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 1.25rem;
+}
+.bento-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.6rem;
+  display: block;
+}
+.bento-h {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.65rem;
+  letter-spacing: -0.02em;
+}
+.bento-p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* Large card decoration */
+.bento-visual {
+  margin-top: 1.5rem;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+.bento-stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.82rem;
+}
+.bento-stat-row:last-child { border: none; }
+.bsr-label { color: var(--muted); }
+.bsr-value { font-weight: 700; color: var(--white); font-family: 'Bricolage Grotesque', sans-serif; }
+.bsr-badge {
+  font-size: 0.65rem;
+  padding: 2px 7px;
+  border-radius: 99px;
+  font-weight: 700;
+}
+.badge-green { background: rgba(16,185,129,0.15); color: var(--emerald); }
+.badge-blue  { background: rgba(37,99,235,0.15);  color: var(--blue-2); }
+.badge-amber { background: rgba(245,158,11,0.15); color: var(--amber); }
+
+/* Mini bar chart */
+.mini-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 40px;
+  margin-top: 0.75rem;
+}
+.mini-bar {
+  flex: 1;
+  border-radius: 3px 3px 0 0;
+  background: rgba(37,99,235,0.25);
+}
+.mini-bar.lit { background: var(--blue-2); }
+
+/* ── NUMBERS SECTION ── */
+.numbers-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 4rem;
+}
+.number-cell {
+  background: var(--card);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  transition: background 0.2s;
+}
+.number-cell:hover { background: var(--card-2); }
+.number-val {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+.number-val .num-accent { color: var(--blue-2); }
+.number-label {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* ── HOW IT WORKS ── */
+.steps-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 4rem;
+  position: relative;
+}
+.steps-row::before {
+  content: '';
+  position: absolute;
+  top: 28px; left: calc(16.66% + 1rem); right: calc(16.66% + 1rem);
+  height: 1px;
+  background: linear-gradient(90deg, var(--blue) 0%, var(--cyan) 100%);
+  opacity: 0.3;
+}
+.step-card {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 2rem;
+  position: relative;
+  transition: border-color 0.3s;
+}
+.step-card:hover { border-color: rgba(37,99,235,0.3); }
+.step-num {
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(37,99,235,0.2), rgba(6,182,212,0.1));
+  border: 1px solid rgba(37,99,235,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--blue-2);
+  margin-bottom: 1.25rem;
+}
+.step-h {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.65rem;
+  letter-spacing: -0.01em;
+}
+.step-p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
+
+/* ── TESTIMONIALS ── */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 4rem;
+}
+.testi-card {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 1.75rem;
+  position: relative;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.testi-card:hover {
+  border-color: rgba(37,99,235,0.25);
+  transform: translateY(-3px);
+}
+.testi-stars { color: var(--amber); font-size: 0.85rem; margin-bottom: 1rem; }
+.testi-quote {
+  font-size: 0.9rem;
+  color: var(--off);
+  line-height: 1.75;
+  margin-bottom: 1.25rem;
+  font-style: italic;
+  font-weight: 300;
+}
+.testi-quote::before { content: '"'; color: var(--blue-2); font-size: 1.2rem; font-style: normal; }
+.testi-author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.testi-avatar {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.testi-name {
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--white);
+  font-family: 'Bricolage Grotesque', sans-serif;
+}
+.testi-role { font-size: 0.75rem; color: var(--muted); }
+
+/* ── PRICING ── */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 4rem;
+  align-items: start;
+}
+.price-card {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 2rem;
+  position: relative;
+  transition: border-color 0.3s;
+}
+.price-card:hover { border-color: rgba(37,99,235,0.3); }
+.price-card.featured {
+  background: linear-gradient(160deg, rgba(37,99,235,0.15), rgba(6,182,212,0.05));
+  border-color: rgba(37,99,235,0.35);
+  transform: scale(1.04);
+  box-shadow: 0 0 60px rgba(37,99,235,0.12);
+}
+.price-badge {
+  display: inline-block;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  color: white;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 10px;
+  border-radius: 99px;
+  margin-bottom: 1.5rem;
+}
+.price-plan {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+}
+.price-amount {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 0.35rem;
+}
+.price-amount .price-currency { font-size: 1.5rem; vertical-align: top; margin-top: 0.5rem; display: inline-block; }
+.price-amount .price-period { font-size: 1rem; color: var(--muted); font-weight: 400; }
+.price-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.5; }
+.price-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 1.5rem 0; }
+.price-features { list-style: none; }
+.price-feature {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+  color: var(--off);
+  padding: 0.4rem 0;
+}
+.price-feature .feat-icon { font-size: 0.8rem; color: var(--emerald); flex-shrink: 0; }
+.price-feature.dim { color: var(--muted); }
+.price-feature.dim .feat-icon { color: var(--muted); }
+.price-btn {
+  width: 100%;
+  margin-top: 1.75rem;
+  padding: 0.85rem;
+  border-radius: 10px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+.price-btn-outline {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--off);
+}
+.price-btn-outline:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.04); }
+.price-btn-fill {
+  background: linear-gradient(135deg, var(--blue), #1d4ed8);
+  color: white;
+  box-shadow: 0 4px 20px rgba(37,99,235,0.35);
+}
+.price-btn-fill:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(37,99,235,0.45); }
+
+/* ── CTA SECTION ── */
+.cta-section {
+  padding: 7rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px; height: 400px;
+  background: radial-gradient(ellipse, rgba(37,99,235,0.18), transparent 70%);
+  pointer-events: none;
+}
+.cta-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+}
+.cta-title {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  color: var(--white);
+  margin-bottom: 1.25rem;
+}
+.cta-sub {
+  font-size: 1.05rem;
+  color: var(--muted);
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+}
+.cta-input-row {
+  display: flex;
+  gap: 0.75rem;
+  max-width: 460px;
+  margin: 0 auto;
+}
+.cta-input {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  padding: 0.85rem 1.1rem;
+  font-size: 0.95rem;
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.cta-input::placeholder { color: var(--muted); }
+.cta-input:focus { border-color: rgba(37,99,235,0.5); }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--line);
+  padding: 4rem 2rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+.footer-brand p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin-top: 1rem;
+  line-height: 1.7;
+  max-width: 260px;
+}
+.footer-col h4 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--off);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.25rem;
+}
+.footer-col ul { list-style: none; }
+.footer-col li { margin-bottom: 0.6rem; }
+.footer-col a {
+  font-size: 0.875rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-col a:hover { color: var(--off); }
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.footer-bottom p { font-size: 0.8rem; color: var(--muted); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 991px) {
+  .nav-links { display: none; }
+  .bento-grid { grid-template-columns: 1fr 1fr; }
+  .bc-1, .bc-2, .bc-3, .bc-4, .bc-5 { grid-column: span 1; }
+  .bc-6 { grid-column: span 2; }
+  .numbers-grid { grid-template-columns: repeat(2, 1fr); }
+  .steps-row { grid-template-columns: 1fr; }
+  .steps-row::before { display: none; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .price-card.featured { transform: none; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .bento-grid { grid-template-columns: 1fr; }
+  .bc-6 { grid-column: span 1; }
+  .numbers-grid { grid-template-columns: 1fr 1fr; }
+  .dp-body { grid-template-columns: 1fr 1fr; }
+  .dp-chart-row { grid-column: span 2; }
+  .cta-input-row { flex-direction: column; }
+  .footer-top { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-mark">₹</div>
+    PersonalCFO
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#">Blog</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="{{ url_for('authentication_bp.login')}}" class="btn-ghost">Log in</a>
+    <a href="{{ url_for('authentication_bp.signup')}}" class="btn-nav">Get Started →</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-grid"></div>
+
+  <div class="hero-badge">
+    <span class="pulse-dot"></span>
+    Now live for FY 2025-26 filing
+  </div>
+
+  <h1 class="display hero-title">
+    Your personal<br>
+    <span class="gradient-word">tax genius</span><br>
+    <span class="outline-word">never sleeps</span>
+  </h1>
+
+  <p class="hero-sub">
+    File smarter, save more. Personal CFO combines AI-powered tax intelligence with human expertise to maximise your refund — automatically.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#" class="btn-primary">Start Filing Free →</a>
+    <a href="#how" class="btn-secondary">▶ See how it works</a>
+  </div>
+
+  <div class="trust-bar">
+    <div class="trust-item"><span>✓</span> Free for salaried</div>
+    <div class="trust-sep"></div>
+    <div class="trust-item"><span>✓</span> Bank-grade 256-bit encryption</div>
+    <div class="trust-sep"></div>
+    <div class="trust-item"><span>✓</span> CA-verified returns</div>
+    <div class="trust-sep"></div>
+    <div class="trust-item"><span>✓</span> No hidden charges</div>
+  </div>
+</section>
+
+<!-- ── DASHBOARD PREVIEW ── -->
+<div class="hero-visual">
+  <div class="dashboard-preview">
+    <div class="dp-topbar">
+      <div class="dp-dot" style="background:#ff5f56"></div>
+      <div class="dp-dot" style="background:#ffbd2e"></div>
+      <div class="dp-dot" style="background:#27c93f"></div>
+      <span style="font-size:0.72rem;color:var(--muted);margin-left:0.75rem">PersonalCFO Dashboard — FY 2025-26</span>
+    </div>
+    <div class="dp-body">
+      <div class="dp-card">
+        <div class="dp-label">Estimated Tax</div>
+        <div class="dp-value">₹84,240</div>
+        <div class="dp-change down">↓ ₹12,480 saved vs last year</div>
+      </div>
+      <div class="dp-card">
+        <div class="dp-label">Potential Savings</div>
+        <div class="dp-value" style="color:#10b981">₹46,800</div>
+        <div class="dp-change up">↑ 3 deductions available</div>
+      </div>
+      <div class="dp-card">
+        <div class="dp-label">80C Utilised</div>
+        <div class="dp-value">₹1.5L</div>
+        <div class="dp-change up">✓ Limit maxed out</div>
+      </div>
+      <div class="dp-chart-row">
+        <div class="dp-bar" style="height:35%"></div>
+        <div class="dp-bar" style="height:55%"></div>
+        <div class="dp-bar" style="height:40%"></div>
+        <div class="dp-bar" style="height:70%"></div>
+        <div class="dp-bar" style="height:60%"></div>
+        <div class="dp-bar" style="height:85%"></div>
+        <div class="dp-bar" style="height:65%"></div>
+        <div class="dp-bar active" style="height:90%"></div>
+        <div class="dp-bar" style="height:75%"></div>
+        <div class="dp-bar" style="height:50%"></div>
+        <div class="dp-bar" style="height:80%"></div>
+        <div class="dp-bar" style="height:45%"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── LOGOS ── -->
+<div class="logos-section">
+  <div class="logos-label">Trusted by professionals at</div>
+  <div class="logos-row">
+    <div class="logo-item">Infosys</div>
+    <div class="logo-item">TCS</div>
+    <div class="logo-item">Zerodha</div>
+    <div class="logo-item">Razorpay</div>
+    <div class="logo-item">HDFC</div>
+    <div class="logo-item">Wipro</div>
+    <div class="logo-item">Swiggy</div>
+  </div>
+</div>
+
+<!-- ── FEATURES ── -->
+<section id="features" class="section">
+  <div class="reveal">
+    <div class="section-eyebrow">Features</div>
+    <h2 class="display section-title">Everything your CA wished you had</h2>
+    <p class="section-sub">One platform for taxes, investments, filing, and smart savings — powered by AI that actually understands Indian tax law.</p>
+  </div>
+
+  <div class="bento-grid reveal">
+
+    <!-- Card 1 — Large -->
+    <div class="bento-card bc-1">
+      <div class="bento-icon" style="background:rgba(37,99,235,0.12)">🤖</div>
+      <span class="bento-tag" style="color:var(--blue-2)">AI Engine</span>
+      <h3 class="bento-h">Your 24/7 tax assistant that never guesses</h3>
+      <p class="bento-p">Ask anything — HRA calculations, capital gains, regime comparison, advance tax deadlines. Get precise answers backed by the actual Income Tax Act, not generic advice.</p>
+      <div class="bento-visual">
+        <div class="bento-stat-row">
+          <span class="bsr-label">Old Regime Tax</span>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span class="bsr-value">₹1,24,800</span>
+            <span class="bsr-badge badge-amber">Higher</span>
+          </div>
+        </div>
+        <div class="bento-stat-row">
+          <span class="bsr-label">New Regime Tax</span>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span class="bsr-value">₹84,240</span>
+            <span class="bsr-badge badge-green">✓ Better</span>
+          </div>
+        </div>
+        <div class="bento-stat-row">
+          <span class="bsr-label">Recommended by CFO Agent</span>
+          <span class="bsr-badge badge-blue">New Regime</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="bento-card bc-2">
+      <div class="bento-icon" style="background:rgba(16,185,129,0.12)">📊</div>
+      <span class="bento-tag" style="color:var(--emerald)">Smart Investments</span>
+      <h3 class="bento-h">Max your 80C before the deadline</h3>
+      <p class="bento-p">Track every rupee invested. Get alerts when you're leaving money on the table.</p>
+      <div class="mini-bars" style="margin-top:1.25rem">
+        <div class="mini-bar" style="height:40%"></div>
+        <div class="mini-bar" style="height:60%"></div>
+        <div class="mini-bar" style="height:80%"></div>
+        <div class="mini-bar lit" style="height:100%"></div>
+        <div class="mini-bar" style="height:45%"></div>
+        <div class="mini-bar" style="height:65%"></div>
+        <div class="mini-bar" style="height:90%"></div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="bento-card bc-3">
+      <div class="bento-icon" style="background:rgba(245,158,11,0.12)">📄</div>
+      <span class="bento-tag" style="color:var(--amber)">ITR Filing</span>
+      <h3 class="bento-h">File in minutes, not hours</h3>
+      <p class="bento-p">Auto-fill from Form 16, Form 26AS, and AIS. Review, approve, submit — all in one flow.</p>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="bento-card bc-4">
+      <div class="bento-icon" style="background:rgba(244,63,94,0.12)">🔔</div>
+      <span class="bento-tag" style="color:var(--rose)">Deadlines</span>
+      <h3 class="bento-h">Never pay a penalty again</h3>
+      <p class="bento-p">Smart reminders for advance tax, ITR, TDS payments and more — personalised to your profile.</p>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="bento-card bc-5">
+      <div class="bento-icon" style="background:rgba(6,182,212,0.12)">🔐</div>
+      <span class="bento-tag" style="color:var(--cyan)">Security</span>
+      <h3 class="bento-h">Bank-grade security, always</h3>
+      <p class="bento-p">256-bit encryption, zero data selling, SOC 2 compliant infrastructure. Your data stays yours.</p>
+    </div>
+
+    <!-- Card 6 — Full width -->
+    <div class="bento-card bc-6" style="display:flex;align-items:center;gap:3rem;flex-wrap:wrap">
+      <div style="flex:1;min-width:220px">
+        <div class="bento-icon" style="background:rgba(124,58,237,0.12)">📁</div>
+        <span class="bento-tag" style="color:#a78bfa">Document Vault</span>
+        <h3 class="bento-h">Every document, one secure place</h3>
+        <p class="bento-p">Upload Form 16, payslips, bank statements, 26AS, investment proofs — and we'll auto-categorise, verify, and use them at the right time.</p>
+      </div>
+      <div style="flex:2;min-width:280px">
+        <div class="bento-visual" style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem">
+          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:0.75rem;display:flex;align-items:center;gap:0.6rem">
+            <span>📄</span><div><div style="font-size:0.78rem;color:var(--off);font-weight:600">Form 16</div><div style="font-size:0.68rem;color:var(--emerald)">✓ Verified</div></div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:0.75rem;display:flex;align-items:center;gap:0.6rem">
+            <span>🏦</span><div><div style="font-size:0.78rem;color:var(--off);font-weight:600">Form 26AS</div><div style="font-size:0.68rem;color:var(--emerald)">✓ Downloaded</div></div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:0.75rem;display:flex;align-items:center;gap:0.6rem">
+            <span>📊</span><div><div style="font-size:0.78rem;color:var(--off);font-weight:600">MF Statement</div><div style="font-size:0.68rem;color:var(--amber)">⏳ Pending</div></div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:0.75rem;display:flex;align-items:center;gap:0.6rem">
+            <span>🏠</span><div><div style="font-size:0.78rem;color:var(--off);font-weight:600">Home Loan Cert.</div><div style="font-size:0.68rem;color:var(--emerald)">✓ Uploaded</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── NUMBERS ── -->
+<div style="max-width:1200px;margin:0 auto;padding:0 2rem 7rem" class="reveal">
+  <div class="numbers-grid">
+    <div class="number-cell">
+      <div class="number-val">₹<span class="num-accent">2.3</span>L</div>
+      <div class="number-label">Average tax saved per user</div>
+    </div>
+    <div class="number-cell">
+      <div class="number-val"><span class="num-accent">4</span>min</div>
+      <div class="number-label">Average time to file ITR</div>
+    </div>
+    <div class="number-cell">
+      <div class="number-val"><span class="num-accent">98</span>%</div>
+      <div class="number-label">Filing accuracy rate</div>
+    </div>
+    <div class="number-cell">
+      <div class="number-val"><span class="num-accent">50K</span>+</div>
+      <div class="number-label">Returns filed successfully</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── HOW IT WORKS ── -->
+<section id="how" style="background:rgba(255,255,255,0.015);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="section">
+    <div class="reveal">
+      <div class="section-eyebrow">How it works</div>
+      <h2 class="display section-title">From signup to refund in 3 steps</h2>
+      <p class="section-sub">We've simplified a process that used to take weeks with a CA into something you can do on a Sunday afternoon.</p>
+    </div>
+    <div class="steps-row reveal">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <h3 class="step-h">Connect your accounts</h3>
+        <p class="step-p">Link your salary account, upload Form 16, and connect your investment portfolio. Our AI reads and understands everything — no manual entry needed.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <h3 class="step-h">Review AI-powered analysis</h3>
+        <p class="step-p">Get a complete picture of your tax situation. See which regime saves more, what deductions you're missing, and your exact refund estimate — in real time.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <h3 class="step-h">File with one click</h3>
+        <p class="step-p">CA-verified returns are submitted directly to the Income Tax Department. Track your refund status live, right inside the dashboard.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="section">
+  <div class="reveal">
+    <div class="section-eyebrow">Testimonials</div>
+    <h2 class="display section-title">Loved by taxpayers across India</h2>
+  </div>
+  <div class="testimonials-grid reveal">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">Switched from a CA to PersonalCFO this year. Saved ₹42,000 more in deductions I didn't know existed. The AI caught things my CA never did.</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(37,99,235,0.15)">👨‍💻</div>
+        <div>
+          <div class="testi-name">Arjun Mehta</div>
+          <div class="testi-role">Senior Engineer · Bengaluru</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">Filed my ITR in under 6 minutes. Form 16 was auto-read, regime comparison was instant, and the refund landed in 9 days. Unreal product.</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(16,185,129,0.15)">👩‍⚕️</div>
+        <div>
+          <div class="testi-name">Priya Sharma</div>
+          <div class="testi-role">Doctor · Mumbai</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">As a freelancer with multiple income sources, tax was always a nightmare. PersonalCFO made it feel like I had a personal CA on call 24/7.</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(245,158,11,0.15)">🎨</div>
+        <div>
+          <div class="testi-name">Rohan Das</div>
+          <div class="testi-role">Freelance Designer · Pune</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ── -->
+<section id="pricing" style="background:rgba(255,255,255,0.015);border-top:1px solid var(--line)">
+  <div class="section">
+    <div class="reveal" style="text-align:center;margin-bottom:0">
+      <div class="section-eyebrow" style="text-align:center">Pricing</div>
+      <h2 class="display section-title" style="max-width:100%;text-align:center">Simple, honest pricing</h2>
+      <p class="section-sub" style="max-width:440px;margin:0 auto">No surprises. No hidden fees. Pay only when your return is filed and approved.</p>
+    </div>
+    <div class="pricing-grid reveal">
+      <div class="price-card">
+        <div class="price-plan">Starter</div>
+        <div class="price-amount"><span class="price-currency">₹</span>0 <span class="price-period">/ year</span></div>
+        <p class="price-desc">Perfect for salaried individuals with straightforward income from one employer.</p>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li class="price-feature"><span class="feat-icon">✓</span> ITR-1 filing</li>
+          <li class="price-feature"><span class="feat-icon">✓</span> Form 16 auto-read</li>
+          <li class="price-feature"><span class="feat-icon">✓</span> Basic tax calculator</li>
+          <li class="price-feature"><span class="feat-icon">✓</span> Deduction tracker</li>
+          <li class="price-feature dim"><span class="feat-icon">—</span> Capital gains</li>
+          <li class="price-feature dim"><span class="feat-icon">—</span> CA review</li>
+          <li class="price-feature dim"><span class="feat-icon">—</span> AI chat assistant</li>
+        </ul>
+        <button class="price-btn price-btn-outline">Get Started Free</button>
+      </div>
+
+      <div class="price-card featured">
+        <div class="price-badge">Most Popular</div>
+        <div class="price-plan">Pro</div>
+        <div class="price-amount"><span class="price-currency">₹</span>999 <span class="price-period">/ year</span></div>
+        <p class="price-desc">For investors, freelancers, and anyone who wants maximum savings with zero stress.</p>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li class="price-feature"><span class="feat-icon">✓</span> All ITR forms (1,2,3,4)</li>
+          <li class="price-feature"><span class="feat-icon">✓</span> Capital gains auto-import</li>
+          <li class="price-feature"><span class="feat-icon">✓</span> AI tax assistant (unlimited)</li>
+          <li class="price-feature"><span class="feat-icon">✓</span> Old vs New regime optimizer</li>
+          <li class="price-feature"><span class="feat-icon">✓</span> CA-verified filing</li>
+          <li class="price-feature"><span class="feat-icon">✓</span> Refund tracking</li>
+          <li class="price-feature"><span class="feat-icon">✓</span> Priority support</li>
+        </ul>
+        <button class="price-btn price-btn-fill">Start Pro — ₹999/yr</button>
+      </div>
+
+      <div class="price-card">
+        <div class="price-plan">Business</div>
+        <div class="price-amount"><span class="price-currency">₹</span>2,999 <span class="price-period">/ year</span></div>
+        <p class="price-desc">For business owners, HUFs, and professionals with complex tax situations.</p>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li class="price-feature"><span class="feat-icon">✓</span> Everything in Pro</li>
+          <li class="price-feature"><span class="feat-icon">✓</span> Business income (44AD/ADA)</li>
+          <li class="price-feature"><span class="feat-icon">✓</span> GST reconciliation</li>
+          <li class="price-feature"><span class="feat-icon">✓</span> Dedicated CA manager</li>
+          <li class="price-feature"><span class="feat-icon">✓</span> Audit support</li>
+          <li class="price-feature"><span class="feat-icon">✓</span> Multi-year filing history</li>
+          <li class="price-feature"><span class="feat-icon">✓</span> White-glove onboarding</li>
+        </ul>
+        <button class="price-btn price-btn-outline">Contact Sales</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section">
+  <div class="cta-inner reveal">
+    <h2 class="display cta-title">Stop overpaying.<br>Start <span class="gradient-word">filing smarter.</span></h2>
+    <p class="cta-sub">Join 50,000+ taxpayers who saved an average of ₹2.3 lakh with PersonalCFO. Your first return is completely free.</p>
+    <div class="cta-input-row">
+      <input type="email" class="cta-input" placeholder="Enter your email address">
+      <a href="{{ url_for('authentication_bp.login') }}" class="btn-primary" style="white-space:nowrap">Get Started →</a>
+    </div>
+    <p style="font-size:0.75rem;color:var(--muted);margin-top:1rem">Free forever for salaried taxpayers · No credit card required</p>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" style="display:inline-flex">
+        <div class="logo-mark">₹</div>
+        PersonalCFO
+      </a>
+      <p>India's smartest AI-powered tax platform. File smarter, save more, stress less — every financial year.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#">Tax Calculator</a></li>
+        <li><a href="#">ITR Filing</a></li>
+        <li><a href="#">Investments</a></li>
+        <li><a href="#">AI Assistant</a></li>
+        <li><a href="#">Document Vault</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="#">Tax Guide FY26</a></li>
+        <li><a href="#">80C Explained</a></li>
+        <li><a href="#">Old vs New Regime</a></li>
+        <li><a href="#">Capital Gains</a></li>
+        <li><a href="#">Blog</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="{{ url_for('landing_page_bp.about') }}">About</a></li>
+        <li><a href="{{ url_for('landing_page_bp.careers') }}">Careers</a></li>
+        <li><a href="{{ url_for('landing_page_bp.privacy') }}">Privacy Policy</a></li>
+        <li><a href="{{ url_for('landing_page_bp.terms') }}">Terms of Service</a></li>
+        <li><a href="{{ url_for('landing_page_bp.contact') }}">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 PersonalCFO Technologies Pvt. Ltd. · SEBI Registered · CIN: U74999MH2024PTC000000</p>
+    <p style="color:var(--muted)">Made with ❤️ in India 🇮🇳</p>
+  </div>
+</footer>
+
+<script>
+  /* ── Scroll reveal ── */
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  /* ── Nav scroll effect ── */
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    nav.style.background = window.scrollY > 60
+      ? 'rgba(5,8,15,0.92)'
+      : 'rgba(5,8,15,0.7)';
+  });
+
+  /* ── Animated number counters ── */
+  function animateCounter(el, target, prefix = '', suffix = '') {
+    let start = 0;
+    const duration = 1800;
+    const step = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = prefix + (typeof target === 'float'
+        ? (eased * target).toFixed(1)
+        : Math.round(eased * target)) + suffix;
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  const numObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        numObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.number-cell').forEach(cell => numObserver.observe(cell));
+</script>
+</body>
+</html>

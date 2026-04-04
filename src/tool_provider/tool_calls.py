@@ -2,12 +2,14 @@ from langchain.tools import tool
 from langchain_community.tools import DuckDuckGoSearchResults
 from src.tool_provider.pydantic_class import CalculateNetPayableTax, SuggestTaxSavingInvestments, InternetBasedTaxResearch
 from typing import Optional
-from src.util.calculation_helper import calculate_net_tax
+from src.util.calculation_helper import TaxEngine
+
+tax_engine = TaxEngine()
 
 @tool("calculate_net_payable_tax", args_schema=CalculateNetPayableTax)
 def calculate_net_payable_tax(total_income: float, tax_regime: str, deductions: Optional[float] = 0) -> float:
     """Calculate net payable tax based on the total income, tax regime and deductions."""
-    tax = calculate_net_tax(total_income, tax_regime, deductions)
+    tax = tax_engine.calculate_net_tax(total_income, tax_regime, deductions)
     return f"The net payable tax for a total income of {total_income} under the {tax_regime} is {tax}."
 
     
@@ -45,7 +47,6 @@ def check_any_penalties_or_interest_for_user():
 def internet_based_tax_research(query: str) -> str:
     """This tool is used to perform internet based reasearch for up-to-date information on tax laws, regulations and best practices in real time."""
     search = DuckDuckGoSearchResults(output_format="list", num_results=2)
-
     response = search.invoke(query)
     return response
 
