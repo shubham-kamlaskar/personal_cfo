@@ -1,5 +1,4 @@
 from flask import Flask
-import logging
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -12,7 +11,6 @@ from src.routes.documents_route import documents_bp
 from src.routes.calculator_route import calculator_bp
 from src.routes.assistant_route import assistant_bp
 
-logging.basicConfig(level=logging.INFO)
 app = Flask(__name__)
 
 app.register_blueprint(landing_page_bp)
