@@ -11,6 +11,10 @@ from src.routes.documents_route import documents_bp
 from src.routes.calculator_route import calculator_bp
 from src.routes.assistant_route import assistant_bp
 
+from src.util.log_adapter import setup_logger
+
+setup_logger()
+
 app = Flask(__name__)
 
 app.register_blueprint(landing_page_bp)

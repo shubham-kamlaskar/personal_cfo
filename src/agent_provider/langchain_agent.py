@@ -84,4 +84,4 @@ class AgentProvider:
             return markdown.markdown(response_call.content)
 
         except Exception as e:
-            raise RuntimeError("Error getting agent response") from e
+            raise Exception(f"Error getting agent response: {str(e)}")

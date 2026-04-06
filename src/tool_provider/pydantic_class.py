@@ -12,3 +12,8 @@ class SuggestTaxSavingInvestments(BaseModel):
     
 class InternetBasedTaxResearch(BaseModel):
     query: Optional[str] = Field(default=None, description="User query for performing real time internet based research on tax and saving related queries.")
+    
+
+class KnowledgeBaseRetriever(BaseModel):
+    embedding_model_name: str = Field(description="Name of the embedding model")
+    user_query: Optional[str] = Field(description="User query related to documents available in knowledge base")

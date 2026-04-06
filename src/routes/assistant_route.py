@@ -1,13 +1,16 @@
 import os
 from dotenv import load_dotenv
-load_dotenv()
-
-
+import logging
 
 from flask import Blueprint, render_template, request, jsonify
 from src.agent_provider.langchain_agent import AgentProvider
+from src.util.log_adapter import setup_logger
+
+load_dotenv()
 
 agent_provider = AgentProvider()
+logger = logging.getLogger(__name__)
+
 assistant_bp = Blueprint('assistant_bp', __name__, template_folder='templates', static_folder='static')
 
 @assistant_bp.route("/assistant", methods=["GET"])
@@ -26,13 +29,14 @@ async def query():
         user_query = data.get("query")
         
         answer = await agent_provider.get_agent_response(user_query)
-
+        logger.info("Answer is generated.")
         return jsonify({
             "query": user_query,
             "response": answer
         })
 
     except Exception as e:
+        logger.error(f"An error occured in Query functions, {str(e)}")
         return jsonify({
             "error": str(e)
         }), 500

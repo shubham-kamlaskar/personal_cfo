@@ -1,8 +1,11 @@
 from langchain.tools import tool
 from langchain_community.tools import DuckDuckGoSearchResults
-from src.tool_provider.pydantic_class import CalculateNetPayableTax, SuggestTaxSavingInvestments, InternetBasedTaxResearch
+from src.tool_provider.pydantic_class import CalculateNetPayableTax, SuggestTaxSavingInvestments, InternetBasedTaxResearch, KnowledgeBaseRetriever
 from typing import Optional
 from src.util.calculation_helper import TaxEngine
+from src.embedding_provider.ollama_embedding import get_embedding_client
+from langchain_community.vectorstores import FAISS
+import faiss
 
 tax_engine = TaxEngine()
 
@@ -50,6 +53,17 @@ def internet_based_tax_research(query: str) -> str:
     response = search.invoke(query)
     return response
 
-    
+@tool('knowledge_base_retriever', args_schema=KnowledgeBaseRetriever)
+def knowledge_base_retriever(embedding_model_name: str, user_query: str):
+    """This tool is used to retrieve responses from available knowledge base which contains glossary, terms conditions, law and practice."""
+    embedding = get_embedding_client(embedding_model_name)
+    new_vector_store = FAISS.load_local(
+    "faiss_index", embedding, allow_dangerous_deserialization=True
+    )
+    retriever = new_vector_store.as_retriever(search_type="mmr", 
+                                              search_kwargs={"k": 5, "fetch_k": 20})
+    response = retriever.invoke(user_query)
+    return [doc.page_content for doc in response]
 
-tools = [ calculate_net_payable_tax, suggest_tax_saving_investments, internet_based_tax_research]
+
+tools = [ calculate_net_payable_tax, suggest_tax_saving_investments, internet_based_tax_research, knowledge_base_retriever]

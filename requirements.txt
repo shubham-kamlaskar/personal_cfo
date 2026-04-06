@@ -11,3 +11,6 @@ flask-cors
 ddgs
 markdown
 flask[async]
+pymupdf4llm
+langchain-text-splitters
+faiss-cpu
