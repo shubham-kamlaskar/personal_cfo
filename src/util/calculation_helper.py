@@ -15,6 +15,7 @@ class TaxEngine:
                     
             return base_tax, extra_cess, net_tax
         except Exception as e:
+            print(f"An error occured in calculate_net_tax functions {str(e)}")
             raise ValueError(f"An error occurred: {str(e)}")
         
     def total_deductions(self, d80c: float, d80d: float, hra: float, hl: float, nps:float) -> float:

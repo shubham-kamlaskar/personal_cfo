@@ -1,3 +1,6 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()
 from langchain.tools import tool
 from langchain_community.tools import DuckDuckGoSearchResults
 from src.tool_provider.pydantic_class import CalculateNetPayableTax, SuggestTaxSavingInvestments, InternetBasedTaxResearch, KnowledgeBaseRetriever
@@ -37,7 +40,7 @@ def calculate_tax_as_per_indian_old_regime():
 def decide_best_tax_regime_for_user():
     pass
 
-def explain_tax_saving_options_to_user(query: str) -> str:
+def explain_tax_saving_options_to_user(query: str):
     pass
 
 def future_tax_planning_for_user():
@@ -54,9 +57,10 @@ def internet_based_tax_research(query: str) -> str:
     return response
 
 @tool('knowledge_base_retriever', args_schema=KnowledgeBaseRetriever)
-def knowledge_base_retriever(embedding_model_name: str, user_query: str):
-    """This tool is used to retrieve responses from available knowledge base which contains glossary, terms conditions, law and practice."""
-    embedding = get_embedding_client(embedding_model_name)
+def knowledge_base_retriever(user_query: str):
+    """This tool is used to retrieve responses from available knowledge base which contains glossary (meanings of income tax related terms)"""
+    embedding_model_name = str(os.getenv("EMBEDDING_MODEL_NAME"))
+    embedding = get_embedding_client(model_name=embedding_model_name)
     new_vector_store = FAISS.load_local(
     "faiss_index", embedding, allow_dangerous_deserialization=True
     )

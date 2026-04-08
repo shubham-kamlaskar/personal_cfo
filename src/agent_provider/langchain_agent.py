@@ -23,8 +23,8 @@ class CustomAgentState(AgentState):
     
 class AgentProvider:
     def __init__(self):
-        self.llm_model_name=os.getenv('LLM_MODEL_NAME')
-        self.llm_temperature=os.getenv('LLM_TEMPERATURE')
+        self.llm_model_name = str(os.getenv('LLM_MODEL_NAME'))
+        self.llm_temperature = float(os.getenv('LLM_TEMPERATURE'))
         
 
     async def get_agent_client(self, llm, tools: List[BaseTool]):
@@ -32,7 +32,8 @@ class AgentProvider:
             agent = create_agent(
                 model=llm,
                 tools=tools,
-                system_prompt=(Prompt.DEFAULT_SYSTEM_PROMPT + Prompt.TASK_PROMPT + Prompt.INFOMRATION_NOT_ALLOWED_PROMPT),
+                system_prompt=(Prompt.DEFAULT_SYSTEM_PROMPT + Prompt.TASK_PROMPT + Prompt.CURRENT_DATE_CONTEXT_PROMPT +
+                               Prompt.THINKING_AND_REASONING_PROMPT + Prompt.INFORMATION_NOT_ALLOWED_PROMPT),
                 state_schema=CustomAgentState,
                 checkpointer=memory_checkpointer,
                 debug=bool(debug_mode),
@@ -40,6 +41,7 @@ class AgentProvider:
             
             return agent
         except Exception as e:
+            print(f"Error initializing agent client: {str(e)}")
             raise Exception(f"Error initializing agent client: {str(e)}")
         
     async def get_agent_response(self, user_query: str):
@@ -84,4 +86,5 @@ class AgentProvider:
             return markdown.markdown(response_call.content)
 
         except Exception as e:
+            print(f"Error getting agent response: {str(e)}")
             raise Exception(f"Error getting agent response: {str(e)}")

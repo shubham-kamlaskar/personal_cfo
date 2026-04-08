@@ -8,4 +8,5 @@ def get_embedding_client(model_name: str):
         
         return embeddings
     except Exception as e:
+        print(f"An error occcured during get_embedding_client method: {str(e)}")
         raise Exception(f"An error occcured during get_embedding_client method: {str(e)}")

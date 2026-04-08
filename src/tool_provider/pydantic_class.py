@@ -15,5 +15,4 @@ class InternetBasedTaxResearch(BaseModel):
     
 
 class KnowledgeBaseRetriever(BaseModel):
-    embedding_model_name: str = Field(description="Name of the embedding model")
     user_query: Optional[str] = Field(description="User query related to documents available in knowledge base")

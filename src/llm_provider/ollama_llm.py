@@ -10,4 +10,5 @@ def llm_client(llm_model_name: str, llm_temperature: float):
         
         return llm
     except Exception as e:
+        print(f"Error initializing Ollama llm_client", str(e))
         raise Exception(f"Error initializing Ollama llm_client", str(e))
