@@ -3,6 +3,7 @@ from typing import Optional
 
 class ResponseObject(BaseModel):
     query: str
+    thread_id: str
     tool_name: Optional[str] = None
     tool_status: bool
     tool_call_id: Optional[str] = None
