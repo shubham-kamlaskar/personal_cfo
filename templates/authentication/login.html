@@ -190,7 +190,7 @@ Forgot password? <a href="{{ url_for('authentication_bp.forgot_password')}}"> Fo
 
 </body>
 <script>
-    async function loginUser() {
+    async function loginUser(event) {
         event.preventDefault(); // stop normal form submit
 
         const email = document.getElementById("email").value;
@@ -213,7 +213,7 @@ Forgot password? <a href="{{ url_for('authentication_bp.forgot_password')}}"> Fo
 
             if (response.ok) {
                 alert("Login successful");
-                window.location.href = "/dashboard"; //redirect
+                window.location.href = data.redirect;
             }
             else {
                 alert(data.message || "Invalid credentials");

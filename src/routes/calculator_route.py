@@ -5,9 +5,9 @@ tax_engine = TaxEngine()
 
 calculator_bp = Blueprint('calculator_bp', __name__, template_folder='templates', static_folder='static')
 
-@calculator_bp.route("/calculator", methods=["GET"])
-def calculator():
-    return render_template("calculator.html")
+@calculator_bp.route("/<user_id>/calculator", methods=["GET"])
+def calculator(user_id):
+    return render_template("calculator.html", user_id=user_id)
 
 @calculator_bp.route("/tax_calculator", methods=["POST"])
 def tax_calculator():

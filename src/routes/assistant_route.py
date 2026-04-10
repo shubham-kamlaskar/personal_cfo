@@ -13,13 +13,13 @@ logger = logging.getLogger(__name__)
 
 assistant_bp = Blueprint('assistant_bp', __name__, template_folder='templates', static_folder='static')
 
-@assistant_bp.route("/assistant", methods=["GET"])
-def assistant():
-    return render_template("assistant.html")
+@assistant_bp.route("/<user_id>/assistant", methods=["GET"])
+def assistant(user_id: str):
+    return render_template("assistant.html", user_id=user_id)
 
 
-@assistant_bp.route("/query", methods=["POST"])
-async def query():
+@assistant_bp.route("/<user_id>/query", methods=["POST"])
+async def query(user_id: str):
     try:
         data = request.get_json(silent=True)
 
@@ -28,7 +28,7 @@ async def query():
 
         user_query = data.get("query")
         
-        answer = await agent_provider.get_agent_response(user_query)
+        answer = await agent_provider.get_agent_response(user_query=user_query, user_id=user_id)
         logger.info("Answer is generated.")
         return jsonify({
             "query": user_query,

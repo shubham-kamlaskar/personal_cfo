@@ -13,10 +13,12 @@ from langchain.tools import BaseTool
 from src.prompt_provider.prompt_store import Prompt
 from src.tool_provider.tool_calls import tools
 from src.llm_provider.ollama_llm import llm_client
-from src.models.response_object import ResponseObject
+from src.models.response_object import ConversationObject
+from src.database_provider.mongo_client import MongoDBClient
 
 debug_mode = os.getenv('AGENT_DEBUG_MODE', 'True')
 memory_checkpointer = InMemorySaver()
+mongodb_client = MongoDBClient()
 class CustomAgentState(AgentState):
     user_id: str
     preferences: dict
@@ -25,12 +27,16 @@ class AgentProvider:
     def __init__(self):
         self.llm_model_name = str(os.getenv('LLM_MODEL_NAME'))
         self.llm_temperature = float(os.getenv('LLM_TEMPERATURE'))
+        self.ai_agent_name = str(os.getenv('AI_AGENT_NAME'))
+        self.ai_agent_version = str(os.getenv("AI_AGENT_VERSION"))
+        self.db_name = str(os.getenv('DB_NAME'))
+        self.conversation_collection = str(os.getenv("CONVERSATION_COLLETION"))
         self.llm = llm_client(
                 llm_model_name=self.llm_model_name,
                 llm_temperature=self.llm_temperature
             )
         self.agent = None
-        self.thread_id = "0000-0000-0000"
+        self.session_id = "0000-0000-0000"
 
     async def get_agent_client(self, llm, tools: List[BaseTool]):
         try:
@@ -49,45 +55,64 @@ class AgentProvider:
             print(f"Error initializing agent client: {str(e)}")
             raise Exception(f"Error initializing agent client: {str(e)}")
         
-    async def get_agent_response(self, user_query: str):
+    async def get_agent_response(self, user_query: str, user_id: str):
         try:
+            answer = None
             if self.agent is None:
                 await self.get_agent_client(self.llm, tools)
                 
             response = self.agent.invoke(
                 {
                     "messages": [{"role": "user", "content": user_query}],
-                    "user_id": "user_123",
+                    "user_id": user_id,
                     "preferences": {"theme": "dark"}
                 },
-                {"configurable": {"thread_id": self.thread_id}}
+                {"configurable": {"thread_id": self.session_id}}
             )
             if response:
                 messages = response.get("messages", [])
 
                 response_call = messages[-1] if messages else None
-                tool_call = messages[-2] if len(messages) >= 2 else None
+                tool_call: dict = messages[-2] if len(messages) >= 2 else None
 
-                usage = getattr(response_call, "usage_metadata", None)
-                metadata = getattr(response_call, "response_metadata", None)
+                usage: dict = getattr(response_call, "usage_metadata", None)
+                metadata: dict = getattr(response_call, "response_metadata", None)
 
-                response_object = ResponseObject(
+                response_object = ConversationObject(
+                    user_id = user_id,
                     query=user_query,
-                    thread_id = self.thread_id,
-                    tool_name=getattr(tool_call, "name", None),
-                    tool_status=True,
-                    tool_call_id=getattr(tool_call, "tool_call_id", None),
-                    input_tokens=usage.get('input_tokens', 0),
-                    output_tokens=usage.get('output_tokens', 0),
-                    total_tokens=usage.get('total_tokens', 0),
-                    model=metadata.get('model', None),
-                    created_at=metadata.get('created_at', None),
-                    response=response_call.content if response_call else ""
+                    response=response_call.content if response_call else "",
+                    session_id = self.session_id,
+                    conversation_id = None,
+                    message_id = getattr(tool_call, "id", None),
+                    agent = {
+                        "agent_name": self.ai_agent_name,
+                        "agent_version": self.ai_agent_version,
+                        "model": metadata.get('model', None),
+                        "tool_name": getattr(tool_call, "name", None),
+                        "tool_status": True,
+                        "tool_call_id": getattr(tool_call, "tool_call_id", None),
+                    },
+                    token_count = {
+                        "input_tokens": usage.get('input_tokens', 0),
+                        "output_tokens": usage.get('output_tokens', 0),
+                        "total_tokens": usage.get('total_tokens', 0),
+                    },
+                    latency_ms = None,
+                    error = None,
+                    status = None,
+                    createdAt = metadata.get('created_at', None),
+                    updatedAt= metadata.get('created_at', None),
                 )
-                print(response_object)
-                return response_call.content
+
+                mongodb_client.insert_one_item_in_collection(database_name=self.db_name,
+                                                             collection_name=self.conversation_collection,
+                                                             data=response_object.model_dump())
+                answer = response_call.content
             else:
-                return "Failed to generate any response."
+                answer =  "Failed to generate any response."
+                
+            return answer   
 
         except Exception as e:
             print(f"Error getting agent response: {str(e)}")

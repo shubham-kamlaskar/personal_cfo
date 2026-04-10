@@ -58,6 +58,11 @@ def suggest_tax_saving_investments(query: str, tax_regime: str) -> str:
                     """
     return saving_options
 
+def decided_which_itr_form_need_to_filed(income_source: str, foreign_assents: Optional[str], type_of_resident: str,
+                                         investment_under_80c: str, business_under_presumptive_taxation: bool):
+    """This tool is used to help user decide which ITR form is best suited for him based on available information."""
+    
+
 def calculate_tax_as_per_indian_new_regime():
     pass
 

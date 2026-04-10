@@ -1,6 +1,20 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify
+from src.database_provider.fetch_user_info import user
+from src.database_provider.mongo_client import MongoDBClient
+from src.models.authentication_object import UserLoginObject
+from src.util.datetime_helper import get_current_dt_in_milliseconds_precision
+from src.util.userid_generator import generate_user_id
+from src.util.password_helper import PasswordHelper
 
 authentication_bp = Blueprint('authentication_bp', __name__, template_folder='templates', static_folder='static')
+
+mongodb_client = MongoDBClient()
+password_helper = PasswordHelper()
+user_info_collection = str(os.getenv('USER_INFO_COLLECTION'))
+db_name = str(os.getenv('DB_NAME')) 
 
 @authentication_bp.route("/login", methods=["GET"])
 def login():
@@ -14,8 +28,16 @@ def loginUser():
             email = data.get("email")
             password = data.get("password")
 
-        if email == "admin@test.com" and password == "123":
-            return redirect(url_for("assitant_bp.assistant"))
+        fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, "email", email)
+
+        if email == fetch_user_info.get('email'):
+            fetch_password = fetch_user_info.get('password')
+            if password_helper.verify_password_hash(password, fetch_password):
+                user_id = fetch_user_info.get('user_id')
+                return jsonify({
+                            "status": "success",
+                            "redirect": url_for("dashboard_bp.dashboard", user_id=user_id)
+                        })
         else:
             return render_template("authentication/login.html")
         
@@ -36,16 +58,28 @@ def signupUser():
     password = data.get("password")
     repassword = data.get("repassword")
 
-    print(name, email, password, repassword)
-
     if password != repassword:
         return jsonify({"message": "Passwords do not match"}), 400
+    
+    user_id = generate_user_id()
+    password_hash = password_helper.generate_password_hash(password)
+    
+    signup_data = UserLoginObject(
+        name=name.title(),
+        email=email.lower(),
+        password=password_hash,
+        user_id=user_id,
+        createAt=get_current_dt_in_milliseconds_precision(),
+        updatedAt=get_current_dt_in_milliseconds_precision()
+    )
 
-    # Normally you would save user in DB here
+    mongodb_client.insert_one_item_in_collection(database_name=db_name,
+                                                 collection_name=user_info_collection,
+                                                 data=signup_data.model_dump())
 
     return jsonify({
         "message": "Account created successfully",
-        "redirect": url_for("dashboard_bp.dashboard")
+        "redirect": url_for("authentication_bp.login")
     }), 200
 
 @authentication_bp.route("/forgot-password", methods=["GET"])

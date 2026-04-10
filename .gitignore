@@ -210,3 +210,6 @@ knowledge/
 *.docx
 *.pptx
 *.pdf
+*.xlsx
+
+admin/
