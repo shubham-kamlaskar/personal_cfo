@@ -1,16 +1,26 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()
 from flask import Blueprint, render_template, request, jsonify
 from src.util.calculation_helper import TaxEngine
+from src.database_provider.mongo_client import MongoDBClient
+from src.models.user_activity_model import TaxCalculator
+from src.util.datetime_helper import get_current_dt_in_milliseconds_precision
 
 tax_engine = TaxEngine()
+mongodb_client = MongoDBClient()
 
 calculator_bp = Blueprint('calculator_bp', __name__, template_folder='templates', static_folder='static')
 
+db_name = str(os.getenv('DB_NAME'))
+tax_calculator_collection = str(os.getenv("TAX_CALCULATOR_COLLECTION"))
+
 @calculator_bp.route("/<user_id>/calculator", methods=["GET"])
-def calculator(user_id):
+def calculator(user_id: str):
     return render_template("calculator.html", user_id=user_id)
 
-@calculator_bp.route("/tax_calculator", methods=["POST"])
-def tax_calculator():
+@calculator_bp.route("/<user_id>/tax_calculator", methods=["POST"])
+def tax_calculator(user_id: str):
     if request.method == "POST":
         data = request.get_json()
         if data:
@@ -55,6 +65,33 @@ def tax_calculator():
                 selected_base_tax = new_base_tax
                 total_deductions = std
                 taxable_income = max(0.0, gross_income - std)
+                
+                
+            tax_comparison = TaxCalculator(  
+                        user_id = user_id,
+                        age = age,
+                        gross_income = gross_income,
+                        std = std,
+                        d80c = d80c,
+                        d80d = d80d,
+                        hra = hra,
+                        hl = hl,
+                        nps = nps,
+                        selected_regime = selected_regime,
+                        taxable_income = taxable_income, 
+                        total_tax = selected_tax, 
+                        total_deductions = total_deductions,
+                        tax_before_cess = selected_base_tax,
+                        cess = selected_extra_cess,
+                        old_regime_tax = old_tax,
+                        new_regime_tax = new_tax,
+                        createdAt = get_current_dt_in_milliseconds_precision(),
+                        updatedAt = get_current_dt_in_milliseconds_precision()   
+            )
+            
+            mongodb_client.insert_one_item_in_collection(database_name=db_name,
+                                                         collection_name=tax_calculator_collection,
+                                                         data=tax_comparison.model_dump())
 
             return jsonify({
                 "selected_regime": selected_regime,

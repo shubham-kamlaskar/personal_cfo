@@ -770,34 +770,16 @@
     <div class="btn-close-panel" onclick="closePanel('history')">✕</div>
   </div>
   <div class="sidebar-content">
-    <div class="conv-item active">
-      <div class="ci-icon">💬</div>
-      <div class="ci-text">
-        <div class="ci-title">Current Session</div>
-        <div class="ci-time">Just now</div>
+    {% for conv in conv_history %}
+      <div class="conv-item active">
+        <div class="ci-icon">💬</div>
+        <div class="ci-text">
+          <div class="ci-title">{{conv.title}}</div>
+          <div class="ci-time">{{conv.timing}}</div>
+        </div>
       </div>
-    </div>
-    <div class="conv-item">
-      <div class="ci-icon">📊</div>
-      <div class="ci-text">
-        <div class="ci-title">80C Investment query</div>
-        <div class="ci-time">Yesterday</div>
-      </div>
-    </div>
-    <div class="conv-item">
-      <div class="ci-icon">🏠</div>
-      <div class="ci-text">
-        <div class="ci-title">HRA & Home Loan</div>
-        <div class="ci-time">3 days ago</div>
-      </div>
-    </div>
-    <div class="conv-item">
-      <div class="ci-icon">📄</div>
-      <div class="ci-text">
-        <div class="ci-title">ITR filing guide</div>
-        <div class="ci-time">Last week</div>
-      </div>
-    </div>
+    {% endfor %}
+    
   </div>
   <div class="panel-footer">
     <button class="btn-clear-chat" onclick="clearChatAndClose()">

@@ -5,17 +5,30 @@ import logging
 from flask import Blueprint, render_template, request, jsonify
 from src.agent_provider.langchain_agent import AgentProvider
 from src.util.log_adapter import setup_logger
+from src.database_provider.mongo_client import MongoDBClient
+from src.database_provider.service.conversation_history_service import HistoryClient
 
 load_dotenv()
 
 agent_provider = AgentProvider()
+mongodb_client = MongoDBClient()
+history_client = HistoryClient()
 logger = logging.getLogger(__name__)
 
 assistant_bp = Blueprint('assistant_bp', __name__, template_folder='templates', static_folder='static')
 
+db_name = str(os.getenv('DB_NAME'))
+conversation_collection = str(os.getenv("CONVERSATION_COLLETION"))
+
 @assistant_bp.route("/<user_id>/assistant", methods=["GET"])
 def assistant(user_id: str):
-    return render_template("assistant.html", user_id=user_id)
+    conv_history = history_client.get_user_conversation_history(user_id)
+    
+    return render_template(
+        "assistant.html",
+        user_id=user_id,
+        conv_history=conv_history
+    )
 
 
 @assistant_bp.route("/<user_id>/query", methods=["POST"])
@@ -32,7 +45,8 @@ async def query(user_id: str):
         logger.info("Answer is generated.")
         return jsonify({
             "query": user_query,
-            "response": answer
+            "response": answer,
+            
         })
 
     except Exception as e:

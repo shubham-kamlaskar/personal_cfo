@@ -12,37 +12,34 @@ from langchain.tools import BaseTool
 
 from src.prompt_provider.prompt_store import Prompt
 from src.tool_provider.tool_calls import tools
-from src.llm_provider.ollama_llm import llm_client
-from src.models.response_object import ConversationObject
+from src.llm_provider.ollama_llm_provider import LLMProvider
+from src.models.user_activity_model import ConversationObject
 from src.database_provider.mongo_client import MongoDBClient
+from src.util.datetime_helper import get_current_dt_in_milliseconds_precision
 
 debug_mode = os.getenv('AGENT_DEBUG_MODE', 'True')
 memory_checkpointer = InMemorySaver()
 mongodb_client = MongoDBClient()
+llm_provider = LLMProvider()
+
 class CustomAgentState(AgentState):
     user_id: str
     preferences: dict
     
 class AgentProvider:
     def __init__(self):
-        self.llm_model_name = str(os.getenv('LLM_MODEL_NAME'))
-        self.llm_temperature = float(os.getenv('LLM_TEMPERATURE'))
         self.ai_agent_name = str(os.getenv('AI_AGENT_NAME'))
         self.ai_agent_version = str(os.getenv("AI_AGENT_VERSION"))
         self.db_name = str(os.getenv('DB_NAME'))
         self.conversation_collection = str(os.getenv("CONVERSATION_COLLETION"))
-        self.llm = llm_client(
-                llm_model_name=self.llm_model_name,
-                llm_temperature=self.llm_temperature
-            )
         self.agent = None
-        self.session_id = "0000-0000-0000"
+        self.session_id = self._generate_new_thread_id()
 
-    async def get_agent_client(self, llm, tools: List[BaseTool]):
+    async def get_agent_client(self, tools: List[BaseTool]):
         try:
             if self.agent is None:    
                 self.agent = create_agent(
-                    model=llm,
+                    model=llm_provider.llm_client(),
                     tools=tools,
                     system_prompt=(Prompt.DEFAULT_SYSTEM_PROMPT + Prompt.TASK_PROMPT + Prompt.CURRENT_DATE_CONTEXT_PROMPT +
                                 Prompt.THINKING_AND_REASONING_PROMPT + Prompt.GENERAL_GUIDELINES_PROMPT +Prompt.INFORMATION_NOT_ALLOWED_PROMPT),
@@ -59,7 +56,7 @@ class AgentProvider:
         try:
             answer = None
             if self.agent is None:
-                await self.get_agent_client(self.llm, tools)
+                await self.get_agent_client(tools)
                 
             response = self.agent.invoke(
                 {
@@ -121,6 +118,6 @@ class AgentProvider:
     
     def _generate_new_thread_id(self):
         """Functions is used to generate new thread id when clicked on new chat button"""
-        new_thread_id = str(uuid.uuid4())
+        new_thread_id = "session" + str(uuid.uuid4())
         self.thread_id = new_thread_id
         
