@@ -672,8 +672,11 @@
   <!-- ── Profile Header ── -->
   <div class="profile-header">
     <button class="btn-edit-profile">
-      <span>✏️</span>
-      <span>Edit Profile</span>
+      <span>✏️
+<a href="{{ url_for('user_profile_bp.edit_profile', user_id=user_id) }}">
+   Edit Profile
+</a>
+</span>
     </button>
     
     <div class="profile-header-content">
@@ -685,20 +688,20 @@
       </div>
       
       <div class="profile-info">
-        <h1 class="profile-name">{{ user.name or "Guest User" }}</h1>
-        <div class="profile-role">{{user.job_profile}} • {{user.subscription_plan}}</div>
+        <h1 class="profile-name">{{ user.personal_info.name or "Guest User" }}</h1>
+        <div class="profile-role">{{user.employment_details.designation or "None"}} • {{user.billing_info.subscription_plan or "None" }}</div>
         
         <div class="profile-stats">
           <div class="stat-item">
-            <div class="stat-value">₹ {{user.tax_saved}}</div>
+            <div class="stat-value">₹ {{user.tax_info.tax_saved or "None"}}</div>
             <div class="stat-label">Tax Saved</div>
           </div>
           <div class="stat-item">
-            <div class="stat-value">{{user.days_active}}</div>
+            <div class="stat-value">₹ {{user.billing_info.days_active or "None"}}</div>
             <div class="stat-label">Days Active</div>
           </div>
           <div class="stat-item">
-            <div class="stat-value">{{user.documents_len}}</div>
+            <div class="stat-value">₹ {{user.billing_info.documents_len or "None"}}</div>
             <div class="stat-label">Documents</div>
           </div>
         </div>
@@ -716,27 +719,26 @@
           <div class="card-icon">👤</div>
           <span>Personal Information</span>
         </div>
-        <button class="card-action">Update</button>
       </div>
       
       <div class="info-group">
         <div class="info-label">Full Name</div>
-        <div class="info-value editable">{{ user.name or "Not provided" }}</div>
+        <div class="info-value editable">{{ user.personal_info.name or "Not provided" }}</div>
       </div>
       
       <div class="info-group">
         <div class="info-label">Email Address</div>
-        <div class="info-value editable">{{ user.email or "user@example.com" }}</div>
+        <div class="info-value editable">{{ user.personal_info.email or "user@example.com" }}</div>
       </div>
       
       <div class="info-group">
         <div class="info-label">Phone Number</div>
-        <div class="info-value editable">{{ user.phone or "+91 XXXXX XXXXX" }}</div>
+        <div class="info-value editable">{{ user.personal_info.phone or "+91 XXXXX XXXXX" }}</div>
       </div>
       
       <div class="info-group">
         <div class="info-label">Date of Birth</div>
-        <div class="info-value editable">{{ user.dob or "DD/MM/YYYY" }}</div>
+        <div class="info-value editable">{{ user.personal_info.dob or "DD/MM/YYYY" }}</div>
       </div>
     </div>
 
@@ -747,22 +749,21 @@
           <div class="card-icon">📊</div>
           <span>Tax Information</span>
         </div>
-        <button class="card-action">Manage</button>
       </div>
       
       <div class="info-group">
         <div class="info-label">PAN Number</div>
-        <div class="info-value editable">{{ user.pan or "XXXXX1234X" }}</div>
+        <div class="info-value editable">{{ user.tax_info.pan or "XXXXX1234X" }}</div>
       </div>
       
       <div class="info-group">
         <div class="info-label">Aadhar Number</div>
-        <div class="info-value editable">{{ user.aadhar or "XXXX XXXX XXXX" }}</div>
+        <div class="info-value editable">{{ user.tax_info.aadhar or "XXXX XXXX XXXX" }}</div>
       </div>
       
       <div class="info-group">
         <div class="info-label">Tax Regime</div>
-        <div class="info-value">{{ user.tax_regime or "New Regime" }}</div>
+        <div class="info-value">{{ user.tax_info.tax_regime or "New Regime" }}</div>
       </div>
       
       <div class="info-group">
@@ -778,27 +779,27 @@
           <div class="card-icon">💼</div>
           <span>Employment Details</span>
         </div>
-        <button class="card-action">Edit</button>
+
       </div>
       
       <div class="info-group">
         <div class="info-label">Employment Type</div>
-        <div class="info-value">{{ user.employment_type or "Salaried" }}</div>
+        <div class="info-value">{{ user.employment_details.employment_type or "None" }}</div>
       </div>
       
       <div class="info-group">
         <div class="info-label">Company Name</div>
-        <div class="info-value editable">{{ user.company or "Tech Corp Ltd." }}</div>
+        <div class="info-value editable">{{ user.employment_details.company or "None" }}</div>
       </div>
       
       <div class="info-group">
         <div class="info-label">Annual Salary</div>
-        <div class="info-value editable">{{ user.salary or "₹12,00,000" }}</div>
+        <div class="info-value editable">{{ user.employment_details.salary or "None" }}</div>
       </div>
       
       <div class="info-group">
         <div class="info-label">City</div>
-        <div class="info-value editable">{{ user.city or "Bengaluru, Karnataka" }}</div>
+        <div class="info-value editable">{{ user.address_info.city or "None" }}</div>
       </div>
     </div>
 
@@ -819,17 +820,17 @@
       
       <div class="info-group">
         <div class="info-label">Member Since</div>
-        <div class="info-value">{{user.member_since}}</div>
+        <div class="info-value">{{user.billing_info.member_since or "None"}}</div>
       </div>
       
       <div class="info-group">
         <div class="info-label">Subscription Plan</div>
-        <div class="info-value">{{user.subscription_plan}}</div>
+        <div class="info-value">{{user.billing_info.subscription_plan or "None" }}</div>
       </div>
       
       <div class="info-group">
         <div class="info-label">Next Billing Date</div>
-        <div class="info-value">{{user.next_billing_date}}</div>
+        <div class="info-value">{{user.billing_info.next_billing_date or "None"}}</div>
       </div>
 
       <div class="action-buttons">
@@ -901,19 +902,19 @@
       <div class="tax-summary">
         <div class="tax-card">
           <div class="tax-card-icon">💰</div>
-          <div class="tax-card-value">₹ {{user.salary}}</div>
+          <div class="tax-card-value">₹ {{user.employment_details.salary}}</div>
           <div class="tax-card-label">Gross Income</div>
         </div>
         
         <div class="tax-card">
           <div class="tax-card-icon">🎯</div>
-          <div class="tax-card-value">₹ {{user.deductions}}</div>
+          <div class="tax-card-value">₹ {{user.tax_info.deductions}}</div>
           <div class="tax-card-label">Total Deductions</div>
         </div>
         
         <div class="tax-card">
           <div class="tax-card-icon">📊</div>
-          <div class="tax-card-value">₹ {{user.tax_liability}}</div>
+          <div class="tax-card-value">₹ {{user.tax_info.tax_liability}}</div>
           <div class="tax-card-label">Tax Liability</div>
         </div>
       </div>
@@ -1001,6 +1002,7 @@
 </div><!-- /page-container -->
 
 <script>
+  const user_id = "{{ user_id }}"
   function toggleSetting(element) {
     element.classList.toggle('active');
   }

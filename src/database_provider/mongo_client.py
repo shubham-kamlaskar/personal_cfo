@@ -33,6 +33,10 @@ class MongoDBClient:
         collection = self.get_collection_client(database_name, collection_name)
         collection.insert_many(data)
         
+    def update_one_item_in_collection(self, database_name: str, collection_name: str, filter_field: str, filter_item: str, update_data: dict):
+        collection = self.get_collection_client(database_name, collection_name)
+        collection.update_one({filter_field: filter_item}, {"$set": update_data})
+        
     def find_one_item_from_collection(self, database_name: str, collection_name: str, search_field: str, search_item: str):
         collection = self.get_collection_client(database_name, collection_name)
         data = collection.find_one({search_field: search_item})

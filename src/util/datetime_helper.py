@@ -1,10 +1,9 @@
 from datetime import datetime, date
 
 def get_current_dt_in_milliseconds_precision():
-    dt= datetime.now()
-    return dt
+    return datetime.now()
 
-def calculate_difference_between_dates(new_date: date, past_date: date):
-    diff = new_date - past_date
-    print(diff.days)
-    
+def calculate_difference_between_dates(past_date: date):
+    current_date = get_current_dt_in_milliseconds_precision().date()
+    diff = current_date - past_date
+    return diff.days
