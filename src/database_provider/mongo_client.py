@@ -46,3 +46,11 @@ class MongoDBClient:
         collection = self.get_collection_client(database_name, collection_name)
         data = collection.find({search_field: search_item})
         return data
+    
+    def delete_one_item_from_collection(self, database_name: str, collection_name: str, search_field: str, delete_item: str):
+        collection = self.get_collection_client(database_name, collection_name)
+        collection.delete_one({search_field: delete_item})
+        
+    def count_item_from_collection(self, database_name: str, collection_name: str, search_field: str, count_item: str):
+        collection = self.get_collection_client(database_name, collection_name)
+        count_item = collection.count_documents({search_field: count_item})

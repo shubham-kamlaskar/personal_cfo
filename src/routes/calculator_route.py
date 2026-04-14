@@ -1,12 +1,14 @@
 import os
 from dotenv import load_dotenv
-load_dotenv()
 from flask import Blueprint, render_template, request, jsonify
+import uuid
+
 from src.util.calculation_helper import TaxEngine
 from src.database_provider.mongo_client import MongoDBClient
 from src.models.user_activity_model import TaxCalculator
 from src.util.datetime_helper import get_current_dt_in_milliseconds_precision
 
+load_dotenv()
 tax_engine = TaxEngine()
 mongodb_client = MongoDBClient()
 
@@ -14,16 +16,19 @@ calculator_bp = Blueprint('calculator_bp', __name__, template_folder='templates'
 
 db_name = str(os.getenv('DB_NAME'))
 tax_calculator_collection = str(os.getenv("TAX_CALCULATOR_COLLECTION"))
+user_info_collection = str(os.getenv('USER_INFO_COLLECTION'))
 
 @calculator_bp.route("/<user_id>/calculator", methods=["GET"])
 def calculator(user_id: str):
-    return render_template("calculator.html", user_id=user_id)
+    fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, "user_id", user_id)
+    return render_template("calculator.html", user=fetch_user_info, user_id=user_id)
 
 @calculator_bp.route("/<user_id>/tax_calculator", methods=["POST"])
 def tax_calculator(user_id: str):
     if request.method == "POST":
         data = request.get_json()
         if data:
+            session_id = str(uuid.uuid4())
             age = data.get('age')
             gross_income = float(data.get('gross', 0))
             std = float(data.get('std', 0))
@@ -68,6 +73,7 @@ def tax_calculator(user_id: str):
                 
                 
             tax_comparison = TaxCalculator(  
+                        session_id = session_id,
                         user_id = user_id,
                         age = age,
                         gross_income = gross_income,

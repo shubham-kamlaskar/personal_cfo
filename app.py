@@ -2,6 +2,9 @@ from flask import Flask
 from dotenv import load_dotenv
 load_dotenv()
 
+import warnings
+warnings.filterwarnings('ignore')
+
 from src.routes.landing_page_route import landing_page_bp
 from src.routes.authentication_route import authentication_bp
 from src.routes.dashboard_route import dashboard_bp

@@ -505,27 +505,27 @@
         <div class="row g-3">
           <div class="col-12 col-sm-6">
             <label class="form-label-custom">Full Name</label>
-            <input type="text" class="form-control" placeholder="As per PAN card">
+            <input type="text" class="form-control" placeholder="As per PAN card" value=" {{ user.personal_info.name}}">
           </div>
           <div class="col-12 col-sm-6">
             <label class="form-label-custom">PAN Number</label>
-            <input type="text" class="form-control" placeholder="ABCDE1234F" maxlength="10" style="text-transform:uppercase">
+            <input type="text" class="form-control" placeholder="ABCDE1234F" maxlength="10" style="text-transform:uppercase" value=" {{ user.tax_info.pan}}">
           </div>
           <div class="col-12 col-sm-6">
             <label class="form-label-custom">Aadhaar Number</label>
-            <input type="text" class="form-control" placeholder="1234 5678 9012" maxlength="14">
+            <input type="text" class="form-control" placeholder="1234 5678 9012" maxlength="14" value=" {{ user.tax_info.aadhar}}">
           </div>
           <div class="col-12 col-sm-6">
             <label class="form-label-custom">Date of Birth</label>
-            <input type="date" class="form-control">
+            <input type="date" class="form-control" value=" {{ user.personal_info.dob}}">
           </div>
           <div class="col-12 col-sm-6">
             <label class="form-label-custom">Mobile Number</label>
-            <input type="tel" class="form-control" placeholder="+91 00000 00000">
+            <input type="tel" class="form-control" placeholder="+91 00000 00000" value=" {{ user.personal_info.phone}}">
           </div>
           <div class="col-12 col-sm-6">
             <label class="form-label-custom">Email Address</label>
-            <input type="email" class="form-control" placeholder="you@email.com">
+            <input type="email" class="form-control" placeholder="you@email.com" value=" {{ user.personal_info.email}}">
           </div>
           <div class="col-12">
             <label class="form-label-custom">Residential Status</label>
@@ -563,13 +563,13 @@
           <div class="row g-2">
             <div class="col-12 col-sm-6">
               <label class="form-label-custom">Gross Salary</label>
-              <div class="input-wrap"><span class="rupee">₹</span>
-                <input type="number" class="form-control" id="inc-salary" placeholder="0" oninput="updateSummary()">
+              <div class="input-wrap"><span class="rupee">₹ </span>
+                <input type="number" class="form-control" id="inc-salary" placeholder="0" oninput="updateSummary()" value=" {{user.employment_info.salary}}">
               </div>
             </div>
             <div class="col-12 col-sm-6">
               <label class="form-label-custom">Employer Name</label>
-              <input type="text" class="form-control" placeholder="Company Ltd.">
+              <input type="text" class="form-control" placeholder="Company Ltd." value=" {{user.employment_info.company}}">
             </div>
             <div class="col-12 col-sm-6">
               <label class="form-label-custom">TDS Deducted</label>
@@ -873,6 +873,7 @@
 </div>
 
 <script>
+  const user_id = "{{user_id}}"
   let currentStep = 1;
   let selectedITR = 'ITR-1';
 

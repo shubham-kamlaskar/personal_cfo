@@ -21,6 +21,8 @@ debug_mode = os.getenv('AGENT_DEBUG_MODE', 'True')
 memory_checkpointer = InMemorySaver()
 mongodb_client = MongoDBClient()
 llm_provider = LLMProvider()
+user_info_collection = str(os.getenv('USER_INFO_COLLECTION'))
+db_name = str(os.getenv('DB_NAME')) 
 
 class CustomAgentState(AgentState):
     user_id: str
@@ -33,16 +35,19 @@ class AgentProvider:
         self.db_name = str(os.getenv('DB_NAME'))
         self.conversation_collection = str(os.getenv("CONVERSATION_COLLETION"))
         self.agent = None
-        self.session_id = self._generate_new_thread_id()
+        self.session_id = "81d9c347-f032-455e-9805-77e6e9198abc"
 
-    async def get_agent_client(self, tools: List[BaseTool]):
+    async def get_agent_client(self, tools: List[BaseTool], user_id: str):
         try:
+            user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, "user_id", user_id)
+            
             if self.agent is None:    
                 self.agent = create_agent(
                     model=llm_provider.llm_client(),
                     tools=tools,
                     system_prompt=(Prompt.DEFAULT_SYSTEM_PROMPT + Prompt.TASK_PROMPT + Prompt.CURRENT_DATE_CONTEXT_PROMPT +
-                                Prompt.THINKING_AND_REASONING_PROMPT + Prompt.GENERAL_GUIDELINES_PROMPT +Prompt.INFORMATION_NOT_ALLOWED_PROMPT),
+                                Prompt.THINKING_AND_REASONING_PROMPT + Prompt.GENERAL_GUIDELINES_PROMPT +Prompt.INFORMATION_NOT_ALLOWED_PROMPT
+                                 + f"Use attached information to give personalized responses {str(user_info)}"),
                     state_schema=CustomAgentState,
                     checkpointer=memory_checkpointer,
                     debug=bool(debug_mode),
@@ -56,7 +61,7 @@ class AgentProvider:
         try:
             answer = None
             if self.agent is None:
-                await self.get_agent_client(tools)
+                await self.get_agent_client(tools, user_id)
                 
             response = self.agent.invoke(
                 {

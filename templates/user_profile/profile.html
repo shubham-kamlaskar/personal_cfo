@@ -689,7 +689,7 @@
       
       <div class="profile-info">
         <h1 class="profile-name">{{ user.personal_info.name or "Guest User" }}</h1>
-        <div class="profile-role">{{user.employment_details.designation or "None"}} • {{user.billing_info.subscription_plan or "None" }}</div>
+        <div class="profile-role">{{user.employment_info.designation or "None"}} • {{user.billing_info.subscription_plan or "None" }}</div>
         
         <div class="profile-stats">
           <div class="stat-item">
@@ -784,17 +784,17 @@
       
       <div class="info-group">
         <div class="info-label">Employment Type</div>
-        <div class="info-value">{{ user.employment_details.employment_type or "None" }}</div>
+        <div class="info-value">{{ user.employment_info.employment_type or "None" }}</div>
       </div>
       
       <div class="info-group">
         <div class="info-label">Company Name</div>
-        <div class="info-value editable">{{ user.employment_details.company or "None" }}</div>
+        <div class="info-value editable">{{ user.employment_info.company or "None" }}</div>
       </div>
       
       <div class="info-group">
         <div class="info-label">Annual Salary</div>
-        <div class="info-value editable">{{ user.employment_details.salary or "None" }}</div>
+        <div class="info-value editable">{{ user.income_info.gross_salary or "None" }}</div>
       </div>
       
       <div class="info-group">
@@ -820,7 +820,9 @@
       
       <div class="info-group">
         <div class="info-label">Member Since</div>
-        <div class="info-value">{{user.billing_info.member_since or "None"}}</div>
+        <div class="info-value" id="memberSince">
+          {{ user.billing_info.member_since or "None" }}
+        </div>
       </div>
       
       <div class="info-group">
@@ -902,7 +904,7 @@
       <div class="tax-summary">
         <div class="tax-card">
           <div class="tax-card-icon">💰</div>
-          <div class="tax-card-value">₹ {{user.employment_details.salary}}</div>
+          <div class="tax-card-value">₹ {{user.income_info.gross_salary}}</div>
           <div class="tax-card-label">Gross Income</div>
         </div>
         
@@ -1016,7 +1018,22 @@
       progressFill.style.width = targetWidth;
     }, 100);
   });
+
+// member since
+const el = document.getElementById("memberSince");
+const memberDate = el.innerText;
+
+if (memberDate && memberDate !== "None") {
+    const start = new Date(memberDate);
+    const now = new Date();
+
+    const diffTime = now - start;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    el.innerText = diffDays + " days";
+}
 </script>
+
 
 </body>
 </html>

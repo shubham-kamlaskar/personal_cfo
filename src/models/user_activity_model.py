@@ -19,6 +19,7 @@ class ConversationObject(BaseModel):
 
 
 class TaxCalculator(BaseModel):
+    session_id: str
     user_id: str
     age: Optional[str]
     gross_income: Optional[float]

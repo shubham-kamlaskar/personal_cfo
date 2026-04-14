@@ -776,20 +776,20 @@
             Employment Type <span class="required">*</span>
           </label>
           <div class="radio-group">
-            <label class="radio-option {% if user.employment_details.employment_type == 'salaried' or not user.employment_details.employment_type %}selected{% endif %}">
-              <input type="radio" name="employment_type" value="salaried" {% if user.employment_details.employment_type == 'salaried' or not user.employment_details.employment_type %}checked{% endif %}>
+            <label class="radio-option {% if user.employment_info.employment_type == 'salaried' or not user.employment_info.employment_type %}selected{% endif %}">
+              <input type="radio" name="employment_type" value="salaried" {% if user.employment_info.employment_type == 'salaried' or not user.employment_info.employment_type %}checked{% endif %}>
               <span>Salaried</span>
             </label>
-            <label class="radio-option {% if user.employment_details.employment_type == 'self-employed' %}selected{% endif %}">
-              <input type="radio" name="employment_type" value="self-employed" {% if user.employment_details.employment_type == 'self-employed' %}checked{% endif %}>
+            <label class="radio-option {% if user.employment_info.employment_type == 'self-employed' %}selected{% endif %}">
+              <input type="radio" name="employment_type" value="self-employed" {% if user.employment_info.employment_type == 'self-employed' %}checked{% endif %}>
               <span>Self-Employed</span>
             </label>
-            <label class="radio-option {% if user.employment_details.employment_type == 'business' %}selected{% endif %}">
-              <input type="radio" name="employment_type" value="business" {% if user.employment_details.employment_type == 'business' %}checked{% endif %}>
+            <label class="radio-option {% if user.employment_info.employment_type == 'business' %}selected{% endif %}">
+              <input type="radio" name="employment_type" value="business" {% if user.employment_info.employment_type == 'business' %}checked{% endif %}>
               <span>Business Owner</span>
             </label>
-            <label class="radio-option {% if user.employment_details.employment_type == 'freelancer' %}selected{% endif %}">
-              <input type="radio" name="employment_type" value="freelancer" {% if user.employment_details.employment_type == 'freelancer' %}checked{% endif %}>
+            <label class="radio-option {% if user.employment_info.employment_type == 'freelancer' %}selected{% endif %}">
+              <input type="radio" name="employment_type" value="freelancer" {% if user.employment_info.employment_type == 'freelancer' %}checked{% endif %}>
               <span>Freelancer</span>
             </label>
           </div>
@@ -799,12 +799,12 @@
           <label class="form-label">
             Company Name <span class="required">*</span>
           </label>
-          <input type="text" name="company" class="form-input" placeholder="Your company name" value="{{ user.employment_details.company }}" required>
+          <input type="text" name="company" class="form-input" placeholder="Your company name" value="{{ user.employment_info.company }}" required>
         </div>
 
         <div class="form-group">
           <label class="form-label">Designation</label>
-          <input type="text" name="designation" class="form-input" placeholder="Your job title" value="{{ user.employment_details.designation }}">
+          <input type="text" name="designation" class="form-input" placeholder="Your job title" value="{{ user.employment_info.designation }}">
         </div>
 
         <div class="form-group">
@@ -813,7 +813,7 @@
           </label>
           <div class="input-wrapper">
             <span class="input-icon">💰</span>
-            <input type="number" name="salary" class="form-input" placeholder="1200000" value="{{ user.employment_details.salary }}" required>
+            <input type="number" name="salary" class="form-input" placeholder="1200000" value="{{ user.employment_info.salary }}" required>
           </div>
           <div class="form-hint">As per Form 16 / CTC</div>
         </div>
@@ -822,14 +822,14 @@
           <label class="form-label">Industry Sector</label>
           <select name="industry" class="form-select">
             <option value="">Select Industry</option>
-            <option value="it" {% if user.employment_details.industry == 'it' %}selected{% endif %}>Information Technology</option>
-            <option value="finance" {% if user.employment_details.industry == 'finance' %}selected{% endif %}>Banking & Finance</option>
-            <option value="healthcare" {% if user.employment_details.industry == 'healthcare' %}selected{% endif %}>Healthcare</option>
-            <option value="education" {% if user.employment_details.industry == 'education' %}selected{% endif %}>Education</option>
-            <option value="manufacturing" {% if user.employment_details.industry == 'manufacturing' %}selected{% endif %}>Manufacturing</option>
-            <option value="retail" {% if user.employment_details.industry == 'retail' %}selected{% endif %}>Retail & E-commerce</option>
-            <option value="consulting" {% if user.employment_details.industry == 'consulting' %}selected{% endif %}>Consulting</option>
-            <option value="other" {% if user.employment_details.industry == 'other' %}selected{% endif %}>Other</option>
+            <option value="it" {% if user.employment_info.industry == 'it' %}selected{% endif %}>Information Technology</option>
+            <option value="finance" {% if user.employment_info.industry == 'finance' %}selected{% endif %}>Banking & Finance</option>
+            <option value="healthcare" {% if user.employment_info.industry == 'healthcare' %}selected{% endif %}>Healthcare</option>
+            <option value="education" {% if user.employment_info.industry == 'education' %}selected{% endif %}>Education</option>
+            <option value="manufacturing" {% if user.employment_info.industry == 'manufacturing' %}selected{% endif %}>Manufacturing</option>
+            <option value="retail" {% if user.employment_info.industry == 'retail' %}selected{% endif %}>Retail & E-commerce</option>
+            <option value="consulting" {% if user.employment_info.industry == 'consulting' %}selected{% endif %}>Consulting</option>
+            <option value="other" {% if user.employment_info.industry == 'other' %}selected{% endif %}>Other</option>
           </select>
         </div>
       </div>

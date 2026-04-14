@@ -5,7 +5,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, jsonif
 from src.database_provider.fetch_user_info import user
 from src.database_provider.mongo_client import MongoDBClient
 from src.models.authentication_object import UserInfoObject, PersonalInfo, BillingInfo
-from src.util.datetime_helper import get_current_dt_in_milliseconds_precision, calculate_difference_between_dates
+from src.util.datetime_helper import get_current_dt_in_milliseconds_precision
 from src.util.userid_generator import generate_user_id
 from src.util.app_constants import VariableConstant
 from src.util.password_helper import PasswordHelper
@@ -17,6 +17,7 @@ password_helper = PasswordHelper()
 user_info_collection = str(os.getenv('USER_INFO_COLLECTION'))
 db_name = str(os.getenv('DB_NAME')) 
 email_id_field = VariableConstant.EMAIL_ID_FIELD_DB
+user_id_field = VariableConstant.USER_ID_FIELD_DB
 
 @authentication_bp.route("/login", methods=["GET"])
 def login():
@@ -38,6 +39,11 @@ def loginUser():
                 fetch_password = personal_info.get('password')
                 if password_helper.verify_password_hash(password, fetch_password):
                     user_id = fetch_user_info.get('user_id')
+                    
+                    last_user_activity = {"billing_info.last_user_activity": get_current_dt_in_milliseconds_precision()}
+
+                    mongodb_client.update_one_item_in_collection(db_name, user_info_collection,
+                                                                user_id_field, user_id, last_user_activity )
                     return jsonify({
                                 "status": "success",
                                 "redirect": url_for("dashboard_bp.dashboard", user_id=user_id)
@@ -70,23 +76,25 @@ def signupUser():
     
     signup_data = UserInfoObject(
         user_id = user_id,
+        
         personal_info= PersonalInfo(
-        name=name.title(),
-        email=email.lower(),
-        password=password_hash,
+                name=name.title(),
+                email=email.lower(),
+                password=password_hash,
         ),
         billing_info = BillingInfo(
-            subscription_status="Active",
-            subscription_plan="Free Plan",
-            member_since=get_current_dt_in_milliseconds_precision(),
-            days_active=,
-            account_active_status="Active",
-            next_billing_date="None",
-            preference=,
-            
-        )
+                subscription_status="Active",
+                subscription_plan="Free Plan",
+                member_since=get_current_dt_in_milliseconds_precision(),
+                account_active_status=True,
+                next_billing_date=get_current_dt_in_milliseconds_precision(),
+                preference={"email_notification":"True",
+                            "sms_alerts": "False",
+                            "two_factor": "False",
+                            "dark_mode": "False"},
+        ),
         createdAt=get_current_dt_in_milliseconds_precision(),
-        updatedAt=get_current_dt_in_milliseconds_precision()
+        updatedAt=get_current_dt_in_milliseconds_precision(),
     )
 
     mongodb_client.insert_one_item_in_collection(database_name=db_name,

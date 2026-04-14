@@ -12,5 +12,5 @@ db_name = str(os.getenv('DB_NAME'))
 
 @dashboard_bp.route("/<user_id>/dashboard", methods=["GET"])
 def dashboard(user_id: str):
-    fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, db_name, "user_id", user_id)
+    fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, "user_id", user_id)
     return render_template("dashboard.html", user=fetch_user_info, user_id=user_id)

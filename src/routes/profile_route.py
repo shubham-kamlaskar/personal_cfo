@@ -4,7 +4,7 @@ load_dotenv()
 from flask import Blueprint, render_template, request, redirect, url_for
 from src.database_provider.mongo_client import MongoDBClient
 from src.util.app_constants import VariableConstant
-from src.models.authentication_object import UserInfoObject, PersonalInfo, TaxInfo, EmploymentDetails, AddressInfo
+from src.models.authentication_object import UserInfoObject, PersonalInfo, TaxInfo, EmploymentInfo, AddressInfo, IncomeInfo
 from src.util.password_helper import PasswordHelper
 from src.util.datetime_helper import get_current_dt_in_milliseconds_precision
 
@@ -44,12 +44,14 @@ def edit_profile(user_id: str):
                     tax_regime= str(form.get("tax_regime")).title()
                 ),
 
-                employment_details=EmploymentDetails(
+                employment_info=EmploymentInfo(
                     employment_type= form.get("employment_type"),
                     company= str(form.get("company")).title(),
                     designation= str(form.get("designation")).title(),
-                    salary= float(form.get("salary")),
                     industry= str(form.get("industry")).title()
+                ),
+                income_info = IncomeInfo(
+                    gross_salary= float(form.get("salary")),
                 ),
 
                 address_info=AddressInfo(
@@ -64,9 +66,9 @@ def edit_profile(user_id: str):
             if form.get("new_password"):
                 if password_helper.verify_password_hash(entered_password=form.get('current_password'),hashed_password=fetch_user_info['password']):
                     if form.get('new_password') == form.get('confirm_password'):
-                        update_data.personal_info['password'] = password_helper.generate_password_hash(password=form.get("new_password"))
+                        update_data.personal_info.password = password_helper.generate_password_hash(password=form.get("new_password"))
 
-            mongodb_client.update_one_item_in_collection(db_name, user_info_collection, USER_ID_FIELD_NAME, user_id, update_data.model_dump())
+            mongodb_client.update_one_item_in_collection(db_name, user_info_collection, USER_ID_FIELD_NAME, user_id, update_data.model_dump(exclude_none=True))
             return redirect(url_for('user_profile_bp.profile', user_id=user_id))
 
         return render_template('user_profile/edit_profile.html', user=fetch_user_info, user_id=user_id)

@@ -5,7 +5,6 @@ from datetime import datetime
 class LoginObject(BaseModel):
     email: Optional[str] = None
     password: Optional[str] = None
-    
 
 class PersonalInfo(BaseModel):
     name: Optional[str] = None
@@ -25,11 +24,29 @@ class TaxInfo(BaseModel):
     potential_savings: Optional[str] = None
     tax_saved: Optional[str] = None
     
-class EmploymentDetails(BaseModel):
+class IncomeInfo(BaseModel):
+    gross_salary: Optional[float] = None
+    tds_deducted: Optional[float] = None
+    form_16_available: Optional[float] = None
+    annual_rental_income: Optional[float] = None
+    home_loan_interest: Optional[float] = None
+    short_term_capital_gains: Optional[float] = None
+    long_term_capital_gains: Optional[float] = None
+    interest_income_fd_savings: Optional[float] = None
+    dividend_income: Optional[float] = None
+    
+class DeductionsInfo(BaseModel):
+    section_80c: Optional[float] = None
+    section_80d: Optional[float] = None
+    hra_examption: Optional[float] = None
+    nps_80ccd: Optional[float] = None
+    home_loan_interest: Optional[float] = None
+    other_deductions: Optional[float] = None
+    
+class EmploymentInfo(BaseModel):
     employment_type: Optional[str] = None
     company: Optional[str] = None
     designation: Optional[str] = None
-    salary: Optional[float] = None
     industry: Optional[str] = None
 
 class AddressInfo(BaseModel):
@@ -43,6 +60,7 @@ class AddressInfo(BaseModel):
 class BillingInfo(BaseModel):
     subscription_status: Optional[str] = None
     member_since: Optional[datetime] = None
+    last_user_activity: Optional[datetime] = None
     days_active: Optional[int] = None
     account_active_status: Optional[bool] = None
     documents_len: Optional[int] = None
@@ -55,9 +73,11 @@ class UserInfoObject(BaseModel):
     user_id: Optional[str] = None
     personal_info: Optional[PersonalInfo] = None
     tax_info: Optional[TaxInfo] = None
-    employment_details: Optional[EmploymentDetails] = None
+    employment_info: Optional[EmploymentInfo] = None
     address_info: Optional[AddressInfo] = None
     billing_info: Optional[BillingInfo] = None
+    income_info: Optional[IncomeInfo] = None
+    deductions_info: Optional[DeductionsInfo] = None
     createdAt: Optional[datetime] = None
     updatedAt: Optional[datetime] = None
 
