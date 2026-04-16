@@ -461,6 +461,48 @@
   .legend-item .li-left { display: flex; align-items: center; gap: 0.4rem; color: var(--text-muted); }
   .legend-item .li-val  { font-weight: 600; color: var(--text); }
 
+  /* ── Save Button (Fixed) ── */
+  .save-investments-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(22, 163, 74, 0.4);
+    transition: all 0.3s;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .save-investments-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(22, 163, 74, 0.5);
+  }
+  .save-investments-btn.saving {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  .save-investments-btn .spinner {
+    display: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+  .save-investments-btn.saving .spinner {
+    display: block;
+  }
+
   /* ── Responsive ── */
   @media (max-width: 767.98px) {
     .section-card { padding: 1.1rem 1rem; }
@@ -480,6 +522,12 @@
 {% include 'header.html' %}
 
 <div class="container-fluid px-3 px-md-4 py-3 py-md-4" style="max-width:1250px; margin:0 auto">
+
+    <!-- Save Button (Fixed) -->
+  <button class="save-investments-btn" id="saveBtn" onclick="saveInvestments()">
+    <span class="spinner"></span>
+    <span>💾 Save All Investments</span>
+  </button>
 
   <!-- ── Page Banner ── -->
   <div class="page-banner">
@@ -959,11 +1007,22 @@
 <!-- ── Scripts ── -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
+  const user_id = "{{user_id}}"
   /* ───── State ───── */
   const limits = { '80c': 150000, '80d': 25000, 'nps': 50000, 'hl': 200000 };
   const totals = { '80c': 150000, '80d': 0, 'nps': 0, 'hl': 0, 'mf': 0, 'other': 0 };
+  const investments = {
+  '80c': [],
+  '80d': [],
+  'nps': [],
+  'hl': [],
+  'mf': [],
+  'other': []
+};
   const icons  = { '80c':'🏦','80d':'🏥','nps':'🏛','hl':'🏠','mf':'📊','other':'💎' };
   const colors = ['#1a56db','#16a34a','#d97706','#7c3aed','#ec4899','#0891b2'];
+
+
 
   /* ───── Donut Chart ───── */
   const ctx = document.getElementById('donutChart').getContext('2d');
@@ -1034,6 +1093,11 @@
     }
     const actual = (lim !== Infinity) ? apply : amt;
     totals[section] += actual;
+
+    investments[section].push({
+      name: typeName,
+      amount: actual
+    });
 
     // Remove empty placeholder
     const list = document.getElementById(listMap[section]);
@@ -1148,6 +1212,56 @@
     document.getElementById('lbl-' + sec + '-used').textContent = fmt(used) + ' used';
     document.getElementById('lbl-' + sec + '-rem').textContent  = fmt(Math.max(0, limit - used)) + ' remaining';
   }
+
+   /* ───── Save Investments to Backend ───── */
+  async function saveInvestments() {
+    const saveBtn = document.getElementById('saveBtn');
+    saveBtn.classList.add('saving');
+    
+    try {
+      // Prepare data payload
+      const payload = {
+        user_id: user_id,
+        fy: '2025-26',
+        investments: {
+          '80c': investments['80c'],
+          '80d': investments['80d'],
+          'nps': investments['nps'],
+          'hl': investments['hl'],
+          'mf': investments['mf'],
+          'other': investments['other']
+        },
+        totals: totals,
+        summary: {
+          total_invested: totals['80c'] + totals['80d'] + totals['nps'] + totals['hl'] + totals['mf'] + totals['other'],
+          total_deduction: Math.min(totals['80c'], 150000) + Math.min(totals['80d'], 25000) + Math.min(totals['nps'], 50000) + Math.min(totals['hl'], 200000),
+          tax_saved: Math.round((Math.min(totals['80c'], 150000) + Math.min(totals['80d'], 25000) + Math.min(totals['nps'], 50000) + Math.min(totals['hl'], 200000)) * 0.312)
+        }
+      };
+ 
+      const response = await fetch(`/${user_id}/add_investments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      });
+ 
+      const result = await response.json();
+      
+      if (response.ok && result.status === 'success') {
+        showToast('success', 'Success!', 'All investments saved successfully!');
+      } else {
+        showToast('error', 'Error', result.message || 'Failed to save investments');
+      }
+    } catch (error) {
+      console.error('Error saving investments:', error);
+      showToast('error', 'Error', 'Network error. Please try again.');
+    } finally {
+      saveBtn.classList.remove('saving');
+    }
+  }
+
 
   // Initialize
   updateAll();

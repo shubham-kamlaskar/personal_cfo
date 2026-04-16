@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import Optional, Any
 from datetime import datetime
+from src.models.investment_object import Section80C, Section80D, Section80CCD, Section24B, MutualFund, OtherInvestments
 
 class LoginObject(BaseModel):
     email: Optional[str] = None
@@ -35,13 +36,13 @@ class IncomeInfo(BaseModel):
     interest_income_fd_savings: Optional[float] = None
     dividend_income: Optional[float] = None
     
-class DeductionsInfo(BaseModel):
-    section_80c: Optional[float] = None
-    section_80d: Optional[float] = None
-    hra_examption: Optional[float] = None
-    nps_80ccd: Optional[float] = None
-    home_loan_interest: Optional[float] = None
-    other_deductions: Optional[float] = None
+class TotalInvestments(BaseModel):
+    section80c: Optional[Section80C] = None
+    section80d: Optional[Section80D] = None
+    section80ccd: Optional[Section80CCD] = None
+    section24b: Optional[Section24B] = None
+    mutualfund: Optional[MutualFund] = None
+    otherinvestments: Optional[OtherInvestments] = None
     
 class EmploymentInfo(BaseModel):
     employment_type: Optional[str] = None
@@ -77,7 +78,7 @@ class UserInfoObject(BaseModel):
     address_info: Optional[AddressInfo] = None
     billing_info: Optional[BillingInfo] = None
     income_info: Optional[IncomeInfo] = None
-    deductions_info: Optional[DeductionsInfo] = None
+    investments_info: Optional[TotalInvestments] = None
     createdAt: Optional[datetime] = None
     updatedAt: Optional[datetime] = None
 

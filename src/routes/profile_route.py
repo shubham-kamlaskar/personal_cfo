@@ -27,48 +27,50 @@ def edit_profile(user_id: str):
         fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, USER_ID_FIELD_NAME, user_id)
         if request.method == "POST":
             form = request.form
-            update_data = UserInfoObject(
-                user_id = user_id,
-                personal_info=PersonalInfo(
-                    name= str(form.get("name")).title(),
-                    dob=form.get("dob"),
-                    email= str(form.get("email")).lower(),
-                    phone= form.get("phone"),
-                    gender= str(form.get("gender")).title(),
-                    marital_status= str(form.get("marital_status")).title()
-                ),
-
-                tax_info=TaxInfo(
-                    pan= str(form.get("pan")).upper(),
-                    aadhar= str(form.get("aadhar")),
-                    tax_regime= str(form.get("tax_regime")).title()
-                ),
-
-                employment_info=EmploymentInfo(
-                    employment_type= form.get("employment_type"),
-                    company= str(form.get("company")).title(),
-                    designation= str(form.get("designation")).title(),
-                    industry= str(form.get("industry")).title()
-                ),
-                income_info = IncomeInfo(
-                    gross_salary= float(form.get("salary")),
-                ),
-
-                address_info=AddressInfo(
-                    address_line1=form.get("address_line1"),
-                    address_line2=form.get("address_line2"),
-                    city= str(form.get("city")).title(),
-                    state= str(form.get("state")).title(),
-                    pincode= int(form.get("pincode"))
-                ),
-                updatedAt = get_current_dt_in_milliseconds_precision()
-            )
+            update_data = {
+                "personal_info":{
+                        "name": str(form.get("name")).title(),
+                        "dob":form.get("dob"),
+                        "email": str(form.get("email")).lower(),
+                        "phone": form.get("phone"),
+                        "gender": str(form.get("gender")).title(),
+                        "marital_status": str(form.get("marital_status")).title(),
+                },
+                
+                "tax_info": {
+                    "pan": str(form.get("pan")).upper(),
+                    "aadhar": str(form.get("aadhar")),
+                    "tax_regime": str(form.get("tax_regime")).title()
+                },
+                
+                "employment_info": {
+                        "employment_type": form.get("employment_type"),
+                        "company": str(form.get("company")).title() if form.get("company") else None,
+                        "designation": str(form.get("designation")).title() if form.get("designation") else None,
+                        "industry": str(form.get("industry")).title() if form.get("industry") else None,
+                },
+                
+                "income_info": {
+                    "gross_salary": float(form.get("salary")),
+                },
+                
+                "address_info": {
+                    "address_line1": str(form.get("address_line1")),
+                    "address_line2": str(form.get("address_line2")),
+                    "city": str(form.get("city")).title(),
+                    "state": str(form.get("state")).title(),
+                    "pincode": int(form.get("pincode")),
+                },
+                
+                "updatedAt": get_current_dt_in_milliseconds_precision()   
+            }
+            
             if form.get("new_password"):
                 if password_helper.verify_password_hash(entered_password=form.get('current_password'),hashed_password=fetch_user_info['password']):
                     if form.get('new_password') == form.get('confirm_password'):
                         update_data.personal_info.password = password_helper.generate_password_hash(password=form.get("new_password"))
 
-            mongodb_client.update_one_item_in_collection(db_name, user_info_collection, USER_ID_FIELD_NAME, user_id, update_data.model_dump(exclude_none=True))
+            mongodb_client.update_one_item_in_collection(db_name, user_info_collection, USER_ID_FIELD_NAME, user_id, update_data)
             return redirect(url_for('user_profile_bp.profile', user_id=user_id))
 
         return render_template('user_profile/edit_profile.html', user=fetch_user_info, user_id=user_id)
