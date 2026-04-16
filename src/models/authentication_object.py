@@ -38,11 +38,17 @@ class IncomeInfo(BaseModel):
     
 class TotalInvestments(BaseModel):
     section80c: Optional[Section80C] = None
+    total_80c: Optional[Section80C] = None
     section80d: Optional[Section80D] = None
+    total_80d: Optional[Section80C] = None
     section80ccd: Optional[Section80CCD] = None
+    total_80ccd: Optional[Section80C] = None
     section24b: Optional[Section24B] = None
+    total_24b: Optional[Section80C] = None
     mutualfund: Optional[MutualFund] = None
+    total_mf: Optional[Section80C] = None
     otherinvestments: Optional[OtherInvestments] = None
+    total_other: Optional[Section80C] = None
     
 class EmploymentInfo(BaseModel):
     employment_type: Optional[str] = None

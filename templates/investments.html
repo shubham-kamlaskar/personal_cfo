@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <title>Investments | Personal CFO</title>
 <style>
   :root {
@@ -119,36 +119,6 @@
     margin-bottom: 1rem;
   }
 
-  /* ── Tab Pills ── */
-  .tab-pills {
-    display: flex;
-    gap: 0.4rem;
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 4px;
-    margin-bottom: 1.25rem;
-    flex-wrap: wrap;
-  }
-  .tab-pill {
-    flex: 1;
-    min-width: fit-content;
-    text-align: center;
-    padding: 0.5rem 0.75rem;
-    border-radius: 8px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s;
-    white-space: nowrap;
-  }
-  .tab-pill.active {
-    background: var(--surface);
-    color: var(--primary);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-  }
-
   /* ── Investment Category Cards ── */
   .invest-cat-card {
     background: var(--surface-2);
@@ -221,189 +191,15 @@
   .form-control::placeholder { color: #b0bec5; }
   .input-wrap { position: relative; }
   .input-wrap .rupee {
-    position: absolute; left: 0.9rem; top: 50%;
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
     transform: translateY(-50%);
-    color: var(--text-muted); font-size: 0.85rem; pointer-events: none;
-  }
-  .input-wrap .form-control { padding-left: 1.75rem; }
-  .divider { border: none; border-top: 1px solid var(--border); margin: 1.1rem 0; }
-
-  /* ── Investment Entry Rows ── */
-  .invest-row {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid var(--border);
-    flex-wrap: wrap;
-  }
-  .invest-row:last-child { border-bottom: none; }
-  .invest-row .ir-icon {
-    width: 36px; height: 36px;
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1rem;
-    flex-shrink: 0;
-  }
-  .invest-row .ir-info { flex: 1; min-width: 120px; }
-  .invest-row .ir-name {
-    font-weight: 600;
-    font-size: 0.875rem;
-    color: var(--text);
-  }
-  .invest-row .ir-type {
-    font-size: 0.72rem;
     color: var(--text-muted);
-    margin-top: 1px;
-  }
-  .invest-row .ir-amount {
-    font-family: 'Sora', sans-serif;
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: var(--text);
-    white-space: nowrap;
-  }
-  .invest-row .ir-tax {
-    font-size: 0.7rem;
-    color: var(--accent);
     font-weight: 600;
-    white-space: nowrap;
   }
-  .invest-row .ir-delete {
-    width: 28px; height: 28px;
-    border-radius: 6px;
-    background: var(--danger-light);
-    color: var(--danger);
-    border: none;
-    font-size: 0.8rem;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    transition: background 0.15s;
-  }
-  .invest-row .ir-delete:hover { background: #fca5a5; }
-
-  /* ── Add Investment Form ── */
-  .add-invest-form {
-    background: var(--surface-2);
-    border: 1.5px dashed var(--border);
-    border-radius: 12px;
-    padding: 1.1rem 1.2rem;
-    margin-top: 0.75rem;
-    display: none;
-  }
-  .add-invest-form.show { display: block; }
-
-  /* ── Progress / Limit Bar ── */
-  .limit-bar-wrap {
-    margin-top: 0.75rem;
-    background: var(--border);
-    border-radius: 99px;
-    height: 8px;
-    overflow: hidden;
-  }
-  .limit-bar {
-    height: 100%;
-    border-radius: 99px;
-    background: linear-gradient(90deg, var(--accent), #4ade80);
-    transition: width 0.4s ease;
-  }
-  .limit-bar.warn { background: linear-gradient(90deg, var(--warning), #fbbf24); }
-  .limit-bar.full { background: linear-gradient(90deg, var(--danger), #f87171); }
-  .limit-label {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    margin-top: 0.3rem;
-  }
-
-  /* ── Summary Row ── */
-  .summary-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.55rem 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 0.875rem;
-  }
-  .summary-row:last-child { border-bottom: none; }
-  .summary-row .sr-label { color: var(--text-muted); }
-  .summary-row .sr-value { font-weight: 600; color: var(--text); }
-  .summary-row.total .sr-label {
-    font-family: 'Sora', sans-serif;
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: var(--text);
-  }
-  .summary-row.total .sr-value {
-    font-family: 'Sora', sans-serif;
-    font-size: 1rem;
-    color: var(--primary);
-  }
-
-  /* ── Suggestion Items ── */
-  .suggestion-item {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    padding: 0.85rem 1rem;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: var(--surface-2);
-    transition: background 0.18s, border-color 0.18s;
-    cursor: pointer;
-    margin-bottom: 0.5rem;
-  }
-  .suggestion-item:last-child { margin-bottom: 0; }
-  .suggestion-item:hover {
-    background: var(--primary-light);
-    border-color: #93b8f8;
-  }
-  .suggestion-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--primary);
-    flex-shrink: 0;
-  }
-  .suggestion-text { font-size: 0.875rem; font-weight: 500; color: var(--text); flex: 1; }
-  .suggestion-badge {
-    font-size: 0.7rem;
-    padding: 2px 8px;
-    border-radius: 99px;
-    background: var(--accent-light);
-    color: var(--accent);
-    font-weight: 600;
-    white-space: nowrap;
-  }
-
-  /* ── Buttons ── */
-  .btn-primary-custom {
-    background: var(--primary);
-    border: none;
-    border-radius: 10px;
-    color: white;
-    font-family: 'Sora', sans-serif;
-    font-weight: 600;
-    font-size: 0.875rem;
-    padding: 0.65rem 1.4rem;
-    transition: background 0.2s, transform 0.15s;
-    cursor: pointer;
-  }
-  .btn-primary-custom:hover { background: #1e40af; transform: translateY(-1px); color: white; }
-  .btn-outline-custom {
-    background: transparent;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    color: var(--text-muted);
-    font-family: 'Sora', sans-serif;
-    font-weight: 600;
-    font-size: 0.875rem;
-    padding: 0.65rem 1.4rem;
-    transition: border-color 0.2s, color 0.2s;
-    cursor: pointer;
-  }
-  .btn-outline-custom:hover { border-color: var(--primary); color: var(--primary); }
+  .input-wrap .form-control { padding-left: 2.2rem; }
+  
   .btn-add {
     background: var(--primary-light);
     border: none;
@@ -417,50 +213,126 @@
     transition: background 0.2s;
   }
   .btn-add:hover { background: #c7d9fb; }
-
-  /* ── Doughnut chart placeholder ── */
-  .donut-wrap {
-    position: relative;
-    width: 140px; height: 140px;
-    margin: 0 auto 1rem;
+  
+  .btn-primary-custom {
+    background: var(--primary);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
   }
-  .donut-wrap canvas { width: 140px !important; height: 140px !important; }
-  .donut-center {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-  }
-  .donut-center .dc-value {
-    font-family: 'Sora', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    color: var(--text);
-    line-height: 1;
-  }
-  .donut-center .dc-label {
-    font-size: 0.62rem;
+  .btn-primary-custom:hover { background: #1e40af; }
+  
+  .btn-outline-custom {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
     color: var(--text-muted);
-    margin-top: 2px;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
   }
-
-  /* Legend dots */
-  .legend-dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 5px;
+  .btn-outline-custom:hover { border-color: var(--primary); color: var(--primary); }
+  
+  .add-invest-form {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s;
+    opacity: 0;
+    background: var(--surface-2);
+    border-radius: 10px;
+    margin-top: 1rem;
   }
-  .legend-item {
+  .add-invest-form.show {
+    max-height: 400px;
+    opacity: 1;
+    padding: 1rem;
+  }
+  
+  .invest-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    font-size: 0.78rem;
-    padding: 0.25rem 0;
+    gap: 0.85rem;
+    padding: 0.85rem 1rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 0.65rem;
+    transition: background 0.2s;
   }
-  .legend-item .li-left { display: flex; align-items: center; gap: 0.4rem; color: var(--text-muted); }
-  .legend-item .li-val  { font-weight: 600; color: var(--text); }
-
+  .invest-row:hover { background: var(--primary-light); }
+  .ir-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .ir-info { flex: 1; min-width: 0; }
+  .ir-name {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--text);
+    margin-bottom: 0.15rem;
+  }
+  .ir-type {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+  .ir-amount {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text);
+    text-align: right;
+  }
+  .ir-tax {
+    font-size: 0.7rem;
+    color: var(--accent);
+    text-align: right;
+    margin-top: 0.15rem;
+  }
+  .ir-delete {
+    background: var(--danger-light);
+    border: none;
+    color: var(--danger);
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .ir-delete:hover { background: var(--danger); color: white; }
+  
+  .limit-bar-wrap {
+    width: 100%;
+    height: 8px;
+    background: var(--surface-2);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-top: 1rem;
+  }
+  .limit-bar {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 99px;
+    transition: width 0.4s ease, background 0.3s;
+  }
+  .limit-bar.warn { background: var(--warning); }
+  .limit-bar.full { background: var(--primary); }
+  .limit-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 0.35rem;
+  }
+  
   /* ── Save Button (Fixed) ── */
   .save-investments-btn {
     position: fixed;
@@ -502,18 +374,182 @@
   .save-investments-btn.saving .spinner {
     display: block;
   }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
 
-  /* ── Responsive ── */
+  /* ── Toast Notification ── */
+  .toast-notification {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transform: translateX(400px);
+    transition: transform 0.3s;
+  }
+  .toast-notification.show {
+    transform: translateX(0);
+  }
+  .toast-notification.success {
+    border-left: 4px solid var(--accent);
+  }
+  .toast-notification.error {
+    border-left: 4px solid var(--danger);
+  }
+  .toast-icon {
+    font-size: 1.5rem;
+  }
+  .toast-content {
+    flex: 1;
+  }
+  .toast-title {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text);
+  }
+  .toast-message {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+  .toast-close {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Donut chart */
+  .donut-wrap {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    margin: 0 auto 1.25rem;
+  }
+  .donut-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  .donut-center .dc-value {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--primary);
+    line-height: 1;
+  }
+  .donut-center .dc-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    padding: 0.5rem 0;
+  }
+  .legend-item .li-left { display: flex; align-items: center; gap: 0.6rem; color: var(--text); }
+  .legend-dot {
+    width: 14px; height: 14px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .legend-item .li-val  { 
+    font-family: 'Sora', sans-serif;
+    font-weight: 700; 
+    color: var(--text); 
+  }
+
+  .deduction-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .deduction-row:last-child { border-bottom: none; }
+  .deduction-row.total {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--primary);
+    padding-top: 0.85rem;
+    margin-top: 0.5rem;
+    border-top: 2px solid var(--border);
+  }
+  .ded-label {
+    font-size: 0.85rem;
+    color: var(--text);
+  }
+  .ded-amount {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text);
+  }
+
+  .suggestion-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: var(--surface-2);
+    border-radius: 8px;
+    margin-bottom: 0.6rem;
+  }
+  .suggestion-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--primary);
+    flex-shrink: 0;
+  }
+  .suggestion-text {
+    flex: 1;
+    font-size: 0.8rem;
+    color: var(--text);
+  }
+  .suggestion-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 0.2rem 0.6rem;
+    border-radius: 99px;
+  }
+
   @media (max-width: 767.98px) {
     .section-card { padding: 1.1rem 1rem; }
     .page-banner  { padding: 1.1rem 1rem; }
-    .page-banner .banner-title { font-size: 1.05rem; }
-    .banner-stat .bs-value { font-size: 0.95rem; }
-  }
-  @media (min-width: 992px) {
-    .page-banner { padding: 2rem 2.25rem; }
-    .page-banner .banner-title { font-size: 1.5rem; }
-    .section-card { padding: 1.75rem 2rem; }
+    .save-investments-btn {
+      bottom: 1rem;
+      right: 1rem;
+      padding: 0.85rem 1.5rem;
+      font-size: 0.85rem;
+    }
+    .toast-notification {
+      right: 1rem;
+      left: 1rem;
+      width: auto;
+    }
   }
 </style>
 </head>
@@ -523,7 +559,17 @@
 
 <div class="container-fluid px-3 px-md-4 py-3 py-md-4" style="max-width:1250px; margin:0 auto">
 
-    <!-- Save Button (Fixed) -->
+  <!-- Toast Notification -->
+  <div id="toastNotification" class="toast-notification">
+    <div class="toast-icon">✓</div>
+    <div class="toast-content">
+      <div class="toast-title">Success</div>
+      <div class="toast-message">Investments saved successfully!</div>
+    </div>
+    <button class="toast-close" onclick="hideToast()">✕</button>
+  </div>
+
+  <!-- Save Button (Fixed) -->
   <button class="save-investments-btn" id="saveBtn" onclick="saveInvestments()">
     <span class="spinner"></span>
     <span>💾 Save All Investments</span>
@@ -647,18 +693,7 @@
 
         <!-- Investment rows -->
         <div id="list-80c" class="mt-2">
-          <div class="invest-row">
-            <div class="ir-icon" style="background:#e8f0fe">🏦</div>
-            <div class="ir-info">
-              <div class="ir-name">PPF Contribution</div>
-              <div class="ir-type">Public Provident Fund · FY 2025-26</div>
-            </div>
-            <div>
-              <div class="ir-amount">₹ 1,50,000</div>
-              <div class="ir-tax">Saves ~₹46,800</div>
-            </div>
-            <button class="ir-delete" onclick="deleteRow(this, '80c', 150000)">✕</button>
-          </div>
+          <!-- Will be populated from backend or by user -->
         </div>
 
         <!-- Add form -->
@@ -699,8 +734,9 @@
             <div class="section-title">🏥 Section 80D — Health Insurance</div>
             <div class="section-sub">Self & Family: ₹25,000 · Parents: ₹25,000 · Senior parents: ₹50,000</div>
           </div>
-          <button class="btn-add" onclick="toggleAddForm('form80d')">+ Add Premium</button>
+          <button class="btn-add" onclick="toggleAddForm('form80d')">+ Add Investment</button>
         </div>
+
         <div class="limit-bar-wrap">
           <div class="limit-bar" id="bar-80d" style="width:0%"></div>
         </div>
@@ -708,13 +744,13 @@
           <span id="lbl-80d-used">₹0 used</span>
           <span id="lbl-80d-rem">₹25,000 remaining</span>
         </div>
-        <div id="list-80d" class="mt-2">
-          <div style="text-align:center;padding:1.5rem 0;color:var(--text-muted);font-size:0.85rem">No entries yet. Click <strong>+ Add Premium</strong> to begin.</div>
-        </div>
+
+        <div id="list-80d" class="mt-2"></div>
+
         <div class="add-invest-form" id="form80d">
           <div class="row g-2">
             <div class="col-12 col-sm-6">
-              <label class="form-label-custom">Policy Type</label>
+              <label class="form-label-custom">Insurance Type</label>
               <select class="form-select" id="type80d">
                 <option>Self & Family Health Insurance</option>
                 <option>Parents Health Insurance</option>
@@ -723,7 +759,7 @@
               </select>
             </div>
             <div class="col-12 col-sm-6">
-              <label class="form-label-custom">Annual Premium</label>
+              <label class="form-label-custom">Premium Paid</label>
               <div class="input-wrap"><span class="rupee">₹</span>
                 <input type="number" class="form-control" id="amt80d" placeholder="0">
               </div>
@@ -736,15 +772,16 @@
         </div>
       </div>
 
-      <!-- NPS Panel -->
+      <!-- NPS Section -->
       <div class="section-card mb-3" id="secNPS" style="display:none">
         <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-1">
           <div>
             <div class="section-title">🏛 NPS — 80CCD(1B)</div>
-            <div class="section-sub">Additional deduction up to ₹50,000 over and above 80C limit</div>
+            <div class="section-sub">Additional ₹50,000 deduction over & above 80C</div>
           </div>
-          <button class="btn-add" onclick="toggleAddForm('formNPS')">+ Add Contribution</button>
+          <button class="btn-add" onclick="toggleAddForm('formNPS')">+ Add Investment</button>
         </div>
+
         <div class="limit-bar-wrap">
           <div class="limit-bar" id="bar-nps" style="width:0%"></div>
         </div>
@@ -752,20 +789,20 @@
           <span id="lbl-nps-used">₹0 used</span>
           <span id="lbl-nps-rem">₹50,000 remaining</span>
         </div>
-        <div id="list-nps" class="mt-2">
-          <div style="text-align:center;padding:1.5rem 0;color:var(--text-muted);font-size:0.85rem">No entries yet.</div>
-        </div>
+
+        <div id="list-nps" class="mt-2"></div>
+
         <div class="add-invest-form" id="formNPS">
           <div class="row g-2">
             <div class="col-12 col-sm-6">
-              <label class="form-label-custom">NPS Account Type</label>
+              <label class="form-label-custom">NPS Type</label>
               <select class="form-select" id="typeNPS">
                 <option>Tier I — Voluntary (80CCD 1B)</option>
                 <option>Tier I — Employer Contribution (80CCD 2)</option>
               </select>
             </div>
             <div class="col-12 col-sm-6">
-              <label class="form-label-custom">Amount Contributed</label>
+              <label class="form-label-custom">Contribution Amount</label>
               <div class="input-wrap"><span class="rupee">₹</span>
                 <input type="number" class="form-control" id="amtNPS" placeholder="0">
               </div>
@@ -778,15 +815,16 @@
         </div>
       </div>
 
-      <!-- Home Loan Panel -->
+      <!-- Home Loan Section -->
       <div class="section-card mb-3" id="secHL" style="display:none">
         <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-1">
           <div>
-            <div class="section-title">🏠 Home Loan — Section 24(b)</div>
-            <div class="section-sub">Interest deduction up to ₹2,00,000 for self-occupied property</div>
+            <div class="section-title">🏠 Home Loan Interest — Section 24(b)</div>
+            <div class="section-sub">Self-occupied: ₹2L · Let-out: No limit</div>
           </div>
-          <button class="btn-add" onclick="toggleAddForm('formHL')">+ Add Entry</button>
+          <button class="btn-add" onclick="toggleAddForm('formHL')">+ Add Investment</button>
         </div>
+
         <div class="limit-bar-wrap">
           <div class="limit-bar" id="bar-hl" style="width:0%"></div>
         </div>
@@ -794,13 +832,13 @@
           <span id="lbl-hl-used">₹0 used</span>
           <span id="lbl-hl-rem">₹2,00,000 remaining</span>
         </div>
-        <div id="list-hl" class="mt-2">
-          <div style="text-align:center;padding:1.5rem 0;color:var(--text-muted);font-size:0.85rem">No entries yet.</div>
-        </div>
+
+        <div id="list-hl" class="mt-2"></div>
+
         <div class="add-invest-form" id="formHL">
           <div class="row g-2">
             <div class="col-12 col-sm-6">
-              <label class="form-label-custom">Loan Type</label>
+              <label class="form-label-custom">Property Type</label>
               <select class="form-select" id="typeHL">
                 <option>Self-Occupied Property Interest</option>
                 <option>Let-Out Property Interest</option>
@@ -808,7 +846,7 @@
               </select>
             </div>
             <div class="col-12 col-sm-6">
-              <label class="form-label-custom">Annual Interest Paid</label>
+              <label class="form-label-custom">Interest Paid</label>
               <div class="input-wrap"><span class="rupee">₹</span>
                 <input type="number" class="form-control" id="amtHL" placeholder="0">
               </div>
@@ -821,27 +859,23 @@
         </div>
       </div>
 
-      <!-- Mutual Funds Panel -->
+      <!-- Mutual Funds Section -->
       <div class="section-card mb-3" id="secMF" style="display:none">
         <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-1">
           <div>
-            <div class="section-title">📊 Mutual Fund Investments</div>
-            <div class="section-sub">ELSS funds qualify under 80C · Others tracked for capital gains</div>
+            <div class="section-title">📊 Mutual Funds</div>
+            <div class="section-sub">ELSS, Large Cap, Mid Cap, Index, Debt Funds</div>
           </div>
-          <button class="btn-add" onclick="toggleAddForm('formMF')">+ Add Fund</button>
+          <button class="btn-add" onclick="toggleAddForm('formMF')">+ Add Investment</button>
         </div>
-        <div id="list-mf" class="mt-2">
-          <div style="text-align:center;padding:1.5rem 0;color:var(--text-muted);font-size:0.85rem">No funds added yet.</div>
-        </div>
+
+        <div id="list-mf" class="mt-2"></div>
+
         <div class="add-invest-form" id="formMF">
           <div class="row g-2">
-            <div class="col-12 col-sm-4">
-              <label class="form-label-custom">Fund Name</label>
-              <input type="text" class="form-control" id="typeMF" placeholder="e.g. Axis ELSS Fund">
-            </div>
-            <div class="col-12 col-sm-4">
+            <div class="col-12 col-sm-6">
               <label class="form-label-custom">Fund Type</label>
-              <select class="form-select" id="catMF">
+              <select class="form-select" id="typeMF">
                 <option>ELSS (Tax Saving)</option>
                 <option>Large Cap</option>
                 <option>Mid Cap</option>
@@ -849,7 +883,7 @@
                 <option>Debt Fund</option>
               </select>
             </div>
-            <div class="col-12 col-sm-4">
+            <div class="col-12 col-sm-6">
               <label class="form-label-custom">Amount Invested</label>
               <div class="input-wrap"><span class="rupee">₹</span>
                 <input type="number" class="form-control" id="amtMF" placeholder="0">
@@ -863,27 +897,23 @@
         </div>
       </div>
 
-      <!-- Other Investments Panel -->
+      <!-- Other Investments Section -->
       <div class="section-card mb-3" id="secOther" style="display:none">
         <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-1">
           <div>
             <div class="section-title">💎 Other Investments</div>
-            <div class="section-sub">Fixed Deposits, Gold, Stocks, Bonds and more</div>
+            <div class="section-sub">FD, Gold, Stocks, Bonds, Real Estate, Crypto</div>
           </div>
           <button class="btn-add" onclick="toggleAddForm('formOther')">+ Add Investment</button>
         </div>
-        <div id="list-other" class="mt-2">
-          <div style="text-align:center;padding:1.5rem 0;color:var(--text-muted);font-size:0.85rem">No other investments added yet.</div>
-        </div>
+
+        <div id="list-other" class="mt-2"></div>
+
         <div class="add-invest-form" id="formOther">
           <div class="row g-2">
-            <div class="col-12 col-sm-4">
-              <label class="form-label-custom">Investment Name</label>
-              <input type="text" class="form-control" id="typeOther" placeholder="e.g. SBI FD">
-            </div>
-            <div class="col-12 col-sm-4">
-              <label class="form-label-custom">Category</label>
-              <select class="form-select" id="catOther">
+            <div class="col-12 col-sm-6">
+              <label class="form-label-custom">Investment Type</label>
+              <select class="form-select" id="typeOther">
                 <option>Fixed Deposit</option>
                 <option>Gold / Sovereign Gold Bond</option>
                 <option>Stocks / Equity</option>
@@ -892,8 +922,8 @@
                 <option>Cryptocurrency</option>
               </select>
             </div>
-            <div class="col-12 col-sm-4">
-              <label class="form-label-custom">Amount</label>
+            <div class="col-12 col-sm-6">
+              <label class="form-label-custom">Amount Invested</label>
               <div class="input-wrap"><span class="rupee">₹</span>
                 <input type="number" class="form-control" id="amtOther" placeholder="0">
               </div>
@@ -906,80 +936,97 @@
         </div>
       </div>
 
-    </div><!-- /left col -->
+    </div>
 
-    <!-- ══ RIGHT — Summary Sidebar ══ -->
+    <!-- ══ RIGHT — Summary & Visualisation ══ -->
     <div class="col-12 col-lg-4">
+      
+      <!-- Deduction Summary -->
+      <div class="section-card mb-3">
+        <div class="section-title">📊 Deduction Summary</div>
+        <div class="section-sub">Total eligible tax deductions</div>
+        <div class="deduction-row">
+          <span class="ded-label">80C Deduction</span>
+          <span class="ded-amount" id="sum-80c">₹ 0</span>
+        </div>
+        <div class="deduction-row">
+          <span class="ded-label">80D (Health)</span>
+          <span class="ded-amount" id="sum-80d">₹ 0</span>
+        </div>
+        <div class="deduction-row">
+          <span class="ded-label">NPS (80CCD)</span>
+          <span class="ded-amount" id="sum-nps">₹ 0</span>
+        </div>
+        <div class="deduction-row">
+          <span class="ded-label">Home Loan Interest</span>
+          <span class="ded-amount" id="sum-hl">₹ 0</span>
+        </div>
+        <div class="deduction-row total">
+          <span class="ded-label">Total Deduction</span>
+          <span class="ded-amount" id="sum-total">₹ 0</span>
+        </div>
+        <div class="deduction-row total" style="border-top:none;margin-top:0.25rem;padding-top:0;color:var(--accent)">
+          <span class="ded-label">Estimated Tax Saved</span>
+          <span class="ded-amount" id="sum-taxsaved">₹ 0</span>
+        </div>
+      </div>
 
-      <!-- Portfolio Donut -->
-      <div class="section-card mb-3 text-center">
-        <div class="section-title mb-0">Portfolio Breakdown</div>
-        <div class="section-sub">By investment category</div>
+      <!-- Portfolio Breakdown -->
+      <div class="section-card mb-3">
+        <div class="section-title">🥧 Portfolio Breakdown</div>
+        <div class="section-sub">Visual investment distribution</div>
         <div class="donut-wrap">
           <canvas id="donutChart"></canvas>
           <div class="donut-center">
-            <div class="dc-value" id="donut-total">₹1.5L</div>
             <div class="dc-label">Total</div>
+            <div class="dc-value" id="donut-total">₹0</div>
           </div>
         </div>
-        <div id="donut-legend">
-          <div class="legend-item">
-            <div class="li-left"><span class="legend-dot" style="background:#1a56db"></span>80C</div>
-            <div class="li-val" id="leg-80c">₹ 1,50,000</div>
+        <div class="legend-item">
+          <div class="li-left">
+            <div class="legend-dot" style="background:#1a56db"></div>
+            <span>80C</span>
           </div>
-          <div class="legend-item">
-            <div class="li-left"><span class="legend-dot" style="background:#16a34a"></span>80D</div>
-            <div class="li-val" id="leg-80d">₹ 0</div>
+          <span class="li-val" id="leg-80c">₹ 0</span>
+        </div>
+        <div class="legend-item">
+          <div class="li-left">
+            <div class="legend-dot" style="background:#16a34a"></div>
+            <span>80D</span>
           </div>
-          <div class="legend-item">
-            <div class="li-left"><span class="legend-dot" style="background:#d97706"></span>NPS</div>
-            <div class="li-val" id="leg-nps">₹ 0</div>
+          <span class="li-val" id="leg-80d">₹ 0</span>
+        </div>
+        <div class="legend-item">
+          <div class="li-left">
+            <div class="legend-dot" style="background:#d97706"></div>
+            <span>NPS</span>
           </div>
-          <div class="legend-item">
-            <div class="li-left"><span class="legend-dot" style="background:#7c3aed"></span>Home Loan</div>
-            <div class="li-val" id="leg-hl">₹ 0</div>
+          <span class="li-val" id="leg-nps">₹ 0</span>
+        </div>
+        <div class="legend-item">
+          <div class="li-left">
+            <div class="legend-dot" style="background:#7c3aed"></div>
+            <span>Home Loan</span>
           </div>
-          <div class="legend-item">
-            <div class="li-left"><span class="legend-dot" style="background:#ec4899"></span>Mutual Funds</div>
-            <div class="li-val" id="leg-mf">₹ 0</div>
+          <span class="li-val" id="leg-hl">₹ 0</span>
+        </div>
+        <div class="legend-item">
+          <div class="li-left">
+            <div class="legend-dot" style="background:#ec4899"></div>
+            <span>Mutual Funds</span>
           </div>
-          <div class="legend-item">
-            <div class="li-left"><span class="legend-dot" style="background:#0891b2"></span>Other</div>
-            <div class="li-val" id="leg-other">₹ 0</div>
+          <span class="li-val" id="leg-mf">₹ 0</span>
+        </div>
+        <div class="legend-item">
+          <div class="li-left">
+            <div class="legend-dot" style="background:#0891b2"></div>
+            <span>Other</span>
           </div>
+          <span class="li-val" id="leg-other">₹ 0</span>
         </div>
       </div>
 
-      <!-- Deduction Summary -->
-      <div class="section-card mb-3">
-        <div class="section-title">Deduction Summary</div>
-        <div class="section-sub">Section-wise tax saving estimate</div>
-        <div class="summary-row">
-          <span class="sr-label">Section 80C</span>
-          <span class="sr-value" id="sum-80c">₹ 0</span>
-        </div>
-        <div class="summary-row">
-          <span class="sr-label">Section 80D</span>
-          <span class="sr-value" id="sum-80d">₹ 0</span>
-        </div>
-        <div class="summary-row">
-          <span class="sr-label">NPS 80CCD(1B)</span>
-          <span class="sr-value" id="sum-nps">₹ 0</span>
-        </div>
-        <div class="summary-row">
-          <span class="sr-label">Home Loan 24(b)</span>
-          <span class="sr-value" id="sum-hl">₹ 0</span>
-        </div>
-        <div class="summary-row total">
-          <span class="sr-label">Total Deductions</span>
-          <span class="sr-value" id="sum-total">₹ 0</span>
-        </div>
-        <div class="mt-2 p-2 rounded-3" style="background:var(--accent-light); font-size:0.8rem; color:var(--accent); font-weight:600; text-align:center">
-          💰 Estimated Tax Saved: <span id="sum-taxsaved">₹ 0</span>
-        </div>
-      </div>
-
-      <!-- AI Suggestions -->
+      <!-- Smart Suggestions -->
       <div class="section-card">
         <div class="section-title">✨ Smart Suggestions</div>
         <div class="section-sub">Personalised recommendations to save more</div>
@@ -1000,29 +1047,178 @@
         </div>
       </div>
 
-    </div><!-- /right col -->
+    </div>
   </div>
 </div>
 
-<!-- ── Scripts ── -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
-  const user_id = "{{user_id}}"
+  const user_id = "{{ user_id }}";
+  
+  // Backend data (from Flask)
+  const backendData = {{ user.investments_info | tojson | safe }} || {};
+
   /* ───── State ───── */
   const limits = { '80c': 150000, '80d': 25000, 'nps': 50000, 'hl': 200000 };
-  const totals = { '80c': 150000, '80d': 0, 'nps': 0, 'hl': 0, 'mf': 0, 'other': 0 };
-  const investments = {
-  '80c': [],
-  '80d': [],
-  'nps': [],
-  'hl': [],
-  'mf': [],
-  'other': []
-};
+  const totals = { '80c': 0, '80d': 0, 'nps': 0, 'hl': 0, 'mf': 0, 'other': 0 };
+  const investments = { '80c': [], '80d': [], 'nps': [], 'hl': [], 'mf': [], 'other': [] };
   const icons  = { '80c':'🏦','80d':'🏥','nps':'🏛','hl':'🏠','mf':'📊','other':'💎' };
   const colors = ['#1a56db','#16a34a','#d97706','#7c3aed','#ec4899','#0891b2'];
 
+  // Name mapping for backend-frontend conversion
+  const nameMapping = {
+    '80c': {
+      'ppf': 'PPF',
+      'lic_premium': 'LIC Premium',
+      'elss_mf': 'ELSS Mutual Fund',
+      'year5_fd': '5-Year FD',
+      'nsc': 'NSC',
+      'sukanya_samruddhi': 'Sukanya Samriddhi (SSY)',
+      'epf': 'EPF (Employee)',
+      'home_loan_principal': 'Home Loan Principal',
+      'ulip': 'ULIP'
+    },
+    '80d': {
+      'self_family_health_insurance': 'Self & Family Health Insurance',
+      'parents_health_insurance': 'Parents Health Insurance',
+      'senior_citizen_health_insurance': 'Senior Citizen Parents',
+      'preventive_health_checkup': 'Preventive Health Check-up'
+    },
+    'nps': {
+      'tier1_vol_80ccd_1b': 'Tier I — Voluntary (80CCD 1B)',
+      'tier1_employer_contribution_80ccd_2': 'Tier I — Employer Contribution (80CCD 2)'
+    },
+    'hl': {
+      'self_occupied_property': 'Self-Occupied Property Interest',
+      'let_out_property': 'Let-Out Property Interest',
+      'under_construction_property': 'Under-Construction Property'
+    },
+    'mf': {
+      'elss_tax_saving': 'ELSS (Tax Saving)',
+      'large_cap': 'Large Cap',
+      'mid_cap': 'Mid Cap',
+      'index_fund': 'Index Fund',
+      'debt_fund': 'Debt Fund'
+    },
+    'other': {
+      'fixed_deposit': 'Fixed Deposit',
+      'gold_soverign_gold_bond': 'Gold / Sovereign Gold Bond',
+      'stocks_equity': 'Stocks / Equity',
+      'bonds_deventures': 'Bonds / Debentures',
+      'real_estate': 'Real Estate',
+      'cryptocurrency': 'Cryptocurrency'
+    }
+  };
 
+  /* ───── Load Backend Data ───── */
+  function loadBackendData() {
+    console.log('Loading backend data:', backendData);
+    
+    // Load 80C
+    if (backendData.section80c) {
+      for (let [key, value] of Object.entries(backendData.section80c)) {
+        if (value && value > 0) {
+          const name = nameMapping['80c'][key] || key;
+          addInvestmentProgrammatically('80c', name, value);
+        }
+      }
+    }
+    
+    // Load 80D
+    if (backendData.section80d) {
+      for (let [key, value] of Object.entries(backendData.section80d)) {
+        if (value && value > 0) {
+          const name = nameMapping['80d'][key] || key;
+          addInvestmentProgrammatically('80d', name, value);
+        }
+      }
+    }
+    
+    // Load NPS
+    if (backendData.section80ccd) {
+      for (let [key, value] of Object.entries(backendData.section80ccd)) {
+        if (value && value > 0) {
+          const name = nameMapping['nps'][key] || key;
+          addInvestmentProgrammatically('nps', name, value);
+        }
+      }
+    }
+    
+    // Load Home Loan
+    if (backendData.section24b) {
+      for (let [key, value] of Object.entries(backendData.section24b)) {
+        if (value && value > 0) {
+          const name = nameMapping['hl'][key] || key;
+          addInvestmentProgrammatically('hl', name, value);
+        }
+      }
+    }
+    
+    // Load Mutual Funds
+    if (backendData.mutualfund) {
+      for (let [key, value] of Object.entries(backendData.mutualfund)) {
+        if (value && value > 0) {
+          const name = nameMapping['mf'][key] || key;
+          addInvestmentProgrammatically('mf', name, value);
+        }
+      }
+    }
+    
+    // Load Other
+    if (backendData.otherinvestments) {
+      for (let [key, value] of Object.entries(backendData.otherinvestments)) {
+        if (value && value > 0) {
+          const name = nameMapping['other'][key] || key;
+          addInvestmentProgrammatically('other', name, value);
+        }
+      }
+    }
+    
+    updateAll();
+  }
+
+  /* ───── Programmatic Add (for backend data) ───── */
+  function addInvestmentProgrammatically(section, typeName, amount) {
+    const listMap = { '80c':'list-80c','80d':'list-80d','nps':'list-nps','hl':'list-hl','mf':'list-mf','other':'list-other' };
+    
+    const lim   = limits[section] || Infinity;
+    const used  = totals[section];
+    const apply = Math.min(amount, Math.max(0, lim - used));
+    const actual = (lim !== Infinity) ? apply : amount;
+    
+    if (actual <= 0) return;
+    
+    const investmentData = {
+      id: Date.now() + Math.random(),
+      name: typeName,
+      amount: actual,
+      section: section,
+      fy: '2025-26'
+    };
+    investments[section].push(investmentData);
+    totals[section] += actual;
+
+    const list = document.getElementById(listMap[section]);
+    const placeholder = list.querySelector('div[style*="text-align:center"]');
+    if (placeholder) placeholder.remove();
+
+    const taxSave = Math.round(actual * 0.312);
+    const row = document.createElement('div');
+    row.className = 'invest-row';
+    row.dataset.id = investmentData.id;
+    row.innerHTML = `
+      <div class="ir-icon" style="background:var(--primary-light)">${icons[section]}</div>
+      <div class="ir-info">
+        <div class="ir-name">${typeName}</div>
+        <div class="ir-type">FY 2025-26</div>
+      </div>
+      <div>
+        <div class="ir-amount">${fmt(actual)}</div>
+        ${section !== 'other' && section !== 'mf' ? `<div class="ir-tax">Saves ~${fmt(taxSave)}</div>` : ''}
+      </div>
+      <button class="ir-delete" onclick="deleteRow(this,'${section}',${investmentData.id})">✕</button>`;
+    list.appendChild(row);
+  }
 
   /* ───── Donut Chart ───── */
   const ctx = document.getElementById('donutChart').getContext('2d');
@@ -1031,7 +1227,7 @@
     data: {
       labels: ['80C','80D','NPS','Home Loan','Mutual Funds','Other'],
       datasets: [{
-        data: [150000, 0, 0, 0, 0, 0],
+        data: [0, 0, 0, 0, 0, 0],
         backgroundColor: colors,
         borderWidth: 2,
         borderColor: '#ffffff'
@@ -1070,7 +1266,7 @@
     f.classList.toggle('show');
   }
 
-  /* ───── Add Investment ───── */
+  /* ───── Add Investment (User input) ───── */
   function addInvestment(section) {
     const typeMap = { '80c':'type80c','80d':'type80d','nps':'typeNPS','hl':'typeHL','mf':'typeMF','other':'typeOther' };
     const amtMap  = { '80c':'amt80c','80d':'amt80d','nps':'amtNPS','hl':'amtHL','mf':'amtMF','other':'amtOther' };
@@ -1079,11 +1275,10 @@
 
     const typeEl = document.getElementById(typeMap[section]);
     const amtEl  = document.getElementById(amtMap[section]);
-    const typeName = typeEl.tagName === 'SELECT' ? typeEl.options[typeEl.selectedIndex].text : typeEl.value;
+    const typeName = typeEl.options[typeEl.selectedIndex].text;
     const amt    = parseFloat(amtEl.value) || 0;
     if (!amt || amt <= 0) { amtEl.focus(); return; }
 
-    // Apply limit capping
     const lim   = limits[section] || Infinity;
     const used  = totals[section];
     const apply = Math.min(amt, Math.max(0, lim - used));
@@ -1092,23 +1287,25 @@
       return;
     }
     const actual = (lim !== Infinity) ? apply : amt;
+    
+    const investmentData = {
+      id: Date.now(),
+      name: typeName,
+      amount: actual,
+      section: section,
+      fy: '2025-26'
+    };
+    investments[section].push(investmentData);
     totals[section] += actual;
 
-    investments[section].push({
-      name: typeName,
-      amount: actual
-    });
-
-    // Remove empty placeholder
     const list = document.getElementById(listMap[section]);
-    const placeholder = list.querySelector('div[style]');
+    const placeholder = list.querySelector('div[style*="text-align:center"]');
     if (placeholder) placeholder.remove();
 
-    // Tax saving estimate (30% slab approx)
     const taxSave = Math.round(actual * 0.312);
-
     const row = document.createElement('div');
     row.className = 'invest-row';
+    row.dataset.id = investmentData.id;
     row.innerHTML = `
       <div class="ir-icon" style="background:var(--primary-light)">${icons[section]}</div>
       <div class="ir-info">
@@ -1119,21 +1316,25 @@
         <div class="ir-amount">${fmt(actual)}</div>
         ${section !== 'other' && section !== 'mf' ? `<div class="ir-tax">Saves ~${fmt(taxSave)}</div>` : ''}
       </div>
-      <button class="ir-delete" onclick="deleteRow(this,'${section}',${actual})">✕</button>`;
+      <button class="ir-delete" onclick="deleteRow(this,'${section}',${investmentData.id})">✕</button>`;
     list.appendChild(row);
 
-    // Reset form
     amtEl.value = '';
-    if (typeEl.tagName !== 'SELECT') typeEl.value = '';
     toggleAddForm(formMap[section]);
     updateAll();
   }
 
   /* ───── Delete row ───── */
-  function deleteRow(btn, section, amount) {
-    totals[section] = Math.max(0, totals[section] - amount);
+  function deleteRow(btn, section, investmentId) {
+    const investment = investments[section].find(inv => inv.id === investmentId);
+    if (!investment) return;
+    
+    totals[section] = Math.max(0, totals[section] - investment.amount);
+    investments[section] = investments[section].filter(inv => inv.id !== investmentId);
+    
     btn.closest('.invest-row').remove();
-    const list = document.getElementById('list-' + section);
+    const listMap = { '80c':'list-80c','80d':'list-80d','nps':'list-nps','hl':'list-hl','mf':'list-mf','other':'list-other' };
+    const list = document.getElementById(listMap[section]);
     if (!list.querySelector('.invest-row')) {
       list.innerHTML = `<div style="text-align:center;padding:1.5rem 0;color:var(--text-muted);font-size:0.85rem">No entries yet.</div>`;
     }
@@ -1213,15 +1414,13 @@
     document.getElementById('lbl-' + sec + '-rem').textContent  = fmt(Math.max(0, limit - used)) + ' remaining';
   }
 
-   /* ───── Save Investments to Backend ───── */
+  /* ───── Save Investments to Backend ───── */
   async function saveInvestments() {
     const saveBtn = document.getElementById('saveBtn');
     saveBtn.classList.add('saving');
     
     try {
-      // Prepare data payload
       const payload = {
-        user_id: user_id,
         fy: '2025-26',
         investments: {
           '80c': investments['80c'],
@@ -1238,7 +1437,7 @@
           tax_saved: Math.round((Math.min(totals['80c'], 150000) + Math.min(totals['80d'], 25000) + Math.min(totals['nps'], 50000) + Math.min(totals['hl'], 200000)) * 0.312)
         }
       };
- 
+
       const response = await fetch(`/${user_id}/add_investments`, {
         method: 'POST',
         headers: {
@@ -1246,7 +1445,7 @@
         },
         body: JSON.stringify(payload)
       });
- 
+
       const result = await response.json();
       
       if (response.ok && result.status === 'success') {
@@ -1262,9 +1461,27 @@
     }
   }
 
+  /* ───── Toast Notification ───── */
+  function showToast(type, title, message) {
+    const toast = document.getElementById('toastNotification');
+    toast.className = `toast-notification ${type}`;
+    toast.querySelector('.toast-title').textContent = title;
+    toast.querySelector('.toast-message').textContent = message;
+    toast.querySelector('.toast-icon').textContent = type === 'success' ? '✓' : '✕';
+    
+    setTimeout(() => toast.classList.add('show'), 100);
+    setTimeout(() => hideToast(), 4000);
+  }
 
-  // Initialize
-  updateAll();
+  function hideToast() {
+    const toast = document.getElementById('toastNotification');
+    toast.classList.remove('show');
+  }
+
+  // Initialize: Load backend data and update UI
+  window.addEventListener('load', function() {
+    loadBackendData();
+  });
 </script>
 
 </body>

@@ -314,8 +314,15 @@
           <div class="mb-0">
             <label class="form-label-custom">Tax Regime</label>
             <select class="form-select" name="tax_regime" id="tax_regime">
-              <option value="old_regime">Old Regime (With Deductions)</option>
-              <option value="new_regime">New Regime (Lower Rates)</option>
+              <option value="old_regime"
+                {% if user.tax_info.tax_regime == "Old" %}selected{% endif %}>
+                Old Regime (With Deductions)
+              </option>
+
+              <option value="new_regime"
+                {% if user.tax_info.tax_regime == "New" %}selected{% endif %}>
+                New Regime (Lower Rates)
+              </option>
             </select>
           </div>
         </div>
@@ -329,7 +336,7 @@
             <label class="form-label-custom">Gross Annual Income</label>
             <div class="input-wrap">
               <span class="rupee">₹</span>
-              <input type="number" class="form-control" name="gross_annual_income" id="gross_annual_income" placeholder="1,200,000" value="{{ user.income_info.salary}}" required>
+              <input type="number" class="form-control" name="gross_annual_income" id="gross_annual_income" placeholder="1,200,000" value="{{ user.income_info.gross_salary}}" required>
             </div>
           </div>
 
@@ -352,7 +359,7 @@
             <label class="form-label-custom">Section 80C (PPF, ELSS, etc.)</label>
             <div class="input-wrap">
               <span class="rupee">₹</span>
-              <input type="number" class="form-control" name="sec_80c" id="sec_80c" placeholder="150,000" max="150000">
+              <input type="number" class="form-control" name="sec_80c" id="sec_80c" placeholder="150,000" max="150000" value="{{ user.investments_info.total_80c }}">
             </div>
             <div class="form-text text-muted mt-1">Max limit: ₹1,50,000</div>
           </div>
@@ -361,7 +368,7 @@
             <label class="form-label-custom">Section 80D (Health Insurance)</label>
             <div class="input-wrap">
               <span class="rupee">₹</span>
-              <input type="number" class="form-control" name="sec_80d" id="sec_80d" placeholder="25,000">
+              <input type="number" class="form-control" name="sec_80d" id="sec_80d" placeholder="25,000" value="{{ user.investments_info.total_80d }}">
             </div>
           </div>
 
@@ -377,7 +384,7 @@
             <label class="form-label-custom">Home Loan Interest (24b)</label>
             <div class="input-wrap">
               <span class="rupee">₹</span>
-              <input type="number" class="form-control" name="home_loan" id="home_loan" placeholder="200,000">
+              <input type="number" class="form-control" name="home_loan" id="home_loan" placeholder="200,000" value="{{ user.investments_info.total_24b }}">
             </div>
           </div>
 
@@ -385,7 +392,7 @@
             <label class="form-label-custom">NPS (80CCD1B)</label>
             <div class="input-wrap">
               <span class="rupee">₹</span>
-              <input type="number" class="form-control" name="nps" id="nps" placeholder="50,000">
+              <input type="number" class="form-control" name="nps" id="nps" placeholder="50,000" value="{{ user.investments_info.total_80ccd }}">
             </div>
             <div class="form-text text-muted mt-1">Additional ₹50,000 over 80C limit</div>
           </div>

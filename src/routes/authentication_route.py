@@ -4,7 +4,7 @@ load_dotenv()
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from src.database_provider.fetch_user_info import user
 from src.database_provider.mongo_client import MongoDBClient
-from src.models.authentication_object import UserInfoObject, PersonalInfo, BillingInfo
+from src.database_provider.strategy.signup_strategy import update_signup_form_in_db
 from src.util.datetime_helper import get_current_dt_in_milliseconds_precision
 from src.util.userid_generator import generate_user_id
 from src.util.app_constants import VariableConstant
@@ -74,32 +74,7 @@ def signupUser():
     user_id = generate_user_id()
     password_hash = password_helper.generate_password_hash(password)
     
-    signup_data = UserInfoObject(
-        user_id = user_id,
-        
-        personal_info= PersonalInfo(
-                name=name.title(),
-                email=email.lower(),
-                password=password_hash,
-        ),
-        billing_info = BillingInfo(
-                subscription_status="Active",
-                subscription_plan="Free Plan",
-                member_since=get_current_dt_in_milliseconds_precision(),
-                account_active_status=True,
-                next_billing_date=get_current_dt_in_milliseconds_precision(),
-                preference={"email_notification":"True",
-                            "sms_alerts": "False",
-                            "two_factor": "False",
-                            "dark_mode": "False"},
-        ),
-        createdAt=get_current_dt_in_milliseconds_precision(),
-        updatedAt=get_current_dt_in_milliseconds_precision(),
-    )
-
-    mongodb_client.insert_one_item_in_collection(database_name=db_name,
-                                                 collection_name=user_info_collection,
-                                                 data=signup_data.model_dump())
+    update_signup_form_in_db(user_id, name, email, password_hash)
 
     return jsonify({
         "message": "Account created successfully",

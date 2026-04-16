@@ -50,7 +50,7 @@ async def query(user_id: str):
         })
 
     except Exception as e:
-        print(f"An error occured in Query functions, {str(e)}")
+        logger.error(f"An error occured in Query functions, {str(e)}")
         return jsonify({
             "error": str(e)
         }), 500
