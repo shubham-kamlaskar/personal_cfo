@@ -16,3 +16,4 @@ langchain-text-splitters
 faiss-cpu
 pymongo[srv]
 bcrypt
+gunicorn

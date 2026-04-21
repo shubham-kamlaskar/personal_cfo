@@ -564,7 +564,7 @@
             <div class="col-12 col-sm-6">
               <label class="form-label-custom">Gross Salary</label>
               <div class="input-wrap"><span class="rupee">₹ </span>
-                <input type="number" class="form-control" id="inc-salary" placeholder="0" oninput="updateSummary()" value=" {{user.employment_info.salary}}">
+                <input type="number" class="form-control" id="inc-salary" placeholder="0"  value=" {{user.income_info.gross_salary}}" oninput="updateSummary()">
               </div>
             </div>
             <div class="col-12 col-sm-6">
@@ -979,6 +979,25 @@
       return;
     }
     alert('✅ Your ITR has been submitted successfully!\n\nAcknowledgement No: ITR2526' + Math.floor(Math.random()*900000+100000));
+  }
+
+
+  async function SaveAndPostTaxFillings(event) {
+    event.preventDefault(event);
+
+    const
+
+
+    try {
+      const response = await fetch(`/${user_id}/post_tax_filling`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ age, regime, gross, std, d80c, d80d, hra, hl, nps })
+       });
+
+      const data = await response.json();
+    }
+
   }
 </script>
 

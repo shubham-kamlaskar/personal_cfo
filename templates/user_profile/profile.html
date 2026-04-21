@@ -671,13 +671,10 @@
 
   <!-- ── Profile Header ── -->
   <div class="profile-header">
-    <button class="btn-edit-profile">
-      <span>✏️
-<a href="{{ url_for('user_profile_bp.edit_profile', user_id=user_id) }}">
-   Edit Profile
-</a>
-</span>
-    </button>
+    <button class="btn-edit-profile"
+onclick="window.location.href='{{ url_for('user_profile_bp.edit_profile', user_id=user_id) }}';">
+  ✏️ Edit Profile
+</button>
     
     <div class="profile-header-content">
       <div class="profile-avatar-wrapper">

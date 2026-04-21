@@ -7,6 +7,7 @@ from src.agent_provider.langchain_agent import AgentProvider
 from src.util.log_adapter import setup_logger
 from src.database_provider.mongo_client import MongoDBClient
 from src.database_provider.service.conversation_history_service import HistoryClient
+from src.util.access_provider import login_required
 
 load_dotenv()
 
@@ -21,6 +22,7 @@ db_name = str(os.getenv('DB_NAME'))
 conversation_collection = str(os.getenv("CONVERSATION_COLLETION"))
 
 @assistant_bp.route("/<user_id>/assistant", methods=["GET"])
+@login_required
 def assistant(user_id: str):
     conv_history = history_client.get_user_conversation_history(user_id)
     

@@ -14,7 +14,6 @@ class PersonalInfo(BaseModel):
     phone: Optional[str] = None
     gender: Optional[str] = None
     marital_status: Optional[str] = None
-    password: Optional[bytes] = None
     
 class TaxInfo(BaseModel):
     pan: Optional[str] = None
@@ -78,6 +77,7 @@ class BillingInfo(BaseModel):
     
 class UserInfoObject(BaseModel):
     user_id: Optional[str] = None
+    password: Optional[bytes] = None
     personal_info: Optional[PersonalInfo] = None
     tax_info: Optional[TaxInfo] = None
     employment_info: Optional[EmploymentInfo] = None

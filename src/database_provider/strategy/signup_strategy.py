@@ -12,11 +12,10 @@ db_name = str(os.getenv('DB_NAME'))
 def update_signup_form_in_db(user_id, name, email, password_hash):
     signup_data = UserInfoObject(
         user_id = user_id,
-        
+        password=password_hash,
         personal_info= PersonalInfo(
                 name=name.title(),
-                email=email.lower(),
-                password=password_hash,
+                email=email.lower(),   
         ),
         billing_info = BillingInfo(
                 subscription_status="Active",

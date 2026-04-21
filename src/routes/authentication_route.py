@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 load_dotenv()
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify, session
 from src.database_provider.fetch_user_info import user
 from src.database_provider.mongo_client import MongoDBClient
 from src.database_provider.strategy.signup_strategy import update_signup_form_in_db
@@ -36,12 +36,12 @@ def loginUser():
         if fetch_user_info:
             personal_info = fetch_user_info.get('personal_info')
             if email.lower() == personal_info.get('email'):
-                fetch_password = personal_info.get('password')
+                fetch_password = fetch_user_info.get('password')
                 if password_helper.verify_password_hash(password, fetch_password):
                     user_id = fetch_user_info.get('user_id')
                     
                     last_user_activity = {"billing_info.last_user_activity": get_current_dt_in_milliseconds_precision()}
-
+                    session['user'] = user_id
                     mongodb_client.update_one_item_in_collection(db_name, user_info_collection,
                                                                 user_id_field, user_id, last_user_activity )
                     return jsonify({
@@ -97,3 +97,8 @@ def forgotPasswordUser():
         "message": "email send to your email id",
         "redirect": url_for("authentication_bp.login")
     }), 200
+    
+@authentication_bp.route("/logout")
+def logout():
+    session.pop("user", None)
+    return redirect(url_for("login"))

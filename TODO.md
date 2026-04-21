@@ -3,3 +3,4 @@
 3. Caching for general queries
 4. Use google signin
 5. Architecture diagram
+6. Rate limiter

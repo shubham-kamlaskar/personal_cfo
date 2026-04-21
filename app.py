@@ -1,6 +1,4 @@
 from flask import Flask
-from dotenv import load_dotenv
-load_dotenv()
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -15,9 +13,6 @@ from src.routes.calculator_route import calculator_bp
 from src.routes.assistant_route import assistant_bp
 from src.routes.profile_route import user_profile_bp
 from src.routes.admin.dashboard_route import admin_dashboard_bp
-from src.util.log_adapter import setup_logger
-
-setup_logger()
 
 app = Flask(__name__)
 
