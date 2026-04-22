@@ -21,8 +21,9 @@ def investments(user_id: str):
 @investments_bp.route("/<user_id>/add_investments", methods=["POST"])
 @login_required
 def add_investments(user_id: str):
-
     data = request.get_json()
+    fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, "user_id", user_id)
+
     if data:
         financial_year = data.get('fy')
         investments = data.get("investments", [])
@@ -32,7 +33,7 @@ def add_investments(user_id: str):
         if not investments:
             return jsonify({"status": "error", "message": "No investments received"}), 400
 
-        update_user_investments_in_db(investments, totals, user_id) 
+        update_user_investments_in_db(fetch_user_info, investments, totals, user_id) 
 
     return jsonify({
         "status": "success",

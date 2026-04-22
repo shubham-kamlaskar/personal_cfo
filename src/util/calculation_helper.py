@@ -78,5 +78,5 @@ class TaxEngine:
         net_payable_tax = base_tax + extra_cess
         net_tax = round(net_payable_tax,2)
         
-        return base_tax, extra_cess, net_tax
+        return round(base_tax,2), round(extra_cess,2), net_tax
 

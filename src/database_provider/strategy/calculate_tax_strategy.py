@@ -62,8 +62,7 @@ def update_calculate_tax_in_db(data: dict, user_id: str) -> dict:
         "total_deductions": std,
         "taxable_income": max(0.0, gross_income - std)
         }
-        
-        
+
         
     tax_comparison = TaxCalculator(  
                 session_id = session_id,

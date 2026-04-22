@@ -19,10 +19,10 @@ class TaxInfo(BaseModel):
     pan: Optional[str] = None
     aadhar: Optional[str] = None
     tax_regime: Optional[str] = None
-    deductions: Optional[str] = None
-    tax_liability: Optional[str] = None
-    potential_savings: Optional[str] = None
-    tax_saved: Optional[str] = None
+    deductions: Optional[float] = None
+    tax_liability: Optional[float] = None
+    potential_savings: Optional[float] = None
+    estimated_tax_saved: Optional[float] = None
     
 class IncomeInfo(BaseModel):
     gross_salary: Optional[float] = None

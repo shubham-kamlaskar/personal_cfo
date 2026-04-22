@@ -15,40 +15,30 @@ USER_ID_FIELD_NAME =  VariableConstant.USER_ID_FIELD_DB
 
 def update_profile_in_db(data: dict, user_id: str, fetch_user_info):
     update_data = {
-                "personal_info":{
-                        "name": str(data.get("name")).title(),
-                        "dob":data.get("dob"),
-                        "email": str(data.get("email")).lower(),
-                        "phone": data.get("phone"),
-                        "gender": str(data.get("gender")).title(),
-                        "marital_status": str(data.get("marital_status")).title(),
-                },
+                "personal_info.name": str(data.get("name")).title(),
+                "personal_info.dob":data.get("dob"),
+                "personal_info.email": str(data.get("email")).lower(),
+                "personal_info.phone": data.get("phone"),
+                "personal_info.gender": str(data.get("gender")).title(),
+                "personal_info.marital_status": str(data.get("marital_status")).title(),
                 
-                "tax_info": {
-                    "pan": str(data.get("pan")).upper(),
-                    "aadhar": str(data.get("aadhar")),
-                    "tax_regime": str(data.get("tax_regime")).title()
-                },
-                
-                "employment_info": {
-                        "employment_type": data.get("employment_type"),
-                        "company": str(data.get("company")).title() if data.get("company") else None,
-                        "designation": str(data.get("designation")).title() if data.get("designation") else None,
-                        "industry": str(data.get("industry")).title() if data.get("industry") else None,
-                },
-                
-                "income_info": {
-                    "gross_salary": float(data.get("salary")),
-                },
-                
-                "address_info": {
-                    "address_line1": str(data.get("address_line1")),
-                    "address_line2": str(data.get("address_line2")),
-                    "city": str(data.get("city")).title(),
-                    "state": str(data.get("state")).title(),
-                    "pincode": int(data.get("pincode")),
-                },
-                
+                "tax_info.pan": str(data.get("pan")).upper(),
+                "tax_info.aadhar": str(data.get("aadhar")),
+                "tax_info.tax_regime": str(data.get("tax_regime")).title(),
+
+                "employment_info.employment_type": data.get("employment_type"),
+                "employment_info.company": str(data.get("company")).title() if data.get("company") else None,
+                "employment_info.designation": str(data.get("designation")).title() if data.get("designation") else None,
+                "employment_info.industry": str(data.get("industry")).title() if data.get("industry") else None,
+
+                "income_info.gross_salary": float(data.get("salary", 0)),
+
+                "address_info.address_line1": str(data.get("address_line1")),
+                "address_info.address_line2": str(data.get("address_line2")),
+                "address_info.city": str(data.get("city")).title(),
+                "address_info.state": str(data.get("state")).title(),
+                "address_info.pincode": int(data.get("pincode", 000000)),
+
                 "updatedAt": get_current_dt_in_milliseconds_precision()   
             }
             

@@ -1,14 +1,21 @@
 import os
 from dotenv import load_dotenv
 from src.database_provider.mongo_client import MongoDBClient
-
+from src.util.calculation_helper import TaxEngine
+from src.util.datetime_helper import get_current_dt_in_milliseconds_precision
 load_dotenv()
 
 mongodb_client = MongoDBClient()
 user_info_collection = str(os.getenv('USER_INFO_COLLECTION'))
-db_name = str(os.getenv('DB_NAME')) 
+db_name = str(os.getenv('DB_NAME'))
+tax_engine = TaxEngine()
 
-def update_user_investments_in_db(investments: dict, totals: dict, user_id: str):
+def update_user_investments_in_db(user_info: dict, investments: dict, totals: dict, user_id: str):
+    tax_info: dict = user_info.get('tax_info', {})
+    tax_regime: str = tax_info.get('tax_regime', "old")
+    income_info: dict = user_info.get('income_info', {})
+    gross_salary: float = income_info.get('gross_salary', 0)
+    existing_tax: float = tax_info.get('deductions', 0)
     section80c = {}
     section80c_new = investments.get('80c', [])
     for item in section80c_new:
@@ -80,6 +87,12 @@ def update_user_investments_in_db(investments: dict, totals: dict, user_id: str)
     for item in otherinvestments_new:
         if item['name'] == "Fixed Deposit":
             otherinvestments['fixed_deposit'] = item['amount']
+        if item['name'] == "Education loan interest (24B)":
+            otherinvestments['education_loan_interest_80e'] = item['amount']
+        if item['name'] == "Donations (80G)":
+            otherinvestments['donations_80g'] = item['amount']
+        if item['name'] == "Saving Account interest":
+            otherinvestments['saving_account_interest'] = item['amount']
         if item['name'] == "Gold / Sovereign Gold Bond":
             otherinvestments['gold_soverign_gold_bond'] = item['amount']
         if item['name'] == "Stocks / Equity":
@@ -90,25 +103,72 @@ def update_user_investments_in_db(investments: dict, totals: dict, user_id: str)
             otherinvestments['real_estate'] = item['amount']
         if item['name'] == "Cryptocurrency":
             otherinvestments['cryptocurrency'] = item['amount']
-
-
+    
+    total_deductions = totals.get('80c', 0) + totals.get('80d', 0) + totals.get('hra',0) + totals.get('nps', 0) + totals.get('hl', 0) + otherinvestments.get('education_loan_interest_80e', 0) + otherinvestments.get('saving_account_interest', 0) + otherinvestments.get('donations_80g', 0)
+    old_base_tax, old_extra_cess, old_tax = tax_engine.old_regime_tax_calculation(total_income=gross_salary, deductions=total_deductions)
+    new_base_tax, new_extra_cess, new_tax = tax_engine.new_regime_tax_calculation(total_income=gross_salary)
+    
+    if tax_regime.lower() == "old":
+        selected = {
+        "selected_regime": "old",
+        "selected_tax": old_tax,
+        "selected_extra_cess": old_extra_cess,
+        "selected_base_tax": old_base_tax,
+        "total_deductions": total_deductions,
+        "standard_deductions": 50000,
+        "taxable_income": max(0.0, gross_salary - total_deductions - 50000)
+        }
         
+    else:
+        selected = {
+        "selected_regime": "new",
+        "selected_tax": new_tax,
+        "selected_extra_cess": new_extra_cess,
+        "selected_base_tax": new_base_tax,
+        "total_deductions": 0,
+        "standard_deductions": 50000,
+        "taxable_income": max(0.0, gross_salary - 75000)
+        }
+    
+    selected['potetial_saving'] = old_tax - new_tax
+    
     update_data = {
-        "investments_info": {
-        "section80c" : section80c,
-        'total_80c': totals.get('80c'),
-        "section80d": section80d,
-        'total_80d': totals.get('80d'),
-        "section80ccd": section80ccd,
-        'total_80ccd': totals.get('nps')  ,   
-        "section24b": section24b,
-        'total_24b': totals.get('hl'),
-        "mutualfund": mutualfund,
-        'total_mf': totals.get('mf'),
-        "otherinvestments": otherinvestments,
-        'total_other': totals.get('other')
+
+        "investments_info.section80c" : section80c,
+        'investments_info.total_80c': totals.get('80c'),
+        "investments_info.section80d": section80d,
+        'investments_info.total_80d': totals.get('80d'),
+        "investments_info.section80ccd": section80ccd,
+        'investments_info.total_80ccd': totals.get('nps')  ,   
+        "investments_info.section24b": section24b,
+        'investments_info.total_24b': totals.get('hl'),
+        "investments_info.mutualfund": mutualfund,
+        'investments_info.total_mf': totals.get('mf'),
+        "investments_info.otherinvestments": otherinvestments,
+        'investments_info.total_other': totals.get('other'),
+
+        "tax_info.tax_regime": selected.get('selected_regime', 0),
+        "tax_info.deductions": selected.get('total_deductions', 0),
+        "tax_info.tax_liability": selected.get('selected_tax', 0), 
+        "tax_info.potential_savings": selected.get('potetial_saving', 0), 
+        "tax_info.estimated_tax_saved": existing_tax - selected.get('selected_tax', 0),
+
+        "updatedAt": get_current_dt_in_milliseconds_precision()   
         }
-        }
+
+    deducation_summary = {
+        "80c_deduction": totals.get('80c', 0),
+        "80d_health": totals.get('80d', 0),
+        "nps_80ccd": totals.get('nps', 0),
+        "home_loan_interest": totals.get('hl', 0),
+        "education_loan_interest_80e": otherinvestments.get('education_loan_interest_80e', 0),
+        "saving_account_interest": otherinvestments.get('saving_account_interest', 0),
+        "donations_80g": otherinvestments.get('donations_80g', 0),
+        "total_deductions": selected.get('total_deductions', 0),
+        "tax_liability": selected.get('selected_tax', 0),
+        "tax_saved": 0,
+        "potential_savings": selected.get('potetial_saving', 0),
+    }
 
     mongodb_client.update_one_item_in_collection(
             db_name,

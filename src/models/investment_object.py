@@ -39,6 +39,9 @@ class MutualFund(BaseModel):
     
 class OtherInvestments(BaseModel):
     fixed_deposit: Optional[float] = None
+    education_loan_interest_80e: Optional[float] = None
+    donations_80g: Optional[float] = None
+    saving_account_interest: Optional[float] = None
     gold_soverign_gold_bond: Optional[float] = None
     stocks_equity: Optional[float] = None
     bonds_deventures: Optional[float] = None

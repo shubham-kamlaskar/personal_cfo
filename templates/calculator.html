@@ -388,6 +388,31 @@
             </div>
           </div>
 
+          <div class="mb-3">
+            <label class="form-label-custom">Education Loan Interest (80E)</label>
+            <div class="input-wrap">
+              <span class="rupee">₹</span>
+              <input type="number" class="form-control" name="home_loan" id="education_loan" placeholder="200,000" value="{{ user.investments_info.total_24b }}">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label-custom">Donations (80G)</label>
+            <div class="input-wrap">
+              <span class="rupee">₹</span>
+              <input type="number" class="form-control" name="donation" id="education_loan" placeholder="200,000" value="{{ user.investments_info.total_24b }}">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label-custom">Saving Account Interest</label>
+            <div class="input-wrap">
+              <span class="rupee">₹</span>
+              <input type="number" class="form-control" name="saving_interest" id="education_loan" placeholder="10,000" value="{{ user.investments_info.total_24b }}">
+            </div>
+            <div class="form-text text-muted mt-1">Max limit: ₹10,000</div>
+          </div>
+
           <div class="mb-0">
             <label class="form-label-custom">NPS (80CCD1B)</label>
             <div class="input-wrap">
@@ -514,6 +539,8 @@
         </div>
         <div class="deduction-bar-wrap"><div class="deduction-bar" id="bar-nps" style="width:0%"></div></div>
       </div>
+
+      
 
     </div><!-- /right col -->
   </div><!-- /row -->

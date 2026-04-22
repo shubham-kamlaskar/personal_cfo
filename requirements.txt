@@ -17,3 +17,4 @@ faiss-cpu
 pymongo[srv]
 bcrypt
 gunicorn
+pyopenssl

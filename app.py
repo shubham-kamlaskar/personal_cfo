@@ -16,6 +16,8 @@ from src.routes.admin.dashboard_route import admin_dashboard_bp
 
 app = Flask(__name__)
 
+app.secret_key = "your_secret_key"
+
 app.register_blueprint(landing_page_bp)
 app.register_blueprint(authentication_bp)
 app.register_blueprint(dashboard_bp)
@@ -29,4 +31,4 @@ app.register_blueprint(admin_dashboard_bp)
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, ssl_context='adhoc')
