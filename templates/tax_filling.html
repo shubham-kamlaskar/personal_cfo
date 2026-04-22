@@ -563,8 +563,13 @@
           <div class="row g-2">
             <div class="col-12 col-sm-6">
               <label class="form-label-custom">Gross Salary</label>
-              <div class="input-wrap"><span class="rupee">₹ </span>
-                <input type="number" class="form-control" id="inc-salary" placeholder="0"  value=" {{user.income_info.gross_salary}}" oninput="updateSummary()">
+              <div class="input-wrap">
+                  <span class="rupee">₹</span>
+                  <input 
+                    type="number"
+                    class="form-control"
+                    id="inc-salary"
+                    value="{{ user.income_info.gross_salary or 0 }}">
               </div>
             </div>
             <div class="col-12 col-sm-6">
@@ -574,7 +579,7 @@
             <div class="col-12 col-sm-6">
               <label class="form-label-custom">TDS Deducted</label>
               <div class="input-wrap"><span class="rupee">₹</span>
-                <input type="number" class="form-control" id="tds-salary" placeholder="0" oninput="updateSummary()">
+                <input type="number" class="form-control" id="tds-salary" placeholder="0" value="{{ user.income_info.tds_deducted or 0 }}">
               </div>
             </div>
             <div class="col-12 col-sm-6">
@@ -602,7 +607,7 @@
             <div class="col-12 col-sm-6">
               <label class="form-label-custom">Annual Rental Income</label>
               <div class="input-wrap"><span class="rupee">₹</span>
-                <input type="number" class="form-control" id="inc-house" placeholder="0" oninput="updateSummary()">
+                <input type="number" class="form-control" id="inc-house" placeholder="0" otherinvestments>
               </div>
             </div>
             <div class="col-12 col-sm-6">
@@ -630,13 +635,13 @@
             <div class="col-12 col-sm-6">
               <label class="form-label-custom">Short Term Capital Gains (STCG)</label>
               <div class="input-wrap"><span class="rupee">₹</span>
-                <input type="number" class="form-control" id="inc-stcg" placeholder="0" oninput="updateSummary()">
+                <input type="number" class="form-control" id="inc-stcg" placeholder="0" otherinvestments>
               </div>
             </div>
             <div class="col-12 col-sm-6">
               <label class="form-label-custom">Long Term Capital Gains (LTCG)</label>
               <div class="input-wrap"><span class="rupee">₹</span>
-                <input type="number" class="form-control" id="inc-ltcg" placeholder="0" oninput="updateSummary()">
+                <input type="number" class="form-control" id="inc-ltcg" placeholder="0" otherinvestments>
               </div>
             </div>
           </div>
@@ -658,13 +663,13 @@
             <div class="col-12 col-sm-6">
               <label class="form-label-custom">Interest Income (FD/Savings)</label>
               <div class="input-wrap"><span class="rupee">₹</span>
-                <input type="number" class="form-control" id="inc-interest" placeholder="0" oninput="updateSummary()">
+                <input type="number" class="form-control" id="inc-interest" placeholder="0" otherinvestments>
               </div>
             </div>
             <div class="col-12 col-sm-6">
               <label class="form-label-custom">Dividend Income</label>
               <div class="input-wrap"><span class="rupee">₹</span>
-                <input type="number" class="form-control" id="inc-dividend" placeholder="0" oninput="updateSummary()">
+                <input type="number" class="form-control" id="inc-dividend" placeholder="0" otherinvestments>
               </div>
             </div>
           </div>
@@ -685,37 +690,37 @@
           <div class="col-12 col-sm-6">
             <label class="form-label-custom">Section 80C <span style="font-weight:400">(Max ₹1.5L)</span></label>
             <div class="input-wrap"><span class="rupee">₹</span>
-              <input type="number" class="form-control" id="ded-80c" placeholder="0" oninput="updateSummary()">
+              <input type="number" class="form-control" id="ded-80c" placeholder="0" value="{{ user.investments_info.total_80c or 0 }}">
             </div>
           </div>
           <div class="col-12 col-sm-6">
             <label class="form-label-custom">Section 80D — Health Insurance</label>
             <div class="input-wrap"><span class="rupee">₹</span>
-              <input type="number" class="form-control" id="ded-80d" placeholder="0" oninput="updateSummary()">
+              <input type="number" class="form-control" id="ded-80d" placeholder="0" value="{{ user.investments_info.total_80d or 0 }}">
             </div>
           </div>
           <div class="col-12 col-sm-6">
             <label class="form-label-custom">HRA Exemption</label>
             <div class="input-wrap"><span class="rupee">₹</span>
-              <input type="number" class="form-control" id="ded-hra" placeholder="0" oninput="updateSummary()">
+              <input type="number" class="form-control" id="ded-hra" placeholder="0" value="{{ user.income_info.total_hra or 0 }}">
             </div>
           </div>
           <div class="col-12 col-sm-6">
             <label class="form-label-custom">NPS — 80CCD(1B)</label>
             <div class="input-wrap"><span class="rupee">₹</span>
-              <input type="number" class="form-control" id="ded-nps" placeholder="0" oninput="updateSummary()">
+              <input type="number" class="form-control" id="ded-nps" placeholder="0" value="{{ user.investments_info.total_80ccd or 0 }}">
             </div>
           </div>
           <div class="col-12 col-sm-6">
             <label class="form-label-custom">Home Loan Interest — Sec 24(b)</label>
             <div class="input-wrap"><span class="rupee">₹</span>
-              <input type="number" class="form-control" id="ded-hl" placeholder="0" oninput="updateSummary()">
+              <input type="number" class="form-control" id="ded-hl" placeholder="0" value="{{ user.investments_info.total_24b or 0 }}">
             </div>
           </div>
           <div class="col-12 col-sm-6">
             <label class="form-label-custom">Other Deductions</label>
             <div class="input-wrap"><span class="rupee">₹</span>
-              <input type="number" class="form-control" id="ded-other" placeholder="0" oninput="updateSummary()">
+              <input type="number" class="form-control" id="ded-other" placeholder="0" value="{{ user.investments_info.total_other or 0 }}">
             </div>
           </div>
         </div>
@@ -840,11 +845,11 @@
 
         <div class="summary-row">
           <span class="sr-label">Total Deductions</span>
-          <span class="sr-value" id="sum-deductions">₹ 0</span>
+          <span class="sr-value" id="sum-deductions">₹ {{user.tax_info.deductions or 0}}</span>
         </div>
         <div class="summary-row">
           <span class="sr-label">Taxable Income</span>
-          <span class="sr-value" id="sum-taxable">₹ 0</span>
+          <span class="sr-value" id="sum-taxable">₹ {{user.tax_info.deductions or 0}}</span>
         </div>
         <div class="summary-row">
           <span class="sr-label">TDS Already Paid</span>
@@ -852,7 +857,7 @@
         </div>
         <div class="summary-row total">
           <span class="sr-label">Tax Payable / Refund</span>
-          <span class="sr-value" id="sum-taxpayable" style="color:var(--accent)">₹ 0</span>
+          <span class="sr-value" id="sum-taxpayable" style="color:var(--accent)">₹ {{user.tax_info.tax_liability or 0}}</span>
         </div>
       </div>
 
@@ -982,23 +987,21 @@
   }
 
 
-  async function SaveAndPostTaxFillings(event) {
-    event.preventDefault(event);
+document.addEventListener("DOMContentLoaded", function () {
 
-    const
+  // run once when page loads
+  updateSummary();
 
+  // select all inputs related to calculation
+  const fields = document.querySelectorAll(
+    "#inc-salary, #inc-house, #inc-stcg, #inc-ltcg, #inc-interest, #inc-dividend, #tds-salary, #ded-80c, #ded-80d, #ded-hra, #ded-nps, #ded-hl, #ded-other"
+  );
 
-    try {
-      const response = await fetch(`/${user_id}/post_tax_filling`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ age, regime, gross, std, d80c, d80d, hra, hl, nps })
-       });
+  fields.forEach(field => {
+    field.addEventListener("input", updateSummary);
+  });
 
-      const data = await response.json();
-    }
-
-  }
+});
 </script>
 
 </body>

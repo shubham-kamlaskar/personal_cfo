@@ -34,6 +34,7 @@ class IncomeInfo(BaseModel):
     long_term_capital_gains: Optional[float] = None
     interest_income_fd_savings: Optional[float] = None
     dividend_income: Optional[float] = None
+    total_hra: Optional[float] = None
     
 class TotalInvestments(BaseModel):
     section80c: Optional[Section80C] = None
