@@ -18,3 +18,5 @@ pymongo[srv]
 bcrypt
 gunicorn
 pyopenssl
+langfuse
+sentry-sdk
