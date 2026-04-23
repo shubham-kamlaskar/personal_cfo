@@ -4,7 +4,7 @@ landing_page_bp = Blueprint('landing_page_bp', __name__, template_folder='templa
 
 @landing_page_bp.route("/", methods=['GET'])
 def landing_page():
-    return render_template("home/landing_page.html")
+    return render_template("b2b/landing_page.html")
 
 @landing_page_bp.route("/about", methods=['GET'])
 def about():

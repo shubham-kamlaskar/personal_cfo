@@ -1,8 +1,6 @@
 from flask import Flask
-
 import warnings
 warnings.filterwarnings('ignore')
-
 import sentry_sdk
 
 from src.routes.landing_page_route import landing_page_bp
@@ -14,7 +12,7 @@ from src.routes.documents_route import documents_bp
 from src.routes.calculator_route import calculator_bp
 from src.routes.assistant_route import assistant_bp
 from src.routes.profile_route import user_profile_bp
-from src.routes.admin.dashboard_route import admin_dashboard_bp
+# from src.routes.admin.dashboard_route import admin_dashboard_bp
 
 sentry_sdk.init(
     dsn="https://a06064aaa11af0dea8206f744b21b006@o4511268270440448.ingest.us.sentry.io/4511268272603136",
@@ -52,7 +50,7 @@ app.register_blueprint(documents_bp)
 app.register_blueprint(calculator_bp)
 app.register_blueprint(assistant_bp)
 app.register_blueprint(user_profile_bp)
-app.register_blueprint(admin_dashboard_bp)
+# app.register_blueprint(admin_dashboard_bp)
 
 
 

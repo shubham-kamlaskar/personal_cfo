@@ -4,7 +4,6 @@ import logging
 
 from flask import Blueprint, render_template, request, jsonify
 from src.agent_provider.langchain_agent import AgentProvider
-from src.util.log_adapter import setup_logger
 from src.database_provider.mongo_client import MongoDBClient
 from src.database_provider.service.conversation_history_service import HistoryClient
 from src.util.access_provider import login_required

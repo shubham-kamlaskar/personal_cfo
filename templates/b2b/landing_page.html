@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaxCopilot for Business — Employee Tax Benefits Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-50: #E6F1FB;
+    --blue-100: #B5D4F4;
+    --blue-200: #85B7EB;
+    --blue-400: #378ADD;
+    --blue-600: #185FA5;
+    --blue-800: #0C447C;
+    --blue-900: #042C53;
+    --teal-50: #E1F5EE;
+    --teal-400: #1D9E75;
+    --teal-600: #0F6E56;
+    --teal-800: #085041;
+    --amber-50: #FAEEDA;
+    --amber-400: #BA7517;
+    --amber-600: #854F0B;
+    --gray-50: #F1EFE8;
+    --gray-100: #D3D1C7;
+    --gray-200: #B4B2A9;
+    --gray-400: #888780;
+    --gray-800: #444441;
+    --gray-900: #2C2C2A;
+    --coral-50: #FAECE7;
+    --coral-400: #D85A30;
+    --coral-600: #993C1D;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #F7F9FC;
+    color: var(--gray-900);
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    background: white;
+    border-bottom: 1px solid #E8EDF4;
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Sora', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--blue-800);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--blue-600), var(--blue-400));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .logo span { color: var(--teal-400); }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+
+  nav ul a {
+    text-decoration: none;
+    color: var(--gray-800);
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  nav ul a:hover { color: var(--blue-600); }
+
+  .nav-cta {
+    background: var(--blue-600) !important;
+    color: white !important;
+    padding: 9px 20px;
+    border-radius: 8px;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--blue-800) !important; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--blue-900) 0%, var(--blue-800) 50%, var(--blue-600) 100%);
+    padding: 90px 5% 80px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(55,138,221,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px;
+    left: 10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(29,158,117,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(29,158,117,0.2);
+    border: 1px solid rgba(29,158,117,0.4);
+    color: #9FE1CB;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hero h1 {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(36px, 5vw, 58px);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    max-width: 700px;
+  }
+
+  .hero h1 span { color: #9FE1CB; }
+
+  .hero p {
+    font-size: 18px;
+    color: rgba(255,255,255,0.75);
+    max-width: 560px;
+    margin-bottom: 40px;
+    line-height: 1.7;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: white;
+    color: var(--blue-800);
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    font-family: 'Sora', sans-serif;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  }
+
+  .btn-outline {
+    border: 1.5px solid rgba(255,255,255,0.4);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+    display: inline-block;
+  }
+
+  .btn-outline:hover {
+    border-color: white;
+    background: rgba(255,255,255,0.08);
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    background: white;
+    border-bottom: 1px solid #E8EDF4;
+    padding: 28px 5%;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-number {
+    font-family: 'Sora', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--blue-600);
+    display: block;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--gray-400);
+    font-weight: 500;
+  }
+
+  /* SECTION */
+  section {
+    padding: 80px 5%;
+  }
+
+  .section-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--teal-400);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(26px, 3vw, 38px);
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  .section-subtitle {
+    font-size: 17px;
+    color: var(--gray-400);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+
+  /* WHY SECTION */
+  .why-section { background: white; }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .why-card {
+    background: var(--gray-50);
+    border: 1px solid #E8EDF4;
+    border-radius: 14px;
+    padding: 28px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .why-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(24,95,165,0.08);
+  }
+
+  .why-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .icon-blue { background: var(--blue-50); }
+  .icon-teal { background: var(--teal-50); }
+  .icon-amber { background: var(--amber-50); }
+  .icon-coral { background: var(--coral-50); }
+
+  .why-card h3 {
+    font-family: 'Sora', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: 8px;
+  }
+
+  .why-card p {
+    font-size: 14px;
+    color: var(--gray-400);
+    line-height: 1.6;
+  }
+
+  .why-card .metric {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--blue-600);
+    margin-top: 16px;
+  }
+
+  /* FEATURES */
+  .features-section { background: #F7F9FC; }
+
+  .features-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+
+  @media (max-width: 768px) {
+    .features-layout { grid-template-columns: 1fr; gap: 40px; }
+  }
+
+  .features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .feature-item {
+    display: flex;
+    gap: 16px;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #E8EDF4;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .feature-item.active, .feature-item:hover {
+    border-color: var(--blue-400);
+    box-shadow: 0 4px 16px rgba(55,138,221,0.1);
+  }
+
+  .feature-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--blue-400);
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  .feature-item.active .feature-dot { background: var(--teal-400); }
+
+  .feature-item h4 {
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: 4px;
+  }
+
+  .feature-item p {
+    font-size: 13px;
+    color: var(--gray-400);
+    line-height: 1.5;
+  }
+
+  /* DASHBOARD MOCKUP */
+  .dashboard-mockup {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #E8EDF4;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(12,68,124,0.1);
+  }
+
+  .mockup-bar {
+    background: var(--blue-800);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #FF5F57; }
+  .dot-y { background: #FEBC2E; }
+  .dot-g { background: #28C840; }
+
+  .mockup-title {
+    color: rgba(255,255,255,0.6);
+    font-size: 12px;
+    margin-left: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .mockup-body { padding: 20px; }
+
+  .mockup-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .m-card {
+    background: var(--gray-50);
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid #E8EDF4;
+  }
+
+  .m-label { font-size: 10px; color: var(--gray-400); font-weight: 500; margin-bottom: 4px; }
+  .m-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--blue-600);
+  }
+  .m-value.green { color: var(--teal-400); }
+  .m-value.amber { color: var(--amber-400); }
+
+  .mockup-table { width: 100%; border-collapse: collapse; }
+  .mockup-table th {
+    font-size: 10px;
+    color: var(--gray-400);
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 1px solid #E8EDF4;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .mockup-table td {
+    font-size: 12px;
+    padding: 8px 8px;
+    border-bottom: 1px solid #F4F6F9;
+    color: var(--gray-800);
+  }
+
+  .status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 500;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .s-filed { background: var(--teal-50); color: var(--teal-600); }
+  .s-pending { background: var(--amber-50); color: var(--amber-600); }
+  .s-review { background: var(--blue-50); color: var(--blue-600); }
+
+  /* PRICING */
+  .pricing-section { background: white; }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 960px;
+  }
+
+  .pricing-card {
+    border: 1.5px solid #E8EDF4;
+    border-radius: 16px;
+    padding: 32px;
+    background: white;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .pricing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(24,95,165,0.1);
+  }
+
+  .pricing-card.featured {
+    border-color: var(--blue-400);
+    background: linear-gradient(160deg, var(--blue-900), var(--blue-800));
+    color: white;
+  }
+
+  .popular-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--teal-400);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+  }
+
+  .plan-name {
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--blue-600);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+
+  .pricing-card.featured .plan-name { color: #9FE1CB; }
+
+  .plan-price {
+    font-family: 'Sora', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 4px;
+  }
+
+  .pricing-card.featured .plan-price { color: white; }
+
+  .plan-period {
+    font-size: 13px;
+    color: var(--gray-400);
+    margin-bottom: 8px;
+  }
+
+  .pricing-card.featured .plan-period { color: rgba(255,255,255,0.6); }
+
+  .plan-billing {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--teal-400);
+    background: var(--teal-50);
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+
+  .pricing-card.featured .plan-billing {
+    background: rgba(29,158,117,0.2);
+    color: #9FE1CB;
+  }
+
+  .plan-desc {
+    font-size: 13px;
+    color: var(--gray-400);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  .pricing-card.featured .plan-desc { color: rgba(255,255,255,0.65); }
+
+  .plan-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .plan-features li {
+    font-size: 13px;
+    color: var(--gray-800);
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .pricing-card.featured .plan-features li { color: rgba(255,255,255,0.85); }
+
+  .check {
+    color: var(--teal-400);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .plan-btn {
+    display: block;
+    text-align: center;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    font-family: 'Sora', sans-serif;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+  }
+
+  .plan-btn-outline {
+    border: 1.5px solid #E8EDF4;
+    color: var(--blue-600);
+    background: transparent;
+  }
+
+  .plan-btn-outline:hover { border-color: var(--blue-400); background: var(--blue-50); }
+
+  .plan-btn-filled {
+    background: white;
+    color: var(--blue-800);
+  }
+
+  .plan-btn-filled:hover { background: #E8EDF4; }
+
+  /* PROCESS */
+  .process-section { background: var(--blue-900); color: white; }
+  .process-section .section-title { color: white; }
+  .process-section .section-subtitle { color: rgba(255,255,255,0.6); }
+  .process-section .section-tag { color: #9FE1CB; }
+
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0;
+    position: relative;
+  }
+
+  .process-step {
+    padding: 32px 24px;
+    position: relative;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .process-step:last-child { border-right: none; }
+
+  .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: rgba(159,225,203,0.7);
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+  }
+
+  .step-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .step-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+  }
+
+  .step-timeline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--teal-400);
+    margin-top: 12px;
+  }
+
+  /* COMPARISON */
+  .comparison-section { background: #F7F9FC; }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid #E8EDF4;
+    font-size: 14px;
+  }
+
+  .comparison-table th {
+    padding: 16px 20px;
+    text-align: left;
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--gray-50);
+    color: var(--gray-800);
+    border-bottom: 1px solid #E8EDF4;
+  }
+
+  .comparison-table th.highlight {
+    background: var(--blue-600);
+    color: white;
+  }
+
+  .comparison-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid #F4F6F9;
+    color: var(--gray-800);
+  }
+
+  .comparison-table tr:last-child td { border-bottom: none; }
+
+  .comparison-table td.highlight {
+    background: var(--blue-50);
+    color: var(--blue-800);
+    font-weight: 500;
+  }
+
+  .tick { color: var(--teal-400); font-weight: 700; }
+  .cross { color: #E24B4A; }
+
+  /* TESTIMONIALS */
+  .testimonials-section { background: white; }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .testimonial-card {
+    background: var(--gray-50);
+    border: 1px solid #E8EDF4;
+    border-radius: 14px;
+    padding: 28px;
+  }
+
+  .testimonial-text {
+    font-size: 15px;
+    color: var(--gray-800);
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: 'Sora', sans-serif;
+  }
+
+  .av-blue { background: var(--blue-50); color: var(--blue-600); }
+  .av-teal { background: var(--teal-50); color: var(--teal-600); }
+  .av-coral { background: var(--coral-50); color: var(--coral-600); }
+
+  .author-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--gray-900);
+    font-family: 'Sora', sans-serif;
+  }
+
+  .author-role { font-size: 12px; color: var(--gray-400); }
+
+  /* CTA */
+  .cta-section {
+    background: linear-gradient(135deg, var(--teal-600), var(--blue-600));
+    padding: 80px 5%;
+    text-align: center;
+    color: white;
+  }
+
+  .cta-section h2 {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .cta-section p {
+    font-size: 17px;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 36px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-form {
+    display: flex;
+    gap: 12px;
+    max-width: 480px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .cta-form input {
+    flex: 1;
+    min-width: 200px;
+    padding: 13px 18px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    outline: none;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+
+  .cta-form input::placeholder { color: rgba(255,255,255,0.5); }
+
+  .cta-form button {
+    background: white;
+    color: var(--blue-800);
+    padding: 13px 24px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Sora', sans-serif;
+    transition: transform 0.2s;
+  }
+
+  .cta-form button:hover { transform: translateY(-2px); }
+
+  /* FOOTER */
+  footer {
+    background: var(--gray-900);
+    color: rgba(255,255,255,0.5);
+    padding: 32px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 13px;
+  }
+
+  .footer-logo {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    color: white;
+    font-size: 16px;
+  }
+
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 12px; }
+  .footer-links a:hover { color: rgba(255,255,255,0.8); }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    nav ul { display: none; }
+    .features-layout { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr; }
+    .process-step { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero h1, .hero p, .hero-ctas {
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero p { animation-delay: 0.1s; }
+  .hero-ctas { animation-delay: 0.2s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">
+    <div class="logo-icon">TC</div>
+    Tax<span>Copilot</span>
+  </div>
+  <ul>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#process">How it works</a></li>
+    <li><a href="#contact" class="nav-cta">Book a Demo</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">✦ Built for Indian Businesses — FY 2025–26</div>
+  <h1>The AI Tax Benefit<br>Your Employees <span>Actually Want</span></h1>
+  <p>Give your team a year-round AI-powered tax copilot. Employees save ₹20,000–50,000 in taxes. HR saves 300+ hours during filing season. You pay less than a team lunch.</p>
+  <div class="hero-ctas">
+    <a href="#contact" class="btn-primary">Book a Free Demo</a>
+    <a href="#pricing" class="btn-outline">See Pricing</a>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-number">₹35,000</span>
+    <span class="stat-label">Avg. tax saved per employee</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">10 min</span>
+    <span class="stat-label">Avg. ITR filing time</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">300+</span>
+    <span class="stat-label">HR hours saved per season</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">₹999</span>
+    <span class="stat-label">Per employee per year</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">0</span>
+    <span class="stat-label">IT notices for filed returns</span>
+  </div>
+</div>
+
+<!-- WHY SECTION -->
+<section class="why-section" id="why">
+  <div class="section-tag">The Problem</div>
+  <h2 class="section-title">Your employees are losing money<br>every year. Here's why.</h2>
+  <p class="section-subtitle">Most Indian companies offer health insurance and meal cards — but ignore the benefit that saves employees the most: a qualified tax advisor.</p>
+
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-icon icon-blue">💸</div>
+      <h3>Wrong regime selection</h3>
+      <p>67% of salaried employees pick the wrong tax regime due to confusion about the new IT Act 2025 — costing them thousands every year.</p>
+      <div class="metric">₹18,000 avg. loss</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon icon-coral">⚠️</div>
+      <h3>AIS mismatches triggering notices</h3>
+      <p>Unreconciled Annual Information Statements cause automated IT notices — creating panic for employees and extra work for HR.</p>
+      <div class="metric">1 in 4 employees affected</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon icon-teal">📊</div>
+      <h3>Capital gains miscalculation</h3>
+      <p>Tech employees with Zerodha/Groww accounts manually calculate hundreds of trades — errors lead to notices and penalties.</p>
+      <div class="metric">Avg. 180 trades/year</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon icon-amber">🗓️</div>
+      <h3>HR overwhelmed in July</h3>
+      <p>HR teams field 50–200 tax queries per filing season. TaxCopilot answers them all — automatically, at any hour.</p>
+      <div class="metric">300+ hrs saved/year</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div class="section-tag">Platform</div>
+  <h2 class="section-title">Everything your team needs,<br>in one platform</h2>
+  <p class="section-subtitle">TaxCopilot gives employees a year-round AI co-pilot and gives HR a real-time compliance dashboard.</p>
+
+  <div class="features-layout">
+    <div class="features-list">
+      <div class="feature-item active">
+        <div class="feature-dot"></div>
+        <div>
+          <h4>HR Admin Dashboard</h4>
+          <p>Track filing status of every employee in real time. Download compliance reports. Manage seats. Get a single GST invoice for your accounting team.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div>
+          <h4>AI Regime Optimizer</h4>
+          <p>Automatically compares Old vs New regime for each employee's unique salary structure. Shows exact ₹ saved — not generic estimates.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div>
+          <h4>Form 16 Auto-Filing</h4>
+          <p>Upload Form 16, AIS fetched automatically, ITR pre-filled and ready to submit in under 10 minutes. Zero manual entry.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div>
+          <h4>Broker Integration</h4>
+          <p>Zerodha, Groww, Upstox, Angel One — capital gains auto-calculated from all broker accounts. STCG/LTCG split correctly.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div>
+          <h4>Notice Management</h4>
+          <p>If an employee receives an IT notice, TaxCopilot generates a response draft and our CA team handles it end-to-end. Included in Elite.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div>
+          <h4>Year-Round AI Chat</h4>
+          <p>Employees ask tax questions anytime — salary restructuring, HRA claims, ESOP tax, advance tax. Instant answers, no waiting for a CA.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD MOCKUP -->
+    <div class="dashboard-mockup">
+      <div class="mockup-bar">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+        <span class="mockup-title">TaxCopilot — HR Dashboard</span>
+      </div>
+      <div class="mockup-body">
+        <div class="mockup-metrics">
+          <div class="m-card">
+            <div class="m-label">Total Employees</div>
+            <div class="m-value">248</div>
+          </div>
+          <div class="m-card">
+            <div class="m-label">ITR Filed</div>
+            <div class="m-value green">187</div>
+          </div>
+          <div class="m-card">
+            <div class="m-label">Pending</div>
+            <div class="m-value amber">61</div>
+          </div>
+        </div>
+        <table class="mockup-table">
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Department</th>
+              <th>Regime</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Priya Sharma</td>
+              <td>Engineering</td>
+              <td>New</td>
+              <td><span class="status-badge s-filed">Filed</span></td>
+            </tr>
+            <tr>
+              <td>Rahul Verma</td>
+              <td>Product</td>
+              <td>Old</td>
+              <td><span class="status-badge s-filed">Filed</span></td>
+            </tr>
+            <tr>
+              <td>Ananya Iyer</td>
+              <td>Design</td>
+              <td>—</td>
+              <td><span class="status-badge s-pending">Pending</span></td>
+            </tr>
+            <tr>
+              <td>Karan Mehta</td>
+              <td>Engineering</td>
+              <td>New</td>
+              <td><span class="status-badge s-review">CA Review</span></td>
+            </tr>
+            <tr>
+              <td>Sneha Patel</td>
+              <td>Finance</td>
+              <td>Old</td>
+              <td><span class="status-badge s-filed">Filed</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="section-tag">Pricing</div>
+  <h2 class="section-title">Simple per-employee pricing.<br>No hidden charges.</h2>
+  <p class="section-subtitle">All plans billed annually. GST applicable. Minimum 25 employees for Business plans.</p>
+
+  <div class="pricing-grid">
+    <!-- STARTER -->
+    <div class="pricing-card">
+      <div class="plan-name">Starter</div>
+      <div class="plan-price">₹499</div>
+      <div class="plan-period">per employee / year</div>
+      <div class="plan-billing">≈ ₹42/employee/month</div>
+      <div class="plan-desc">For companies with simple salaried workforce. No investments, single Form 16.</div>
+      <ul class="plan-features">
+        <li><span class="check">✓</span> ITR-1 filing for all employees</li>
+        <li><span class="check">✓</span> Form 16 upload + auto-fill</li>
+        <li><span class="check">✓</span> Old vs New regime optimizer</li>
+        <li><span class="check">✓</span> AIS/26AS mismatch alerts</li>
+        <li><span class="check">✓</span> AI chat (15 queries/month)</li>
+        <li><span class="check">✓</span> HR filing status dashboard</li>
+        <li><span class="check">✓</span> WhatsApp + email reminders</li>
+      </ul>
+      <button class="plan-btn plan-btn-outline">Get Started</button>
+    </div>
+
+    <!-- GROWTH (FEATURED) -->
+    <div class="pricing-card featured">
+      <div class="popular-badge">Most Popular</div>
+      <div class="plan-name">Growth</div>
+      <div class="plan-price">₹999</div>
+      <div class="plan-period">per employee / year</div>
+      <div class="plan-billing">≈ ₹83/employee/month</div>
+      <div class="plan-desc">For tech companies with investors, F&O traders, and multiple income sources.</div>
+      <ul class="plan-features">
+        <li><span class="check">✓</span> Everything in Starter</li>
+        <li><span class="check">✓</span> ITR-2 + ITR-4 (freelancers)</li>
+        <li><span class="check">✓</span> Broker sync — Zerodha, Groww, Upstox</li>
+        <li><span class="check">✓</span> Auto STCG/LTCG calculation</li>
+        <li><span class="check">✓</span> Multiple Form 16 support</li>
+        <li><span class="check">✓</span> Salary restructuring optimizer</li>
+        <li><span class="check">✓</span> Unlimited AI chat year-round</li>
+        <li><span class="check">✓</span> Notice response drafts (AI)</li>
+        <li><span class="check">✓</span> ESOP tax advisory</li>
+      </ul>
+      <button class="plan-btn plan-btn-filled">Book a Demo</button>
+    </div>
+
+    <!-- ENTERPRISE -->
+    <div class="pricing-card">
+      <div class="plan-name">Enterprise</div>
+      <div class="plan-price">₹1,799</div>
+      <div class="plan-period">per employee / year</div>
+      <div class="plan-billing">≈ ₹150/employee/month</div>
+      <div class="plan-desc">CA-backed filing for senior leadership and complex cases. Full white-glove service.</div>
+      <ul class="plan-features">
+        <li><span class="check">✓</span> Everything in Growth</li>
+        <li><span class="check">✓</span> Dedicated CA per company</li>
+        <li><span class="check">✓</span> CA files ITR (zero effort)</li>
+        <li><span class="check">✓</span> End-to-end notice management</li>
+        <li><span class="check">✓</span> Quarterly tax planning calls</li>
+        <li><span class="check">✓</span> NRI + foreign income support</li>
+        <li><span class="check">✓</span> Priority 4hr support SLA</li>
+        <li><span class="check">✓</span> Payroll integration (Darwinbox, Keka)</li>
+      </ul>
+      <button class="plan-btn plan-btn-outline">Contact Sales</button>
+    </div>
+  </div>
+
+  <p style="margin-top: 24px; font-size: 13px; color: var(--gray-400);">
+    * 200-employee company on Growth plan = <strong style="color: var(--blue-600);">₹1,99,800/year</strong> — less than a single CA retainer. Early bird: 20% off for companies signing before July 1, 2026.
+  </p>
+</section>
+
+<!-- COMPARISON -->
+<section class="comparison-section">
+  <div class="section-tag">Why TaxCopilot</div>
+  <h2 class="section-title">How we compare to alternatives</h2>
+  <p class="section-subtitle">Same price as ClearTax. Three times the value. Built for businesses, not individuals.</p>
+
+  <div style="overflow-x: auto;">
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th class="highlight">TaxCopilot</th>
+          <th>ClearTax</th>
+          <th>TaxBuddy</th>
+          <th>Offline CA</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>HR Admin Dashboard</td>
+          <td class="highlight"><span class="tick">✓</span> All tiers</td>
+          <td><span class="cross">✗</span> Not available</td>
+          <td><span class="cross">✗</span> Not available</td>
+          <td><span class="cross">✗</span> Manual</td>
+        </tr>
+        <tr>
+          <td>Regime Optimizer</td>
+          <td class="highlight"><span class="tick">✓</span> Automatic</td>
+          <td><span class="tick">✓</span> Manual toggle</td>
+          <td><span class="tick">✓</span> Upfront</td>
+          <td><span class="cross">✗</span> Extra charge</td>
+        </tr>
+        <tr>
+          <td>Broker Integration</td>
+          <td class="highlight"><span class="tick">✓</span> 4 brokers</td>
+          <td><span class="tick">✓</span> 80+ brokers</td>
+          <td><span class="cross">✗</span> Limited</td>
+          <td><span class="cross">✗</span> Manual</td>
+        </tr>
+        <tr>
+          <td>Notice Management</td>
+          <td class="highlight"><span class="tick">✓</span> Included</td>
+          <td>Paid add-on</td>
+          <td><span class="tick">✓</span> Included</td>
+          <td>Extra charge</td>
+        </tr>
+        <tr>
+          <td>Year-round AI Chat</td>
+          <td class="highlight"><span class="tick">✓</span> All tiers</td>
+          <td>WhatsApp only</td>
+          <td><span class="cross">✗</span> Filing season</td>
+          <td><span class="cross">✗</span> Billed per call</td>
+        </tr>
+        <tr>
+          <td>ESOP Tax Advisory</td>
+          <td class="highlight"><span class="tick">✓</span> Growth+</td>
+          <td><span class="cross">✗</span> Not available</td>
+          <td><span class="cross">✗</span> Not available</td>
+          <td>Extra charge</td>
+        </tr>
+        <tr>
+          <td>Per-employee Pricing</td>
+          <td class="highlight"><span class="tick">✓</span> B2B native</td>
+          <td><span class="cross">✗</span> Per-filing only</td>
+          <td><span class="cross">✗</span> Per-filing only</td>
+          <td>Per hour / filing</td>
+        </tr>
+        <tr>
+          <td>New IT Act 2025 Ready</td>
+          <td class="highlight"><span class="tick">✓</span> Built for it</td>
+          <td>Updating</td>
+          <td>Updating</td>
+          <td>Varies by CA</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process-section" id="process">
+  <div class="section-tag">Onboarding</div>
+  <h2 class="section-title" style="color:white;">From signup to first ITR filed<br>in under 2 weeks</h2>
+  <p class="section-subtitle">We handle everything. Your HR team spends less than 2 hours on setup.</p>
+
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="step-num">STEP 01</div>
+      <div class="step-title">Discovery Call</div>
+      <div class="step-desc">30-minute call with our team. We understand your workforce, income types, and filing complexity.</div>
+      <div class="step-timeline">Day 1</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">STEP 02</div>
+      <div class="step-title">Free 30-Day Pilot</div>
+      <div class="step-desc">We onboard 20 employees for free. No contract, no credit card. See real results before committing.</div>
+      <div class="step-timeline">Day 2–3</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">STEP 03</div>
+      <div class="step-title">Full Rollout</div>
+      <div class="step-desc">Bulk invite via email or HRMS integration. Employees onboard themselves in under 5 minutes.</div>
+      <div class="step-timeline">Day 7–10</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">STEP 04</div>
+      <div class="step-title">Filing Season</div>
+      <div class="step-desc">AI handles employee queries. HR tracks progress on the dashboard. CAs file complex returns.</div>
+      <div class="step-timeline">July 2026</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">STEP 05</div>
+      <div class="step-title">Year-Round Value</div>
+      <div class="step-desc">Employees use the AI co-pilot for tax planning, investment decisions, and advance tax reminders all year.</div>
+      <div class="step-timeline">Ongoing</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <div class="section-tag">Early Adopters</div>
+  <h2 class="section-title">What HR teams are saying</h2>
+  <p class="section-subtitle">From pilot companies who onboarded before the July 2026 season.</p>
+
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <div class="testimonial-text">"We had 180 employees filing ITR manually. Half of them were on the wrong regime. TaxCopilot's optimizer saved our engineering team an average of ₹28,000 each — and our HR inbox went from 150 July queries to almost zero."</div>
+      <div class="testimonial-author">
+        <div class="author-avatar av-blue">SP</div>
+        <div>
+          <div class="author-name">Sunita Prakash</div>
+          <div class="author-role">CHRO, Series B SaaS startup · Bengaluru</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-text">"Our employees have heavy Zerodha portfolios. Every year they'd mess up the capital gains section and get notices. TaxCopilot's broker integration made it a non-issue. Best ₹999/head we've spent."</div>
+      <div class="testimonial-author">
+        <div class="author-avatar av-teal">RK</div>
+        <div>
+          <div class="author-name">Rohit Kulkarni</div>
+          <div class="author-role">VP Finance, Fintech Startup · Pune</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-text">"The HR dashboard alone is worth it. I can see exactly who's filed, who's pending, and download the compliance report for our auditors. It used to take 3 weeks of back-and-forth. Now it's one click."</div>
+      <div class="testimonial-author">
+        <div class="author-avatar av-coral">AM</div>
+        <div>
+          <div class="author-name">Arjun Menon</div>
+          <div class="author-role">Head of HR, Product Company · Hyderabad</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section" id="contact">
+  <h2>Ready to make tax filing<br>your best employee benefit?</h2>
+  <p>Book a free 30-minute demo. We'll show you exactly how much your employees are overpaying in taxes right now.</p>
+  <div class="cta-form">
+    <input type="email" placeholder="Work email address" />
+    <button>Book Demo →</button>
+  </div>
+  <p style="font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 16px;">No contract. Free 30-day pilot for first 20 employees. Early bird: 20% off if signed before July 1, 2026.</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">TaxCopilot</div>
+  <div class="footer-links">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Service</a>
+    <a href="#">DPDP Compliance</a>
+    <a href="#">Contact</a>
+  </div>
+  <div>© 2026 TaxCopilot. DPIIT Recognized Startup. GST: 27XXXXX1234Z1.</div>
+</footer>
+
+</body>
+</html>
