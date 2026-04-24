@@ -1339,15 +1339,21 @@
 </section>
 
 <!-- CTA -->
+ <form onsubmit="DemoRequest(event)">
 <div class="cta-section" id="contact">
   <h2>Ready to make tax filing<br>your best employee benefit?</h2>
   <p>Book a free 30-minute demo. We'll show you exactly how much your employees are overpaying in taxes right now.</p>
   <div class="cta-form">
-    <input type="email" placeholder="Work email address" />
-    <button>Book Demo →</button>
+    <input type="email"
+        id="email-id"
+        name="email"
+        placeholder="Work email address"
+        required/>
+    <button type="submit">Book Demo →</button>
   </div>
   <p style="font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 16px;">No contract. Free 30-day pilot for first 20 employees. Early bird: 20% off if signed before July 1, 2026.</p>
 </div>
+</form>
 
 <!-- FOOTER -->
 <footer>
@@ -1362,4 +1368,66 @@
 </footer>
 
 </body>
+
+<script>
+async function DemoRequest(event) {
+  event.preventDefault();
+
+  const email = document.getElementById("email-id").value;
+
+  try {
+    const response = await fetch("/demo_request", {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email: email })
+    });
+
+    const result = await response.json();
+
+    if (response.ok && result.status === "success") {
+      showToast("success", "Success!", "Our representative will connect soon!");
+    } else {
+      showToast("error", "Error", result.message || "Failed to save email id");
+    }
+
+  } catch (error) {
+    console.error("Error saving email id:", error);
+    showToast("error", "Error", "Network error. Please try again.");
+  }
+}
+</script>
+<script>
+function showToast(type, title, message) {
+
+  const toast = document.createElement("div");
+
+  toast.innerHTML = `
+    <strong>${title}</strong><br>
+    <span>${message}</span>
+  `;
+
+  toast.style.position = "fixed";
+  toast.style.bottom = "20px";
+  toast.style.right = "20px";
+  toast.style.padding = "14px 18px";
+  toast.style.borderRadius = "6px";
+  toast.style.color = "white";
+  toast.style.fontSize = "14px";
+  toast.style.zIndex = "1000";
+
+  if (type === "success") {
+    toast.style.background = "#28a745";
+  } else {
+    toast.style.background = "#dc3545";
+  }
+
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
+}
+</script>
 </html>

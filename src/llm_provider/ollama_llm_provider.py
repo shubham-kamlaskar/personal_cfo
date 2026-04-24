@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 from langchain_ollama import ChatOllama
-
+from ollama import Client
 class LLMProvider:
     def __init__(self):
         self.llm_model_name = str(os.getenv('LLM_MODEL_NAME'))
