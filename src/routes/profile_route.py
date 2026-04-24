@@ -1,27 +1,28 @@
 import os
 from dotenv import load_dotenv
 import logging
-load_dotenv()
+
 from flask import Blueprint, render_template, request, redirect, url_for
-from src.database_provider.mongo_client import MongoDBClient
+from src.database.infodb.service.mongo_client import MongoDBClient
 from src.util.app_constants import VariableConstant
-from src.database_provider.strategy.edit_profile_strategy import update_profile_in_db
+from src.database.infodb.strategy.edit_profile_strategy import update_profile_in_db
 from src.util.access_provider import login_required
 
-user_profile_bp = Blueprint('user_profile_bp', __name__, template_folder='templates', static_folder='static')
-
+load_dotenv()
 mongodb_client = MongoDBClient()
 user_info_collection = str(os.getenv('USER_INFO_COLLECTION'))
 db_name = str(os.getenv('DB_NAME'))
 USER_ID_FIELD_NAME =  VariableConstant.USER_ID_FIELD_DB
 logger = logging.getLogger(__name__)
 
+user_profile_bp = Blueprint('user_profile_bp', __name__, template_folder='templates', static_folder='static')
+
 @user_profile_bp.route('/<user_id>/profile', methods=["GET"])
 @login_required
 def profile(user_id: str):
     try:
         fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, USER_ID_FIELD_NAME, user_id)
-        return render_template("user_profile/profile.html", user=fetch_user_info, user_id=user_id)
+        return render_template("employee/profile/profile.html", user=fetch_user_info, user_id=user_id)
     except Exception as e:
         logger.error(f"An error occured in profile route: {str(e)}")
         
@@ -37,7 +38,7 @@ def edit_profile(user_id: str):
             
             return redirect(url_for('user_profile_bp.profile', user_id=user_id))
 
-        return render_template('user_profile/edit_profile.html', user=fetch_user_info, user_id=user_id)
+        return render_template('employee/profile/edit_profile.html', user=fetch_user_info, user_id=user_id)
     except Exception as e:
         logger.error(f"An error occured in edit_profile route: {str(e)}")
         raise Exception(f"An error occured in edit_profile route: {str(e)}")

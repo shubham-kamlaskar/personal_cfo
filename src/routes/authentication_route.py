@@ -1,18 +1,16 @@
 import os
 from dotenv import load_dotenv
-load_dotenv()
 import logging
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, session
-from src.database_provider.fetch_user_info import user
-from src.database_provider.mongo_client import MongoDBClient
-from src.database_provider.strategy.signup_strategy import update_signup_form_in_db
+
+from src.database.infodb.service.mongo_client import MongoDBClient
+from src.database.infodb.strategy.signup_strategy import update_signup_form_in_db
 from src.util.datetime_helper import get_current_dt_in_milliseconds_precision
 from src.util.userid_generator import generate_user_id
 from src.util.app_constants import VariableConstant
 from src.util.password_helper import PasswordHelper
 
-authentication_bp = Blueprint('authentication_bp', __name__, template_folder='templates', static_folder='static')
-
+load_dotenv()
 mongodb_client = MongoDBClient()
 password_helper = PasswordHelper()
 user_info_collection = str(os.getenv('USER_INFO_COLLECTION'))
@@ -20,6 +18,8 @@ db_name = str(os.getenv('DB_NAME'))
 email_id_field = VariableConstant.EMAIL_ID_FIELD_DB
 user_id_field = VariableConstant.USER_ID_FIELD_DB
 logger = logging.getLogger(__name__)
+
+authentication_bp = Blueprint('authentication_bp', __name__, template_folder='templates', static_folder='static')
 
 @authentication_bp.route("/login", methods=["GET"])
 def login():

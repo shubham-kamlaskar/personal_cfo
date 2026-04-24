@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<title>Dashboard | Personal CFO</title>
+<style>
+  :root {
+    --primary: #1a56db;
+    --primary-light: #e8f0fe;
+    --accent: #16a34a;
+    --accent-light: #dcfce7;
+    --warning: #d97706;
+    --warning-light: #fef3c7;
+    --danger: #dc2626;
+    --danger-light: #fee2e2;
+    --surface: #ffffff;
+    --surface-2: #f8fafc;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-hover: 0 8px 24px rgba(26,86,219,0.12);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f1f5f9;
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, .heading {
+    font-family: 'Sora', sans-serif;
+  }
+
+  /* ── Welcome Banner ── */
+  .welcome-banner {
+    background: linear-gradient(135deg, #1a56db 0%, #1e40af 100%);
+    border-radius: var(--radius);
+    color: white;
+    padding: 1.5rem 1.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .welcome-banner::after {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+  .welcome-banner .banner-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  .welcome-banner .banner-sub {
+    font-size: 0.875rem;
+    opacity: 0.85;
+    margin-bottom: 1.25rem;
+  }
+
+  /* ── Stat Cards inside banner ── */
+  .stat-card {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+    color: white;
+    flex: 1;
+    min-width: 0;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .stat-card:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+  }
+  .stat-card .stat-label {
+    font-size: 0.75rem;
+    opacity: 0.75;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.35rem;
+  }
+  .stat-card .stat-value {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+
+  /* ── Quick Action Cards ── */
+  .action-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    flex: 1;
+    min-width: 0;
+  }
+  .action-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--primary);
+  }
+  .action-card .action-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.25rem;
+    margin: 0 auto 0.6rem;
+  }
+  .action-card .action-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text);
+    margin-bottom: 0.15rem;
+  }
+  .action-card .action-sub {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  /* ── Section Cards ── */
+  .section-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    box-shadow: var(--shadow);
+  }
+  .section-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+  .section-sub {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  /* ── Suggestion Items ── */
+  .suggestion-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.85rem 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    transition: background 0.18s, border-color 0.18s;
+    cursor: pointer;
+  }
+  .suggestion-item + .suggestion-item { margin-top: 0.6rem; }
+  .suggestion-item:hover {
+    background: var(--primary-light);
+    border-color: #93b8f8;
+  }
+  .suggestion-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--primary);
+    flex-shrink: 0;
+  }
+  .suggestion-text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .suggestion-badge {
+    margin-left: auto;
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 99px;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* ── Deadline Items ── */
+  .deadline-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .deadline-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .deadline-item:first-child { padding-top: 0; }
+  .deadline-name {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--text);
+  }
+  .deadline-date {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .deadline-badge {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 99px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge-overdue  { background: var(--danger-light);  color: var(--danger); }
+  .badge-soon     { background: var(--warning-light); color: var(--warning); }
+  .badge-ok       { background: var(--accent-light);  color: var(--accent); }
+
+  /* ── AI Query Form ── */
+  .query-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    box-shadow: var(--shadow);
+  }
+  .query-card .form-control {
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    padding: 0.65rem 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .query-card .form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(26,86,219,0.12);
+  }
+  .query-card .btn-primary {
+    border-radius: 10px;
+    background: var(--primary);
+    border: none;
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.65rem 1.4rem;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .query-card .btn-primary:hover {
+    background: #1e40af;
+    transform: translateY(-1px);
+  }
+  #response {
+    margin-top: 0.85rem;
+    font-size: 0.875rem;
+    color: var(--text);
+    background: var(--surface-2);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    min-height: 2.5rem;
+    border: 1px solid var(--border);
+    display: none;
+  }
+  #response.visible { display: block; }
+</style>
+</head>
+
+<body>
+{% include 'employee/header.html' %}
+
+<div class="container-fluid px-3 py-3" style="max-width:1250px">
+
+  <!-- ── Welcome Banner + Stats ── -->
+  <div class="welcome-banner mb-3">
+    <div class="banner-title">Welcome Back, {{user.personal_info.name}}! 👋</div>
+    <div class="banner-sub">Your AI-powered tax assistant is ready to help you save more and file smarter.</div>
+    <div class="d-flex gap-2 flex-wrap">
+      <div class="stat-card">
+        <div class="stat-label">Estimated Tax</div>
+        <div class="stat-value">₹ {{user.tax_liability}}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Potential Savings</div>
+        <div class="stat-value">₹ {{user.potential_savings}}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Deductions</div>
+        <div class="stat-value">₹ {{user.deductions}}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Quick Actions ── -->
+  <div class="d-flex gap-2 flex-wrap mb-3">
+    <a href="{{ url_for('assistant_bp.assistant', user_id=user_id) }}" class="action-card text-decoration-none">
+      <div class="action-icon" style="background:#e8f0fe">📄</div>
+      <div class="action-title">AI Agent</div>
+      <div class="action-sub">Ask Anything</div>
+    </a>
+    <a href="{{ url_for('tax_filling_bp.tax_filling' , user_id=user_id) }}" class="action-card text-decoration-none">
+      <div class="action-icon" style="background:#e8f0fe">📄</div>
+      <div class="action-title">File ITR</div>
+      <div class="action-sub">Start Filling</div>
+    </a>
+    <a href="{{ url_for('investments_bp.investments', user_id=user_id) }}" class="action-card text-decoration-none">
+      <div class="action-icon" style="background:#dcfce7">📈</div>
+      <div class="action-title">Invest</div>
+      <div class="action-sub">Save Tax</div>
+    </a>
+    <a href="{{ url_for('documents_bp.documents', user_id=user_id) }}" class="action-card text-decoration-none">
+      <div class="action-icon" style="background:#f3e8ff">📁</div>
+      <div class="action-title">Documents</div>
+      <div class="action-sub">Upload Files</div>
+    </a>
+  </div>
+
+  <!-- ── AI Suggestions ── -->
+  <div class="section-card mb-3">
+    <div class="section-title">✨ AI-Powered Tax Saving Suggestions</div>
+    <div class="section-sub">Smart recommendations to maximize your tax savings</div>
+
+    <div class="suggestion-item">
+      <div class="suggestion-dot"></div>
+      <div class="suggestion-text">Maximize 80C Deductions</div>
+      <span class="suggestion-badge">Save up to ₹46,800</span>
+    </div>
+    <div class="suggestion-item">
+      <div class="suggestion-dot"></div>
+      <div class="suggestion-text">Maximize 80C Deductions</div>
+      <span class="suggestion-badge">Recommended</span>
+    </div>
+    <div class="suggestion-item">
+      <div class="suggestion-dot"></div>
+      <div class="suggestion-text">NPS Contribution</div>
+      <span class="suggestion-badge">Extra ₹15,600</span>
+    </div>
+  </div>
+
+  <!-- ── Upcoming Deadlines ── -->
+  <div class="section-card mb-3">
+    <div class="section-title">🗓 Upcoming Deadlines</div>
+    <div class="section-sub">Stay on top of important tax dates</div>
+
+    <div class="deadline-item">
+      <div>
+        <div class="deadline-name">Q4 Advance Tax Payment</div>
+        <div class="deadline-date">March 15, 2026</div>
+      </div>
+      <span class="deadline-badge badge-overdue">14 Days Overdue</span>
+    </div>
+    <div class="deadline-item">
+      <div>
+        <div class="deadline-name">ITR Filing (FY 2025-26)</div>
+        <div class="deadline-date">July 31, 2026</div>
+      </div>
+      <span class="deadline-badge badge-ok">124 Days Left</span>
+    </div>
+    <div class="deadline-item">
+      <div>
+        <div class="deadline-name">Form 16 Receipt</div>
+        <div class="deadline-date">June 15, 2026</div>
+      </div>
+      <span class="deadline-badge badge-soon">78 Days Left</span>
+    </div>
+  </div>
+
+
+</div>
+
+<script>
+document.getElementById("submitBtn").addEventListener("click", async function() {
+    const query = document.getElementById("query").value.trim();
+    if (!query) return;
+
+    const responseEl = document.getElementById("response");
+    responseEl.classList.add("visible");
+    responseEl.innerText = "Thinking…";
+
+    try {
+      const res = await fetch("/query", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query })
+      });
+      const data = await res.json();
+      responseEl.innerText = data.response;
+    } catch (err) {
+      responseEl.innerText = "Something went wrong. Please try again.";
+    }
+});
+
+document.getElementById("query").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") document.getElementById("submitBtn").click();
+});
+</script>
+
+</body>
+</html>

@@ -3,28 +3,27 @@ from dotenv import load_dotenv
 from flask import Blueprint, render_template, request, jsonify
 import logging
 
-from src.database_provider.strategy.calculate_tax_strategy import update_calculate_tax_in_db
+from src.database.infodb.strategy.calculate_tax_strategy import update_calculate_tax_in_db
 from src.util.calculation_helper import TaxEngine
-from src.database_provider.mongo_client import MongoDBClient
+from src.database.infodb.service.mongo_client import MongoDBClient
 from src.util.access_provider import login_required
 
 load_dotenv()
 tax_engine = TaxEngine()
 mongodb_client = MongoDBClient()
-logger = logging.getLogger(__name__)
-
-calculator_bp = Blueprint('calculator_bp', __name__, template_folder='templates', static_folder='static')
-
 db_name = str(os.getenv('DB_NAME'))
 tax_calculator_collection = str(os.getenv("TAX_CALCULATOR_COLLECTION"))
 user_info_collection = str(os.getenv('USER_INFO_COLLECTION'))
+logger = logging.getLogger(__name__)
+
+calculator_bp = Blueprint('calculator_bp', __name__, template_folder='templates', static_folder='static')
 
 @calculator_bp.route("/<user_id>/calculator", methods=["GET"])
 @login_required
 def calculator(user_id: str):
     try:
         fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, "user_id", user_id)
-        return render_template("calculator.html", user=fetch_user_info, user_id=user_id)
+        return render_template("employee/calculator.html", user=fetch_user_info, user_id=user_id)
     except Exception as e:
         logger.error(f"An error occured in calculator route: {str(e)}")
         
