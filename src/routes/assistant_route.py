@@ -4,7 +4,6 @@ import logging
 
 from flask import Blueprint, render_template, request, jsonify
 from src.agent_provider.langchain_agent import AgentProvider
-from src.util.log_adapter import setup_logger
 from src.database_provider.mongo_client import MongoDBClient
 from src.database_provider.service.conversation_history_service import HistoryClient
 from src.util.access_provider import login_required
@@ -24,13 +23,16 @@ conversation_collection = str(os.getenv("CONVERSATION_COLLETION"))
 @assistant_bp.route("/<user_id>/assistant", methods=["GET"])
 @login_required
 def assistant(user_id: str):
-    conv_history = history_client.get_user_conversation_history(user_id)
-    
-    return render_template(
-        "assistant.html",
-        user_id=user_id,
-        conv_history=conv_history
-    )
+    try:
+        conv_history = history_client.get_user_conversation_history(user_id)
+        
+        return render_template(
+            "assistant.html",
+            user_id=user_id,
+            conv_history=conv_history
+        )
+    except Exception as e:
+        logger.error(f"An error occured in assistant route: {str(e)}")
 
 
 @assistant_bp.route("/<user_id>/query", methods=["POST"])

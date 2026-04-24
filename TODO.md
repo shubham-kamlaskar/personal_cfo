@@ -6,3 +6,5 @@
 6. Rate limiter
 7. unauthorized access
 8. no user id in url
+9. RBAC
+10. Document ingestion pipeline

@@ -1,4 +1,5 @@
 import os
+import logging
 from dotenv import load_dotenv
 from src.util.calculation_helper import TaxEngine
 import uuid
@@ -11,6 +12,7 @@ mongodb_client = MongoDBClient()
 db_name = str(os.getenv('DB_NAME'))
 tax_calculator_collection = str(os.getenv("TAX_CALCULATOR_COLLECTION"))
 user_info_collection = str(os.getenv('USER_INFO_COLLECTION'))
+logger = logging.getLogger(__name__)
 
 tax_engine = TaxEngine()
 

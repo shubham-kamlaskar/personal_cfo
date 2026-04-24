@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 import uuid
-
+import logging
 import markdown
 
 from langchain.agents import create_agent, AgentState
@@ -16,6 +16,7 @@ from src.llm_provider.ollama_llm_provider import LLMProvider
 from src.models.user_activity_model import ConversationObject
 from src.database_provider.mongo_client import MongoDBClient
 from src.util.datetime_helper import get_current_dt_in_milliseconds_precision
+from src.analytics_tools.llm_tracing_provider import langfuse_handler
 
 debug_mode = os.getenv('AGENT_DEBUG_MODE', 'True')
 memory_checkpointer = InMemorySaver()
@@ -23,6 +24,7 @@ mongodb_client = MongoDBClient()
 llm_provider = LLMProvider()
 user_info_collection = str(os.getenv('USER_INFO_COLLECTION'))
 db_name = str(os.getenv('DB_NAME')) 
+logger = logging.getLogger(__name__)
 
 class CustomAgentState(AgentState):
     user_id: str
@@ -54,7 +56,7 @@ class AgentProvider:
                 )
 
         except Exception as e:
-            print(f"Error initializing agent client: {str(e)}")
+            logging.error(f"Error initializing agent client: {str(e)}")
             raise Exception(f"Error initializing agent client: {str(e)}")
         
     async def get_agent_response(self, user_query: str, user_id: str):
@@ -69,7 +71,8 @@ class AgentProvider:
                     "user_id": user_id,
                     "preferences": {"theme": "dark"}
                 },
-                {"configurable": {"thread_id": self.session_id}}
+                config={"callbacks": [langfuse_handler],
+                        "configurable": {"thread_id": self.session_id}},
             )
             if response:
                 messages = response.get("messages", [])
@@ -117,7 +120,7 @@ class AgentProvider:
             return answer   
 
         except Exception as e:
-            print(f"Error getting agent response: {str(e)}")
+            logging.error(f"Error getting agent response: {str(e)}")
             raise Exception(f"Error getting agent response: {str(e)}")
         
     
