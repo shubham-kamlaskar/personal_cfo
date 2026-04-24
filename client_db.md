@@ -1,0 +1,18 @@
+company
+    name
+    plan
+    total_employees
+    active_employees
+    filing_percentage
+    filed_count
+    total_savings
+    monthly_bill
+    next_billing_date
+    pending_payments
+    pending_amount
+    payment_due_date
+    status_counts
+        filed
+        review
+        pending
+        not_started

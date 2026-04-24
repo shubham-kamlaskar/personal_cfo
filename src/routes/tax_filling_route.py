@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import logging
 load_dotenv()
 from flask import Blueprint, render_template
-from src.database_provider.mongo_client import MongoDBClient
+from src.database.infodb.service.mongo_client import MongoDBClient
 from src.util.access_provider import login_required
 
 mongodb_client = MongoDBClient()
@@ -18,7 +18,7 @@ tax_filling_bp = Blueprint('tax_filling_bp', __name__, template_folder='template
 def tax_filling(user_id: str):
     try:
         fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, "user_id", user_id)
-        return render_template("tax_filling.html", user=fetch_user_info, user_id=user_id)
+        return render_template("employee/tax_filling.html", user=fetch_user_info, user_id=user_id)
     except Exception as e:
         logger.error(f"An error occured in tax_filling route: {str(e)}")
         
@@ -27,6 +27,6 @@ def tax_filling(user_id: str):
 def post_tax_filling(user_id: str):
     try:
         fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, "user_id", user_id)
-        return render_template("tax_filling.html", user=fetch_user_info, user_id=user_id)
+        return render_template("employee/tax_filling.html", user=fetch_user_info, user_id=user_id)
     except Exception as e:
         logger.error(f"An error occured in post_tax_filling route: {str(e)}")

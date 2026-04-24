@@ -3,7 +3,7 @@ import warnings
 warnings.filterwarnings('ignore')
 import sentry_sdk
 
-from src.routes.landing_page_route import landing_page_bp
+from src.routes.product.landing_page_route import landing_page_bp
 from src.routes.authentication_route import authentication_bp
 from src.routes.dashboard_route import dashboard_bp
 from src.routes.tax_filling_route import tax_filling_bp
@@ -12,6 +12,7 @@ from src.routes.documents_route import documents_bp
 from src.routes.calculator_route import calculator_bp
 from src.routes.assistant_route import assistant_bp
 from src.routes.profile_route import user_profile_bp
+from src.routes.client.client_dashboard_route import client_dashboard_bp
 # from src.routes.admin.dashboard_route import admin_dashboard_bp
 
 sentry_sdk.init(
@@ -50,6 +51,7 @@ app.register_blueprint(documents_bp)
 app.register_blueprint(calculator_bp)
 app.register_blueprint(assistant_bp)
 app.register_blueprint(user_profile_bp)
+app.register_blueprint(client_dashboard_bp)
 # app.register_blueprint(admin_dashboard_bp)
 
 
