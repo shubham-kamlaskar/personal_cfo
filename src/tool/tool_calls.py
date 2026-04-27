@@ -99,7 +99,7 @@ def check_complaint_status(complaint_no: str, user_query:str):
 @tool('raise_complaint_request', args_schema=RaiseComplaintRequest)
 def raise_complaint_request(user_query: str, complaint: str):
     """This tool is used to raise a complaint and in return user will get a complaint number for better tracking purpose."""
-    complaint_no = str(uuid.uuid4())
+    complaint_no = "COM" +str(uuid.uuid4())
     return f"Thanks for raising a complaint for {complaint}, we will connect with you shortly. Please note your complaint number: {complaint_no}"
 
 @tool('human_agent_connection', args_schema=HumanAgentConnection)
