@@ -7,6 +7,7 @@ from src.ai_agent.langchain_agent import AgentProvider
 from src.database.infodb.service.mongo_client import MongoDBClient
 from src.database.infodb.service.conversation_history_service import HistoryClient
 from src.util.access_provider import login_required
+from src.ai_agent.langchain_agent import AgentProvider
 
 load_dotenv()
 
@@ -44,7 +45,7 @@ async def query(user_id: str):
 
         user_query = data.get("query")
         
-        answer = await agent.get_agent_response(user_query=user_query, user_id=user_id)
+        answer = await agent_provider.get_agent_response(user_query=user_query, user_id=user_id)
         logger.info("Answer is generated.")
         return jsonify({
             "query": user_query,
