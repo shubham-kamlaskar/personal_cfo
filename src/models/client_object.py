@@ -13,9 +13,32 @@ class DemoRequest(BaseModel):
     createdAt: Optional[datetime] = None
     responedOn: Optional[datetime] = None
 
-class ClientInfo(BaseModel):
+class ClientOnboarding(BaseModel):
     client_id: Optional[str] = None
     client_password: Optional[bytes] = None
+    legal_name: Optional[str] = None
+    short_name: Optional[str] = None
+    pan: Optional[str] = None
+    gstin: Optional[str] = None
+    address: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    pincode: Optional[int] = None
+    industry: Optional[str] = None
+    employee_count: Optional[int] = None
+    plan: Optional[str] = None
+    billing_cycle: Optional[str] = None
+    admin_name: Optional[str] = None
+    admin_email: Optional[str] = None
+    admin_phone: Optional[str] = None
+    admin_designation: Optional[str] = None
+    notes: Optional[str] = None
+    send_welcome_note: Optional[str] = None
+    createdAt: Optional[datetime] = None
+    updatedAt: Optional[datetime] = None
+    
+class ClientInfo(BaseModel):
+    client_id: Optional[str] = None
     address: Optional[str] = None
     name: Optional[str] = None
     plan: Optional[str] = None

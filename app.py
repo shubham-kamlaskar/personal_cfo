@@ -2,6 +2,7 @@ from flask import Flask
 import warnings
 warnings.filterwarnings('ignore')
 import sentry_sdk
+from flask_cors import CORS
 
 from src.routes.product.landing_page_route import landing_page_bp
 from src.routes.authentication_route import authentication_bp
@@ -34,7 +35,7 @@ sentry_sdk.init(
 )
 
 app = Flask(__name__)
-
+cors = CORS(app)
 app.secret_key = "your_secret_key"
 
 
