@@ -37,10 +37,6 @@ app = Flask(__name__)
 
 app.secret_key = "your_secret_key"
 
-@app.before_request
-def before_the_start():
-    print("App is starting...")
-
 
 app.register_blueprint(landing_page_bp)
 app.register_blueprint(authentication_bp)

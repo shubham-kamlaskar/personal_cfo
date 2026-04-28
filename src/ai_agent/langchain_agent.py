@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 load_dotenv()
 import uuid
 import logging
-import markdown
 
 from langchain.agents import create_agent, AgentState
 from langgraph.checkpoint.memory import InMemorySaver
