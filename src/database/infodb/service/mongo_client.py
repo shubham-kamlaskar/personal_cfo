@@ -60,3 +60,7 @@ class MongoDBClient:
         data = collection.find()
         return data
     
+    def count_all_records_from_collection(self, database_name: str, collection_name: str):
+        collection = self.get_collection_client(database_name, collection_name)
+        data = collection.count_documents({})
+        return data
