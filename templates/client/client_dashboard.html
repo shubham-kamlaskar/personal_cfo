@@ -460,22 +460,7 @@
 
 <body>
 <!-- ── Top Navigation ── -->
-<nav class="top-nav">
-  <a href="#" class="logo">
-    <div class="logo-icon">TC</div>
-    <div>Tax<span>Copilot</span></div>
-  </a>
-  
-  <div class="nav-right">
-    <select class="company-select">
-      <option>{{company.name}}</option>
-    </select>
-    <div class="user-menu">
-      <div class="user-avatar">{{user.initials}}</div>
-      <span style="font-size: 0.875rem; font-weight: 500;">{{user.name}}</span>
-    </div>
-  </div>
-</nav>
+{% include 'client/header.html' %}
 
 <div class="container-fluid px-3 py-3" style="max-width:1300px">
 
@@ -510,22 +495,22 @@
 
   <!-- ── Quick Actions ── -->
   <div class="d-flex gap-2 flex-wrap mb-3">
-    <a href="{{ url_for('company_bp.employees', company_id=company_id) }}" class="action-card">
+    <a href="#" class="action-card">
       <div class="action-icon" style="background: var(--blue-50)">👥</div>
       <div class="action-title">Manage Employees</div>
       <div class="action-sub">Add, edit, view</div>
     </a>
-    <a href="{{ url_for('company_bp.analytics', company_id=company_id) }}" class="action-card">
+    <a href="#" class="action-card">
       <div class="action-icon" style="background: var(--teal-50)">📊</div>
       <div class="action-title">Analytics</div>
       <div class="action-sub">Reports & insights</div>
     </a>
-    <a href="{{ url_for('company_bp.billing', company_id=company_id) }}" class="action-card">
+    <a href="#" class="action-card">
       <div class="action-icon" style="background: var(--amber-50)">💳</div>
       <div class="action-title">Billing</div>
       <div class="action-sub">Invoices & payments</div>
     </a>
-    <a href="{{ url_for('company_bp.settings', company_id=company_id) }}" class="action-card">
+    <a href="#" class="action-card">
       <div class="action-icon" style="background: var(--coral-50)">⚙️</div>
       <div class="action-title">Settings</div>
       <div class="action-sub">Profile & integrations</div>
@@ -540,7 +525,7 @@
       <div class="alert-title">Action Required: Payment Due</div>
       <div class="alert-text">
         Your invoice for ₹{{company.pending_amount}} is due on {{company.payment_due_date}}. 
-        <a href="{{ url_for('company_bp.billing', company_id=company_id) }}" style="color: var(--blue-600); font-weight: 600;">Pay Now →</a>
+        <a href="#" style="color: var(--blue-600); font-weight: 600;">Pay Now →</a>
       </div>
     </div>
   </div>
@@ -577,7 +562,7 @@
             <div class="section-title">👤 Recent Employee Activity</div>
             <div class="section-sub">Latest updates from your team</div>
           </div>
-          <a href="{{ url_for('company_bp.employees', company_id=company_id) }}" class="view-all-btn">
+          <a href="#" class="view-all-btn">
             View All Employees →
           </a>
         </div>

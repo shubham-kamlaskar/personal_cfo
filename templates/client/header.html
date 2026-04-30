@@ -1,0 +1,116 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm px-4">
+
+  <!-- Logo -->
+  <a class="navbar-brand fw-bold" href="#">PersonalCFO</a>
+
+  <!-- Mobile toggle -->
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarMain">
+
+    <!-- Left navigation -->
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+      <!-- Dashboard -->
+      <li class="nav-item">
+        <a class="nav-link"
+           href="{{ url_for('admin_dashboard_bp.admin_dashboard', admin_id=admin_id) }}">
+           Dashboard
+        </a>
+      </li>
+
+      
+      <!-- Billing -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+          Billing
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a class="dropdown-item"
+               href="{{ url_for('admin_dashboard_bp.billing', admin_id=admin_id) }}">
+               Subscription
+            </a>
+          </li>
+          <li><a class="dropdown-item" href="#">Invoices</a></li>
+        </ul>
+      </li>
+
+      <!-- Analytics -->
+      <li class="nav-item">
+        <a class="nav-link"
+           href="{{ url_for('admin_dashboard_bp.analytics', admin_id=admin_id) }}">
+           Analytics
+        </a>
+      </li>
+
+       <!-- Users -->
+      <li class="nav-item">
+        <a class="nav-link"
+           href="{{ url_for('admin_dashboard_bp.employee_list', admin_id=admin_id) }}">
+           Employees
+        </a>
+      </li>
+
+      <!-- Support -->
+      <li class="nav-item">
+        <a class="nav-link"
+           href="{{ url_for('admin_dashboard_bp.support', admin_id=admin_id) }}">
+           Support
+        </a>
+      </li>
+
+    </ul>
+
+    <!-- Search -->
+    <form class="d-flex me-3">
+      <input class="form-control form-control-sm" type="search" placeholder="Search">
+    </form>
+
+    <!-- Notification icon -->
+    <button class="btn btn-light me-3 position-relative">
+      🔔
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        3
+      </span>
+    </button>
+
+    <!-- Profile dropdown -->
+    <div class="dropdown">
+
+      <a href="#"
+         class="d-flex align-items-center text-decoration-none dropdown-toggle"
+         data-bs-toggle="dropdown">
+
+        <img src="https://github.com/mdo.png"
+             width="36"
+             height="36"
+             class="rounded-circle me-2">
+
+        <strong>Admin</strong>
+
+      </a>
+
+      <ul class="dropdown-menu dropdown-menu-end shadow">
+
+        <li>
+          <a class="dropdown-item"
+             href="{{ url_for('user_profile_bp.profile', user_id=user_id) }}">
+             Profile
+          </a>
+        </li>
+
+        <li><a class="dropdown-item" href="#">Settings</a></li>
+
+        <li><hr class="dropdown-divider"></li>
+
+        <li><a class="dropdown-item text-danger" href="#">Logout</a></li>
+
+      </ul>
+
+    </div>
+
+  </div>
+</nav>

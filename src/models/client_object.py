@@ -26,8 +26,7 @@ class ClientOnboarding(BaseModel):
     pincode: Optional[int] = None
     industry: Optional[str] = None
     employee_count: Optional[int] = None
-    plan: Optional[str] = None
-    billing_cycle: Optional[str] = None
+
     admin_name: Optional[str] = None
     admin_email: Optional[str] = None
     admin_phone: Optional[str] = None
@@ -37,11 +36,14 @@ class ClientOnboarding(BaseModel):
     createdAt: Optional[datetime] = None
     updatedAt: Optional[datetime] = None
     
+class ClientBillingInfo(BaseModel):
+    client_id: Optional[str] = None
+    plan: Optional[str] = None
+    billing_cycle: Optional[str] = None
+    
 class ClientInfo(BaseModel):
     client_id: Optional[str] = None
-    address: Optional[str] = None
     name: Optional[str] = None
-    plan: Optional[str] = None
     total_employees: Optional[int] = None
     active_employees: Optional[int] = None
     filing_percentage: Optional[float] = None
@@ -53,10 +55,6 @@ class ClientInfo(BaseModel):
     pending_amount: Optional[float] = None
     payment_due_date: Optional[datetime] = None
     status_counts : Optional[dict[str,int]] = None
-        # filed
-        # review
-        # pending
-        # not_started
     createdAt: Optional[datetime] = None
     updatedAt: Optional[datetime] = None
     

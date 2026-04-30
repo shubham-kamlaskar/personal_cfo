@@ -31,6 +31,13 @@ def client_dashboard():
             "next_billing_date": "2026-12-30",
             "pending_amount": 0,
             "payment_due_date": "2026-12-30",
+            "pending_payments": 10000,
+            "status_counts": {
+                "filed": 500,
+                "review": 200,
+                "pending": 100,
+                "not_started": 50
+            }
         }
         user= {
             "initials": "JDK",
