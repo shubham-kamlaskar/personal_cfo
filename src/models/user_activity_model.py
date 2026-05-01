@@ -3,7 +3,8 @@ from typing import Optional, Any
 from datetime import datetime
 
 class ConversationObject(BaseModel):
-    user_id: str
+    client_id: str
+    employee_id: str
     query: Optional[str]
     response: Optional[str] = None
     session_id: Optional[str] = None
@@ -19,8 +20,9 @@ class ConversationObject(BaseModel):
 
 
 class TaxCalculator(BaseModel):
+    client_id: str
+    employee_id: str
     session_id: str
-    user_id: str
     age: Optional[str]
     gross_income: Optional[float]
     std: Optional[float]

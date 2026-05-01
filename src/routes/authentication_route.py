@@ -34,22 +34,24 @@ def loginUser():
                 email = data.get("email")
                 password = data.get("password")
 
-            search_item = "personal_info" + "." + email_id_field
-            fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, search_item, email)
+            fetch_user_info = mongodb_client.find_one_item_from_collection("user_info", "LoginInfo", "email", email)
             if fetch_user_info:
-                personal_info = fetch_user_info.get('personal_info')
-                if email.lower() == personal_info.get('email'):
+                if email.lower() == fetch_user_info.get('email'):
                     fetch_password = fetch_user_info.get('password')
                     if password_helper.verify_password_hash(password, fetch_password):
-                        user_id = fetch_user_info.get('user_id')
                         
+                        user_info = {
+                            "client_id": fetch_user_info.get('client_id'),
+                            "employee_id": fetch_user_info.get('employee_id'),
+                            "rbac_role": fetch_user_info.get('rbac_role')
+                        }
                         last_user_activity = {"billing_info.last_user_activity": get_current_dt_in_milliseconds_precision()}
-                        session['user'] = user_id
+                        session['user'] = user_info.get('employee_id')
                         mongodb_client.update_one_item_in_collection(db_name, user_info_collection,
-                                                                    user_id_field, user_id, last_user_activity )
+                                                                    user_id_field, user_info.get('employee_id'), last_user_activity )
                         return jsonify({
                                     "status": "success",
-                                    "redirect": url_for("dashboard_bp.dashboard", user_id=user_id)
+                                    "redirect": url_for("dashboard_bp.dashboard", user_id=user_info.get('employee_id'))
                                 })
             else:
                 return render_template("authentication/login.html")

@@ -2,9 +2,18 @@ from pydantic import BaseModel, Field
 from typing import Optional, Any
 from datetime import datetime, date
 
-class InternalEmployeeInfo(BaseModel):
+class LoginObject(BaseModel):
+    client_id: Optional[str] = None
     employee_id: Optional[str] = None
-    password: Optional[bytes] = None
+    email: Optional[str] = None
+    password: Optional[str] = None
+    rbac_role: Optional[str] = None
+    createdAt: Optional[datetime] = None
+    updatedAt: Optional[datetime] = None
+
+class InternalEmployeeInfo(BaseModel):
+    client_id: Optional[str] = None
+    employee_id: Optional[str] = None
     employee_name: Optional[str] = None
     employee_initials: Optional[str] = None
     manager_id: Optional[str] = None
@@ -21,4 +30,4 @@ class InternalEmployeeInfo(BaseModel):
     designation: Optional[str] = None
     role: Optional[str] = None
     createdAt: Optional[datetime] = None
-    updateAt: Optional[datetime] = None
+    updatedAt: Optional[datetime] = None

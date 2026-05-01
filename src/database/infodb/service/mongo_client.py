@@ -39,7 +39,7 @@ class MongoDBClient:
         
     def find_one_item_from_collection(self, database_name: str, collection_name: str, search_field: str, search_item: str):
         collection = self.get_collection_client(database_name, collection_name)
-        data = collection.find_one({search_field: search_item})
+        data = collection.find_one({'cliet_id': search_item})
         return data
     
     def find_many_item_from_collection(self, database_name: str, collection_name: str, search_field: str, search_item: str):
