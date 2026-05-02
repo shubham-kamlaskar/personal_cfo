@@ -792,6 +792,7 @@
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeAllPanels()"></div>
 
 <script>
+  const client_id = "{{client_id}}"
   const employee_id = "{{ employee_id }}";
   
   /* ─── State ─── */
@@ -950,7 +951,7 @@
     showTyping();
 
     try {
-      const response = await fetch(`/${employee_id}/query`, {
+      const response = await fetch(`/${client_id}/${employee_id}/query`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: text })

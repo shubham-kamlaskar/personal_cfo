@@ -18,7 +18,8 @@ investments_bp = Blueprint('investments_bp', __name__, template_folder='template
 @login_required
 def investments(client_id: str, employee_id: str):
     try:
-        fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, "employee_id", employee_id)
+        filter_items = {"client_id": client_id, "employee_id": employee_id}
+        fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, filter_items)
         return render_template("employee/investments.html", user=fetch_user_info, client_id=client_id,employee_id=employee_id)
     except Exception as e:
         logger.error(f"An error occured in investments route: {str(e)}")
@@ -28,7 +29,8 @@ def investments(client_id: str, employee_id: str):
 def add_investments(client_id: str, employee_id: str):
     try:
         data = request.get_json()
-        fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, "employee_id", employee_id)
+        filter_items = {"client_id": client_id, "employee_id": employee_id}
+        fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, filter_items)
 
         if data:
             financial_year = data.get('fy')

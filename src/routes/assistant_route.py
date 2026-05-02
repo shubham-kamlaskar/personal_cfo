@@ -24,10 +24,11 @@ assistant_bp = Blueprint('assistant_bp', __name__, template_folder='templates', 
 @login_required
 def assistant(client_id: str, employee_id: str):
     try:
-        conv_history = history_client.get_user_conversation_history(employee_id)
+        conv_history = history_client.get_user_conversation_history(client_id, employee_id)
         
         return render_template(
             "employee/assistant.html",
+            client_id=client_id,
             employee_id=employee_id,
             conv_history=conv_history
         )
@@ -45,7 +46,7 @@ async def query(client_id: str, employee_id: str):
 
         user_query = data.get("query")
         
-        answer = await agent_provider.get_agent_response(user_query=user_query, employee_id=employee_id)
+        answer = await agent_provider.get_agent_response(user_query=user_query, client_id=client_id, employee_id=employee_id)
         logger.info("Answer is generated.")
         return jsonify({
             "query": user_query,

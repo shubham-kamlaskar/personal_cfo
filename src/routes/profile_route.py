@@ -12,7 +12,7 @@ load_dotenv()
 mongodb_client = MongoDBClient()
 user_info_collection = str(os.getenv('USER_INFO_COLLECTION'))
 db_name = str(os.getenv('DB_NAME'))
-employee_id_FIELD_NAME =  VariableConstant.employee_id_FIELD_DB
+employee_id_FIELD_NAME =  VariableConstant.EMPLOYEE_ID_FIELD_DB
 logger = logging.getLogger(__name__)
 
 user_profile_bp = Blueprint('user_profile_bp', __name__, template_folder='templates', static_folder='static')

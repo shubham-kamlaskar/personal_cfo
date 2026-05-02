@@ -1135,7 +1135,9 @@
 </div>
 
 <script>
+  const client_id = "{{client_id}}"
   const employee_id = "{{ employee_id }}";
+  
   const fmt = (n) => '₹' + n.toLocaleString('en-IN');
   const fmtShort = (n) => n >= 100000 ? (n/100000).toFixed(1)+'L' : n >= 1000 ? (n/1000).toFixed(1)+'K' : n.toString();
   

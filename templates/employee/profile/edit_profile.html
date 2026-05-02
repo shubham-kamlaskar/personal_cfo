@@ -601,7 +601,7 @@
         <h1 class="header-title">✏️ Edit Profile</h1>
         <p class="header-subtitle">Update your personal information and preferences</p>
       </div>
-      <a href="{{ url_for('user_profile_bp.profile', employee_id=employee_id) }}" class="btn-cancel">
+      <a href="{{ url_for('user_profile_bp.profile', employee_id=employee_id, client_id=client_id) }}" class="btn-cancel">
         <span>←</span>
         <span>Back to Profile</span>
       </a>
@@ -617,7 +617,7 @@
     </div>
   </div>
 
-  <form action="{{ url_for('user_profile_bp.edit_profile', employee_id=employee_id) }}" method="POST" id="editProfileForm">
+  <form action="{{ url_for('user_profile_bp.edit_profile', employee_id=employee_id, client_id=client_id) }}" method="POST" id="editProfileForm">
 
     <!-- ══ Avatar Section ══ -->
     <div class="form-section">
@@ -958,6 +958,7 @@
 </div><!-- /page-container -->
 
 <script>
+  const client_id = "{{client_id}}"
     const employee_id = "{{ employee_id }}"
   // Radio option selection styling
   document.querySelectorAll('.radio-option input[type="radio"]').forEach(radio => {

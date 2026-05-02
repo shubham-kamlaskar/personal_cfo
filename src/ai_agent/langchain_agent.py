@@ -40,7 +40,8 @@ class AgentProvider:
 
     async def get_agent_client(self, tools: List[BaseTool], client_id: str, employee_id: str):
         try:
-            user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, "employee_id", employee_id)
+            filter_items = {"client_id": client_id, "employee_id": employee_id}
+            user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, filter_items)
             
             if self.agent is None:    
                 self.agent = create_agent(
@@ -62,7 +63,7 @@ class AgentProvider:
         try:
             answer = None
             if self.agent is None:
-                await self.get_agent_client(tools, employee_id)
+                await self.get_agent_client(tools, client_id, employee_id)
                 
             response = self.agent.invoke(
                 {
@@ -83,6 +84,7 @@ class AgentProvider:
                 metadata: dict = getattr(response_call, "response_metadata", None)
 
                 response_object = ConversationObject(
+                    client_id= client_id,
                     employee_id = employee_id,
                     query=user_query,
                     response=response_call.content if response_call else "",

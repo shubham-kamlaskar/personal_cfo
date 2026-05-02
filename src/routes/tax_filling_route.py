@@ -15,7 +15,7 @@ tax_filling_bp = Blueprint('tax_filling_bp', __name__, template_folder='template
 
 @tax_filling_bp.route("/<client_id>/<employee_id>/tax_filling", methods=["GET"])
 @login_required
-def tax_filling(client_id: str,employee_id: str):
+def tax_filling(client_id: str, employee_id: str):
     try:
         filter_items = {"client_id": client_id, "employee_id": employee_id}
         fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, filter_items)

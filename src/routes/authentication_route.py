@@ -89,7 +89,7 @@ def signupUser():
 
         return jsonify({
             "message": "Account created successfully",
-            "redirect": url_for("authentication_bp.login")
+            "redirect": url_for("authentication_bp.loginUser")
         }), 200
     except Exception as e:
         logger.error(f"An error occured in SignupUser route: {str(e)}")
@@ -109,12 +109,12 @@ def forgotPasswordUser():
 
         return jsonify({
             "message": "email send to your email id",
-            "redirect": url_for("authentication_bp.login")
+            "redirect": url_for("authentication_bp.loginUser")
         }), 200
     except Exception as e:
         logger.error(f"An error occured in forgotPasswordUser route: {str(e)}")
     
-@authentication_bp.route("/logout")
-def logout():
+@authentication_bp.route("/signout", methods=["GET"])
+def signout():
     session.pop("user", None)
-    return redirect(url_for("login"))
+    return redirect(url_for("authentication_bp.loginUser"))
