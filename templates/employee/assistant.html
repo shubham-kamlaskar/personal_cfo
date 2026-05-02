@@ -792,7 +792,7 @@
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeAllPanels()"></div>
 
 <script>
-  const user_id = "{{ user_id }}";
+  const employee_id = "{{ employee_id }}";
   
   /* ─── State ─── */
   let messages = [];
@@ -950,7 +950,7 @@
     showTyping();
 
     try {
-      const response = await fetch(`/${user_id}/query`, {
+      const response = await fetch(`/${employee_id}/query`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: text })

@@ -33,27 +33,28 @@ class MongoDBClient:
         collection = self.get_collection_client(database_name, collection_name)
         collection.insert_many(data)
         
-    def update_one_item_in_collection(self, database_name: str, collection_name: str, filter_field: str, filter_item: str, update_data: dict):
+    def update_one_item_in_collection(self, database_name: str, collection_name: str, filter_items: dict, update_data: dict):
         collection = self.get_collection_client(database_name, collection_name)
-        collection.update_one({filter_field: filter_item}, {"$set": update_data})
+        collection.update_one(filter_items, {"$set": update_data})
         
-    def find_one_item_from_collection(self, database_name: str, collection_name: str, search_field: str, search_item: str):
+    def find_one_item_from_collection(self, database_name: str, collection_name: str, filter_items: dict):
         collection = self.get_collection_client(database_name, collection_name)
-        data = collection.find_one({'cliet_id': search_item})
+        data = collection.find_one(filter_items)
         return data
     
-    def find_many_item_from_collection(self, database_name: str, collection_name: str, search_field: str, search_item: str):
+    def find_many_item_from_collection(self, database_name: str, collection_name: str, filter_items: dict):
         collection = self.get_collection_client(database_name, collection_name)
-        data = collection.find({search_field: search_item})
+        data = collection.find(filter_items)
         return data
     
-    def delete_one_item_from_collection(self, database_name: str, collection_name: str, search_field: str, delete_item: str):
+    def delete_one_item_from_collection(self, database_name: str, collection_name: str, filter_items: dict):
         collection = self.get_collection_client(database_name, collection_name)
-        collection.delete_one({search_field: delete_item})
+        collection.delete_one(filter_items)
         
-    def count_item_from_collection(self, database_name: str, collection_name: str, search_field: str, count_item: str):
+    def count_item_from_collection(self, database_name: str, collection_name: str, filter_items: dict):
         collection = self.get_collection_client(database_name, collection_name)
-        count_item = collection.count_documents({search_field: count_item})
+        count_item = collection.count_documents(filter_items)
+        return count_item
         
     def fetch_all_records_from_collection(self, database_name: str, collection_name: str):
         collection = self.get_collection_client(database_name, collection_name)

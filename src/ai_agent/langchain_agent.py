@@ -26,7 +26,7 @@ db_name = str(os.getenv('DB_NAME'))
 logger = logging.getLogger(__name__)
 
 class CustomAgentState(AgentState):
-    user_id: str
+    employee_id: str
     preferences: dict
     
 class AgentProvider:
@@ -38,9 +38,9 @@ class AgentProvider:
         self.agent = None
         self.session_id = "81d9c347-f032-455e-9805-77e6e9198abc"
 
-    async def get_agent_client(self, tools: List[BaseTool], user_id: str):
+    async def get_agent_client(self, tools: List[BaseTool], client_id: str, employee_id: str):
         try:
-            user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, "user_id", user_id)
+            user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, "employee_id", employee_id)
             
             if self.agent is None:    
                 self.agent = create_agent(
@@ -58,16 +58,16 @@ class AgentProvider:
             logging.error(f"Error initializing agent client: {str(e)}")
             raise Exception(f"Error initializing agent client: {str(e)}")
         
-    async def get_agent_response(self, user_query: str, user_id: str):
+    async def get_agent_response(self, user_query: str, client_id: str, employee_id: str):
         try:
             answer = None
             if self.agent is None:
-                await self.get_agent_client(tools, user_id)
+                await self.get_agent_client(tools, employee_id)
                 
             response = self.agent.invoke(
                 {
                     "messages": [{"role": "user", "content": user_query}],
-                    "user_id": user_id,
+                    "employee_id": employee_id,
                     "preferences": {"theme": "dark"}
                 },
                 config={"callbacks": [langfuse_handler],
@@ -83,7 +83,7 @@ class AgentProvider:
                 metadata: dict = getattr(response_call, "response_metadata", None)
 
                 response_object = ConversationObject(
-                    user_id = user_id,
+                    employee_id = employee_id,
                     query=user_query,
                     response=response_call.content if response_call else "",
                     session_id = self.session_id,

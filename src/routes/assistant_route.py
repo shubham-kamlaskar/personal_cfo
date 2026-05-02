@@ -20,23 +20,23 @@ logger = logging.getLogger(__name__)
 
 assistant_bp = Blueprint('assistant_bp', __name__, template_folder='templates', static_folder='static')
 
-@assistant_bp.route("/<user_id>/assistant", methods=["GET"])
+@assistant_bp.route("/<client_id>/<employee_id>/assistant", methods=["GET"])
 @login_required
-def assistant(user_id: str):
+def assistant(client_id: str, employee_id: str):
     try:
-        conv_history = history_client.get_user_conversation_history(user_id)
+        conv_history = history_client.get_user_conversation_history(employee_id)
         
         return render_template(
             "employee/assistant.html",
-            user_id=user_id,
+            employee_id=employee_id,
             conv_history=conv_history
         )
     except Exception as e:
         logger.error(f"An error occured in assistant route: {str(e)}")
 
 
-@assistant_bp.route("/<user_id>/query", methods=["POST"])
-async def query(user_id: str):
+@assistant_bp.route("/<client_id>/<employee_id>/query", methods=["POST"])
+async def query(client_id: str, employee_id: str):
     try:
         data = request.get_json(silent=True)
 
@@ -45,7 +45,7 @@ async def query(user_id: str):
 
         user_query = data.get("query")
         
-        answer = await agent_provider.get_agent_response(user_query=user_query, user_id=user_id)
+        answer = await agent_provider.get_agent_response(user_query=user_query, employee_id=employee_id)
         logger.info("Answer is generated.")
         return jsonify({
             "query": user_query,

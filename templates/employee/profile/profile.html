@@ -672,7 +672,7 @@
   <!-- ── Profile Header ── -->
   <div class="profile-header">
     <button class="btn-edit-profile"
-onclick="window.location.href='{{ url_for('user_profile_bp.edit_profile', user_id=user_id) }}';">
+onclick="window.location.href='{{ url_for('user_profile_bp.edit_profile', employee_id=employee_id) }}';">
   ✏️ Edit Profile
 </button>
     
@@ -1001,7 +1001,7 @@ onclick="window.location.href='{{ url_for('user_profile_bp.edit_profile', user_i
 </div><!-- /page-container -->
 
 <script>
-  const user_id = "{{ user_id }}"
+  const employee_id = "{{ employee_id }}"
   function toggleSetting(element) {
     element.classList.toggle('active');
   }

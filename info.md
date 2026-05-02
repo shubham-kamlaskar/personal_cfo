@@ -51,7 +51,7 @@ Store employee tax profile.
 Example schema in MongoDB:
 
 {
- "user_id": "EMP123",
+ "employee_id": "EMP123",
  "pan": "ABCDE1234F",
  "salary": {
     "basic": 800000,

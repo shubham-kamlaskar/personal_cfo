@@ -127,6 +127,11 @@ class UserInfoObject(BaseModel):
     investments_info: Optional[TotalInvestments] = None
     createdAt: Optional[datetime] = None
     updatedAt: Optional[datetime] = None
+    
+class UserInfo(BaseModel):
+    client_id: str
+    employee_id: str
+    rbac_role: str
 
 
 class ForgotPasswordObject(BaseModel):

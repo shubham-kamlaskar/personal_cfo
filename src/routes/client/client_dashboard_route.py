@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 @login_required
 def client_dashboard():
     try:
-        # fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, "user_id", user_id)
+        # fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, "employee_id", employee_id)
         # return render_template("employee/dashboard.html", client=fetch_user_info, client_id=client_id)
         company = {
             "name": "ABC Corporation",

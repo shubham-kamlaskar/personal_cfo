@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 tax_engine = TaxEngine()
 
-def update_calculate_tax_in_db(data: dict, user_id: str) -> dict:
+def update_calculate_tax_in_db(data: dict, client_id: str, employee_id: str) -> dict:
     session_id = str(uuid.uuid4())
     age = data.get('age')
     gross_income = float(data.get('gross', 0))
@@ -68,7 +68,7 @@ def update_calculate_tax_in_db(data: dict, user_id: str) -> dict:
         
     tax_comparison = TaxCalculator(  
                 session_id = session_id,
-                user_id = user_id,
+                employee_id = employee_id,
                 age = age,
                 gross_income = gross_income,
                 std = std,

@@ -1135,7 +1135,7 @@
 </div>
 
 <script>
-  const user_id = "{{ user_id }}";
+  const employee_id = "{{ employee_id }}";
   const fmt = (n) => '₹' + n.toLocaleString('en-IN');
   const fmtShort = (n) => n >= 100000 ? (n/100000).toFixed(1)+'L' : n >= 1000 ? (n/1000).toFixed(1)+'K' : n.toString();
   
@@ -1184,7 +1184,7 @@
   /* ───── Load Backend Data ───── */
   async function loadBackendData() {
     try {
-      const response = await fetch(`/${user_id}/get_investments?fy=${currentFY}`);
+      const response = await fetch(`/${employee_id}/get_investments?fy=${currentFY}`);
       if (!response.ok) {
         console.error('Failed to load investments');
         return;
@@ -1465,7 +1465,7 @@
         }
       };
 
-      const response = await fetch(`/${user_id}/add_investments`, {
+      const response = await fetch(`/${employee_id}/add_investments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

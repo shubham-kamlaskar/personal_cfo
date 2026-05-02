@@ -1100,7 +1100,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
-  const user_id = "{{ user_id }}";
+  const employee_id = "{{ employee_id }}";
   
   // Backend data (from Flask)
   const backendData = {{ user.investments_info | tojson | safe }} || {};
@@ -1505,7 +1505,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       };
 
-      const response = await fetch(`/${user_id}/add_investments`, {
+      const response = await fetch(`/${employee_id}/add_investments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
