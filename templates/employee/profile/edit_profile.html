@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<title>Edit Profile | TaxCopilot</title>
+<style>
+  :root {
+    --primary: #1a56db;
+    --primary-light: #e8f0fe;
+    --primary-dark: #1e40af;
+    --accent: #16a34a;
+    --accent-light: #dcfce7;
+    --warning: #d97706;
+    --warning-light: #fef3c7;
+    --danger: #dc2626;
+    --danger-light: #fee2e2;
+    --surface: #ffffff;
+    --surface-2: #f8fafc;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 32px rgba(26,86,219,0.15);
+  }
+ 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f1f5f9;
+    color: var(--text);
+    line-height: 1.6;
+  }
+ 
+  h1, h2, h3, h4, .heading { font-family: 'Sora', sans-serif; }
+ 
+  /* ── Page Container ── */
+  .page-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  /* ── Page Header ── */
+  .page-header {
+    background: linear-gradient(135deg, #1a56db 0%, #1e40af 100%);
+    border-radius: var(--radius);
+    padding: 1.75rem 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .page-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -15%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    animation: float 15s infinite ease-in-out;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(20px, -20px) rotate(3deg); }
+  }
+
+  .page-header-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header-left {
+    color: white;
+  }
+
+  .header-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.3rem;
+  }
+
+  .header-subtitle {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    font-weight: 500;
+  }
+
+  .btn-cancel {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 0.65rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all 0.2s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-cancel:hover {
+    background: rgba(255,255,255,0.3);
+    transform: translateY(-2px);
+    color: white;
+  }
+
+  /* ── Form Sections ── */
+  .form-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .section-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 11px;
+    background: var(--primary-light);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+  }
+
+  .section-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .section-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  /* ── Avatar Upload ── */
+  .avatar-upload-section {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.5rem;
+    background: var(--surface-2);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+
+  .current-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #1a56db, #3b82f6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    box-shadow: 0 8px 24px rgba(26,86,219,0.2);
+    flex-shrink: 0;
+  }
+
+  .avatar-upload-info {
+    flex: 1;
+  }
+
+  .avatar-upload-title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+  }
+
+  .avatar-upload-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .avatar-upload-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .btn-upload {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-upload:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+
+  .btn-remove {
+    background: var(--danger-light);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+    padding: 0.6rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-remove:hover {
+    background: var(--danger);
+    color: white;
+  }
+
+  /* ── Form Fields ── */
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .form-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .required {
+    color: var(--danger);
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    background: var(--surface);
+    transition: all 0.2s;
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(26,86,219,0.1);
+  }
+
+  .form-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.6;
+  }
+
+  .form-select {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    background: var(--surface);
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .form-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(26,86,219,0.1);
+  }
+
+  .form-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+  }
+
+  .form-hint.error {
+    color: var(--danger);
+  }
+
+  .form-hint.success {
+    color: var(--accent);
+  }
+
+  /* ── Input Icons ── */
+  .input-wrapper {
+    position: relative;
+  }
+
+  .input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.1rem;
+    color: var(--text-muted);
+  }
+
+  .input-wrapper .form-input {
+    padding-left: 3rem;
+  }
+
+  /* ── Radio/Checkbox Groups ── */
+  .radio-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--surface);
+  }
+
+  .radio-option:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+  }
+
+  .radio-option input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--primary);
+  }
+
+  .radio-option.selected {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    font-weight: 600;
+  }
+
+  /* ── Action Buttons ── */
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.9rem 2.5rem;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(26,86,219,0.3);
+  }
+
+  .btn-secondary {
+    background: var(--surface-2);
+    color: var(--text);
+    border: 1.5px solid var(--border);
+    padding: 0.9rem 2rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover {
+    background: var(--border);
+  }
+
+  /* ── Info Box ── */
+  .info-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--primary-light);
+    border: 1px solid var(--primary);
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+  }
+
+  .info-box-icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+
+  .info-box-content {
+    flex: 1;
+  }
+
+  .info-box-title {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--primary-dark);
+    margin-bottom: 0.2rem;
+  }
+
+  .info-box-text {
+    font-size: 0.8rem;
+    color: var(--primary-dark);
+    opacity: 0.85;
+  }
+
+  /* ── Password Strength ── */
+  .password-strength {
+    margin-top: 0.5rem;
+  }
+
+  .strength-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-bottom: 0.3rem;
+  }
+
+  .strength-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--danger);
+    transition: all 0.3s;
+    border-radius: 99px;
+  }
+
+  .strength-fill.weak { width: 33%; background: var(--danger); }
+  .strength-fill.medium { width: 66%; background: var(--warning); }
+  .strength-fill.strong { width: 100%; background: var(--accent); }
+
+  .strength-text {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  /* ── Verification Badge ── */
+  .verification-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.8rem;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .verification-badge.verified {
+    background: var(--accent-light);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+
+  .verification-badge.unverified {
+    background: var(--warning-light);
+    color: var(--warning);
+    border: 1px solid var(--warning);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 767.98px) {
+    .page-container {
+      padding: 1rem 0.75rem;
+    }
+    .page-header {
+      padding: 1.25rem 1rem;
+    }
+    .header-title {
+      font-size: 1.35rem;
+    }
+    .page-header-content {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .btn-cancel {
+      align-self: flex-start;
+    }
+    .form-section {
+      padding: 1.25rem;
+    }
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+    .avatar-upload-section {
+      flex-direction: column;
+      text-align: center;
+    }
+    .avatar-upload-actions {
+      justify-content: center;
+    }
+    .form-actions {
+      flex-direction: column-reverse;
+    }
+    .btn-primary, .btn-secondary {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  /* ── Loading State ── */
+  .btn-loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  .btn-loading::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    right: 1rem;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+</head>
+
+<body>
+{% include 'employee/header.html' %}
+
+<div class="page-container">
+
+  <!-- ── Page Header ── -->
+  <div class="page-header">
+    <div class="page-header-content">
+      <div class="header-left">
+        <h1 class="header-title">✏️ Edit Profile</h1>
+        <p class="header-subtitle">Update your personal information and preferences</p>
+      </div>
+      <a href="{{ url_for('user_profile_bp.profile', employee_id=employee_id) }}" class="btn-cancel">
+        <span>←</span>
+        <span>Back to Profile</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Info Box ── -->
+  <div class="info-box">
+    <div class="info-box-icon">🔒</div>
+    <div class="info-box-content">
+      <div class="info-box-title">Your data is secure</div>
+      <div class="info-box-text">All information is encrypted and stored in compliance with DPDP Act 2023. We never share your personal data with third parties.</div>
+    </div>
+  </div>
+
+  <form action="{{ url_for('user_profile_bp.edit_profile', employee_id=employee_id) }}" method="POST" id="editProfileForm">
+
+    <!-- ══ Avatar Section ══ -->
+    <div class="form-section">
+      <div class="avatar-upload-section">
+        <div class="current-avatar">
+          <span>👤</span>
+        </div>
+        <div class="avatar-upload-info">
+          <div class="avatar-upload-title">Profile Picture</div>
+          <div class="avatar-upload-desc">JPG, PNG or GIF. Max size 2MB. Recommended 400x400px</div>
+          <div class="avatar-upload-actions">
+            <button type="button" class="btn-upload" onclick="document.getElementById('avatarInput').click()">
+              📷 Upload Photo
+            </button>
+            <button type="button" class="btn-remove">🗑️ Remove</button>
+          </div>
+          <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ Personal Information ══ -->
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-icon">👤</div>
+        <div>
+          <div class="section-title">Personal Information</div>
+        </div>
+        <div class="section-desc">Basic details about you</div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">
+            Full Name <span class="required">*</span>
+          </label>
+          <input type="text" name="name" class="form-input" placeholder="Enter your full name" value="{{ user.personal_info.name }}" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            Date of Birth <span class="required">*</span>
+          </label>
+          <input type="date" name="dob" class="form-input" value="{{ user.personal_info.dob }}" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            Email Address <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon">📧</span>
+            <input type="email" name="email" class="form-input" placeholder="your.email@example.com" value="{{ user.personal_info.email }}" required>
+          </div>
+          <div class="form-hint">
+            <span class="verification-badge verified">✓ Verified</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            Phone Number <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon">📱</span>
+            <input type="tel" name="phone" class="form-input" placeholder="+91 XXXXX XXXXX" value="{{ user.personal_info.phone }}" required>
+          </div>
+          <div class="form-hint">
+            <span class="verification-badge unverified">⚠ Not Verified</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Gender</label>
+          <select name="gender" class="form-select">
+            <option value="">Select Gender</option>
+            <option value="male" {% if user.personal_info.gender == 'male' %}selected{% endif %}>Male</option>
+            <option value="female" {% if user.personal_info.gender == 'female' %}selected{% endif %}>Female</option>
+            <option value="other" {% if user.personal_info.gender == 'other' %}selected{% endif %}>Other</option>
+            <option value="prefer-not-to-say" {% if user.personal_info.gender == 'prefer-not-to-say' %}selected{% endif %}>Prefer not to say</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Marital Status</label>
+          <select name="marital_status" class="form-select">
+            <option value="">Select Status</option>
+            <option value="single" {% if user.personal_info.marital_status == 'single' %}selected{% endif %}>Single</option>
+            <option value="married" {% if user.personal_info.marital_status == 'married' %}selected{% endif %}>Married</option>
+            <option value="divorced" {% if user.personal_info.marital_status == 'divorced' %}selected{% endif %}>Divorced</option>
+            <option value="widowed" {% if user.personal_info.marital_status == 'widowed' %}selected{% endif %}>Widowed</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ Tax Information ══ -->
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-icon">📊</div>
+        <div>
+          <div class="section-title">Tax Information</div>
+        </div>
+        <div class="section-desc">Critical for ITR filing</div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">
+            PAN Number <span class="required">*</span>
+          </label>
+          <input type="text" name="pan" class="form-input" placeholder="ABCDE1234F" value="{{ user.tax_info.pan }}" maxlength="10" style="text-transform: uppercase;" required>
+          <div class="form-hint">10-character alphanumeric code</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            Aadhar Number <span class="required">*</span>
+          </label>
+          <input type="text" name="aadhar" class="form-input" placeholder="XXXX XXXX XXXX" value="{{ user.tax_info.aadhar }}" maxlength="14" required>
+          <div class="form-hint">12-digit unique identification number</div>
+        </div>
+
+        <div class="form-group full-width">
+          <label class="form-label">
+            Tax Regime <span class="required">*</span>
+          </label>
+          <div class="radio-group">
+            <label class="radio-option {% if user.tax_info.tax_regime == 'old' or not user.tax_info.tax_regime %}selected{% endif %}">
+              <input type="radio" name="tax_regime" value="old" {% if user.tax_info.tax_regime == 'old' or not user.tax_info.tax_regime %}checked{% endif %}>
+              <span>Old Regime (with deductions)</span>
+            </label>
+            <label class="radio-option {% if user.tax_info.tax_regime == 'new' %}selected{% endif %}">
+              <input type="radio" name="tax_regime" value="new" {% if user.tax_info.tax_regime == 'new' %}checked{% endif %}>
+              <span>New Regime (lower rates)</span>
+            </label>
+          </div>
+          <div class="form-hint">Our AI will help you choose the best regime based on your profile</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ Employment Details ══ -->
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-icon">💼</div>
+        <div>
+          <div class="section-title">Employment Details</div>
+        </div>
+        <div class="section-desc">Work & income information</div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group full-width">
+          <label class="form-label">
+            Employment Type <span class="required">*</span>
+          </label>
+          <div class="radio-group">
+            <label class="radio-option {% if user.employment_info.employment_type == 'salaried' or not user.employment_info.employment_type %}selected{% endif %}">
+              <input type="radio" name="employment_type" value="salaried" {% if user.employment_info.employment_type == 'salaried' or not user.employment_info.employment_type %}checked{% endif %}>
+              <span>Salaried</span>
+            </label>
+            <label class="radio-option {% if user.employment_info.employment_type == 'self-employed' %}selected{% endif %}">
+              <input type="radio" name="employment_type" value="self-employed" {% if user.employment_info.employment_type == 'self-employed' %}checked{% endif %}>
+              <span>Self-Employed</span>
+            </label>
+            <label class="radio-option {% if user.employment_info.employment_type == 'business' %}selected{% endif %}">
+              <input type="radio" name="employment_type" value="business" {% if user.employment_info.employment_type == 'business' %}checked{% endif %}>
+              <span>Business Owner</span>
+            </label>
+            <label class="radio-option {% if user.employment_info.employment_type == 'freelancer' %}selected{% endif %}">
+              <input type="radio" name="employment_type" value="freelancer" {% if user.employment_info.employment_type == 'freelancer' %}checked{% endif %}>
+              <span>Freelancer</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            Company Name <span class="required">*</span>
+          </label>
+          <input type="text" name="company" class="form-input" placeholder="Your company name" value="{{ user.employment_info.company }}" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Designation</label>
+          <input type="text" name="designation" class="form-input" placeholder="Your job title" value="{{ user.employment_info.designation }}">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            Annual Gross Salary (₹) <span class="required">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-icon">💰</span>
+            <input type="number" name="salary" class="form-input" placeholder="1200000" value="{{ user.employment_info.salary }}" required>
+          </div>
+          <div class="form-hint">As per Form 16 / CTC</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Industry Sector</label>
+          <select name="industry" class="form-select">
+            <option value="">Select Industry</option>
+            <option value="it" {% if user.employment_info.industry == 'it' %}selected{% endif %}>Information Technology</option>
+            <option value="finance" {% if user.employment_info.industry == 'finance' %}selected{% endif %}>Banking & Finance</option>
+            <option value="healthcare" {% if user.employment_info.industry == 'healthcare' %}selected{% endif %}>Healthcare</option>
+            <option value="education" {% if user.employment_info.industry == 'education' %}selected{% endif %}>Education</option>
+            <option value="manufacturing" {% if user.employment_info.industry == 'manufacturing' %}selected{% endif %}>Manufacturing</option>
+            <option value="retail" {% if user.employment_info.industry == 'retail' %}selected{% endif %}>Retail & E-commerce</option>
+            <option value="consulting" {% if user.employment_info.industry == 'consulting' %}selected{% endif %}>Consulting</option>
+            <option value="other" {% if user.employment_info.industry == 'other' %}selected{% endif %}>Other</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ Address Information ══ -->
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-icon">📍</div>
+        <div>
+          <div class="section-title">Address Information</div>
+        </div>
+        <div class="section-desc">Residential details</div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group full-width">
+          <label class="form-label">
+            Street Address <span class="required">*</span>
+          </label>
+          <input type="text" name="address_line1" class="form-input" placeholder="House/Flat No., Building Name" value="{{ user.address_info.address_line1 }}" required>
+        </div>
+
+        <div class="form-group full-width">
+          <label class="form-label">Address Line 2</label>
+          <input type="text" name="address_line2" class="form-input" placeholder="Street, Locality" value="{{ user.address_info.address_line2 }}">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            City <span class="required">*</span>
+          </label>
+          <input type="text" name="city" class="form-input" placeholder="Bengaluru" value="{{ user.address_info.city }}" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            State <span class="required">*</span>
+          </label>
+          <select name="state" class="form-select" required>
+            <option value="">Select State</option>
+            <option value="AN" {% if user.address_info.state == 'AN' %}selected{% endif %}>Andaman and Nicobar Islands</option>
+            <option value="AP" {% if user.address_info.state == 'AP' %}selected{% endif %}>Andhra Pradesh</option>
+            <option value="AR" {% if user.address_info.state == 'AR' %}selected{% endif %}>Arunachal Pradesh</option>
+            <option value="AS" {% if user.address_info.state == 'AS' %}selected{% endif %}>Assam</option>
+            <option value="BR" {% if user.address_info.state == 'BR' %}selected{% endif %}>Bihar</option>
+            <option value="CH" {% if user.address_info.state == 'CH' %}selected{% endif %}>Chandigarh</option>
+            <option value="CT" {% if user.address_info.state == 'CT' %}selected{% endif %}>Chhattisgarh</option>
+            <option value="DL" {% if user.address_info.state == 'DL' %}selected{% endif %}>Delhi</option>
+            <option value="GA" {% if user.address_info.state == 'GA' %}selected{% endif %}>Goa</option>
+            <option value="GJ" {% if user.address_info.state == 'GJ' %}selected{% endif %}>Gujarat</option>
+            <option value="HR" {% if user.address_info.state == 'HR' %}selected{% endif %}>Haryana</option>
+            <option value="HP" {% if user.address_info.state == 'HP' %}selected{% endif %}>Himachal Pradesh</option>
+            <option value="JK" {% if user.address_info.state == 'JK' %}selected{% endif %}>Jammu and Kashmir</option>
+            <option value="JH" {% if user.address_info.state == 'JH' %}selected{% endif %}>Jharkhand</option>
+            <option value="KA" {% if user.address_info.state == 'KA' %}selected{% endif %}>Karnataka</option>
+            <option value="KL" {% if user.address_info.state == 'KL' %}selected{% endif %}>Kerala</option>
+            <option value="MH" {% if user.address_info.state == 'MH' %}selected{% endif %}>Maharashtra</option>
+            <option value="TN" {% if user.address_info.state == 'TN' %}selected{% endif %}>Tamil Nadu</option>
+            <option value="TG" {% if user.address_info.state == 'TG' %}selected{% endif %}>Telangana</option>
+            <option value="UP" {% if user.address_info.state == 'UP' %}selected{% endif %}>Uttar Pradesh</option>
+            <option value="WB" {% if user.address_info.state == 'WB' %}selected{% endif %}>West Bengal</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            PIN Code <span class="required">*</span>
+          </label>
+          <input type="text" name="pincode" class="form-input" placeholder="560001" value="{{ user.address_info.pincode }}" maxlength="6" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Country</label>
+          <input type="text" name="country" class="form-input" value="India" readonly>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ Security Settings ══ -->
+    <div class="form-section">
+      <div class="section-header">
+        <div class="section-icon">🔐</div>
+        <div>
+          <div class="section-title">Security Settings</div>
+        </div>
+        <div class="section-desc">Optional password change</div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Current Password</label>
+          <input type="password" name="current_password" class="form-input" placeholder="Enter current password">
+          <div class="form-hint">Leave blank if you don't want to change password</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">New Password</label>
+          <input type="password" name="new_password" id="newPassword" class="form-input" placeholder="Enter new password" onkeyup="checkPasswordStrength(this.value)">
+          <div class="password-strength" id="passwordStrength" style="display: none;">
+            <div class="strength-bar">
+              <div class="strength-fill" id="strengthFill"></div>
+            </div>
+            <div class="strength-text" id="strengthText"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Confirm New Password</label>
+          <input type="password" name="confirm_password" class="form-input" placeholder="Re-enter new password">
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ Form Actions ══ -->
+    <div class="form-actions">
+      <a href="/profile" class="btn-secondary">Cancel</a>
+      <button type="submit" class="btn-primary" id="saveBtn">
+        <span>💾</span>
+        <span>Save Changes</span>
+      </button>
+    </div>
+
+  </form>
+
+</div><!-- /page-container -->
+
+<script>
+    const employee_id = "{{ employee_id }}"
+  // Radio option selection styling
+  document.querySelectorAll('.radio-option input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      // Remove selected class from all options in this group
+      this.closest('.radio-group').querySelectorAll('.radio-option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      // Add selected class to chosen option
+      this.closest('.radio-option').classList.add('selected');
+    });
+  });
+
+  // Password strength checker
+  function checkPasswordStrength(password) {
+    const strengthDiv = document.getElementById('passwordStrength');
+    const strengthFill = document.getElementById('strengthFill');
+    const strengthText = document.getElementById('strengthText');
+
+    if (!password) {
+      strengthDiv.style.display = 'none';
+      return;
+    }
+
+    strengthDiv.style.display = 'block';
+
+    let strength = 0;
+    if (password.length >= 8) strength++;
+    if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+    if (password.match(/[0-9]/)) strength++;
+    if (password.match(/[^a-zA-Z0-9]/)) strength++;
+
+    strengthFill.className = 'strength-fill';
+    if (strength <= 2) {
+      strengthFill.classList.add('weak');
+      strengthText.textContent = 'Weak Password';
+      strengthText.style.color = 'var(--danger)';
+    } else if (strength === 3) {
+      strengthFill.classList.add('medium');
+      strengthText.textContent = 'Medium Password';
+      strengthText.style.color = 'var(--warning)';
+    } else {
+      strengthFill.classList.add('strong');
+      strengthText.textContent = 'Strong Password';
+      strengthText.style.color = 'var(--accent)';
+    }
+  }
+
+  // Form submission handling
+  document.getElementById('editProfileForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Validate passwords match
+    const newPassword = document.querySelector('input[name="new_password"]').value;
+    const confirmPassword = document.querySelector('input[name="confirm_password"]').value;
+
+    if (newPassword && newPassword !== confirmPassword) {
+      alert('New passwords do not match!');
+      return;
+    }
+
+    // Add loading state and submit the actual form
+    const saveBtn = document.getElementById('saveBtn');
+    saveBtn.classList.add('btn-loading');
+    saveBtn.disabled = true;
+
+    this.submit();
+  });
+
+  // PAN format validation
+  document.querySelector('input[name="pan"]').addEventListener('input', function(e) {
+    this.value = this.value.toUpperCase();
+    const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+    if (this.value.length === 10) {
+      if (!panRegex.test(this.value)) {
+        this.setCustomValidity('Invalid PAN format. Should be: ABCDE1234F');
+      } else {
+        this.setCustomValidity('');
+      }
+    }
+  });
+
+  // Aadhar format validation (with spaces)
+  document.querySelector('input[name="aadhar"]').addEventListener('input', function(e) {
+    let value = this.value.replace(/\s/g, '');
+    if (value.length > 12) value = value.substr(0, 12);
+    
+    // Add spaces after every 4 digits
+    let formatted = value.match(/.{1,4}/g)?.join(' ') || value;
+    this.value = formatted;
+  });
+
+  // PIN code validation
+  document.querySelector('input[name="pincode"]').addEventListener('input', function(e) {
+    this.value = this.value.replace(/\D/g, '');
+  });
+
+  // Phone number validation
+  document.querySelector('input[name="phone"]').addEventListener('input', function(e) {
+    // Remove all non-digits
+    let value = this.value.replace(/\D/g, '');
+    
+    // Format: +91 XXXXX XXXXX
+    if (value.startsWith('91')) {
+      value = value.substr(2);
+    }
+    if (value.length > 10) value = value.substr(0, 10);
+    
+    if (value.length > 5) {
+      this.value = '+91 ' + value.substr(0, 5) + ' ' + value.substr(5);
+    } else if (value.length > 0) {
+      this.value = '+91 ' + value;
+    }
+  });
+
+  // Auto-save draft (optional feature)
+  let autoSaveTimeout;
+  document.querySelectorAll('.form-input, .form-select').forEach(input => {
+    input.addEventListener('input', function() {
+      clearTimeout(autoSaveTimeout);
+      autoSaveTimeout = setTimeout(() => {
+        // Save to localStorage
+        const formData = new FormData(document.getElementById('editProfileForm'));
+        const data = Object.fromEntries(formData);
+        localStorage.setItem('profileDraft', JSON.stringify(data));
+        console.log('Draft saved');
+      }, 1000);
+    });
+  });
+
+  // Load draft on page load
+  window.addEventListener('load', function() {
+    const draft = localStorage.getItem('profileDraft');
+    if (draft && confirm('Found unsaved changes. Would you like to restore them?')) {
+      const data = JSON.parse(draft);
+      Object.keys(data).forEach(key => {
+        const input = document.querySelector(`[name="${key}"]`);
+        if (input && !input.value) {
+          input.value = data[key];
+        }
+      });
+    }
+  });
+
+  // Clear draft on successful save
+  window.addEventListener('beforeunload', function() {
+    if (document.getElementById('saveBtn').classList.contains('btn-loading')) {
+      localStorage.removeItem('profileDraft');
+    }
+  });
+</script>
+
+</body>
+</html>

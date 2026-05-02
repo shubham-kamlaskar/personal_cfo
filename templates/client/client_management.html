@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<title>Company Settings | TaxCopilot</title>
+<style>
+  :root {
+    --blue-50: #E6F1FB;
+    --blue-100: #B5D4F4;
+    --blue-400: #378ADD;
+    --blue-600: #185FA5;
+    --blue-800: #0C447C;
+    --teal-50: #E1F5EE;
+    --teal-400: #1D9E75;
+    --teal-600: #0F6E56;
+    --amber-50: #FAEEDA;
+    --amber-400: #BA7517;
+    --coral-50: #FAECE7;
+    --coral-400: #D85A30;
+    --gray-50: #F1EFE8;
+    --gray-100: #D3D1C7;
+    --gray-400: #888780;
+    --gray-800: #444441;
+    --gray-900: #2C2C2A;
+    --surface: #ffffff;
+    --border: #e2e8f0;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f1f5f9;
+    color: var(--gray-900);
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, .heading {
+    font-family: 'Sora', sans-serif;
+  }
+
+  /* ── Navigation ── */
+  .top-nav {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--blue-800);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--blue-600), var(--blue-400));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  .logo span { color: var(--teal-400); }
+
+  .user-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    background: var(--gray-50);
+    cursor: pointer;
+  }
+
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue-600), var(--blue-400));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.75rem;
+  }
+
+  /* ── Page Header ── */
+  .page-header {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow);
+  }
+
+  .page-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 0.25rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.875rem;
+    color: var(--gray-400);
+  }
+
+  .breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--gray-400);
+    margin-bottom: 1rem;
+  }
+
+  .breadcrumb-nav a {
+    color: var(--blue-600);
+    text-decoration: none;
+  }
+
+  /* ── Settings Layout ── */
+  .settings-container {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 1.5rem;
+  }
+
+  .settings-nav {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1rem;
+    box-shadow: var(--shadow);
+    height: fit-content;
+    position: sticky;
+    top: 80px;
+  }
+
+  .settings-nav-item {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--gray-800);
+    margin-bottom: 0.5rem;
+    transition: all 0.2s;
+  }
+
+  .settings-nav-item:hover,
+  .settings-nav-item.active {
+    background: var(--blue-50);
+    color: var(--blue-600);
+  }
+
+  .settings-content {
+    background: white;
+    border-radius: var(--radius);
+    padding: 2rem 2.5rem;
+    box-shadow: var(--shadow);
+  }
+
+  .settings-section {
+    display: none;
+  }
+
+  .settings-section.active {
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--gray-900);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.875rem;
+    color: var(--gray-400);
+    margin-bottom: 2rem;
+  }
+
+  /* ── Form Elements ── */
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-label {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--gray-800);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.875rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: var(--blue-600);
+    box-shadow: 0 0 0 3px rgba(55,138,221,0.12);
+  }
+
+  .form-help {
+    font-size: 0.75rem;
+    color: var(--gray-400);
+    margin-top: 0.35rem;
+  }
+
+  .btn-primary {
+    background: var(--blue-600);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .btn-primary:hover {
+    background: var(--blue-800);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: var(--gray-50);
+    color: var(--gray-800);
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+
+  .btn-danger {
+    background: var(--coral-400);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+
+  /* ── Integration Cards ── */
+  .integration-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  .integration-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    transition: all 0.2s;
+  }
+
+  .integration-card:hover {
+    box-shadow: var(--shadow);
+  }
+
+  .integration-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .integration-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: var(--gray-50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+  }
+
+  .integration-name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--gray-900);
+  }
+
+  .integration-status {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    border-radius: 99px;
+    font-weight: 600;
+    margin-top: 0.25rem;
+  }
+
+  .status-connected { background: var(--teal-50); color: var(--teal-600); }
+  .status-disconnected { background: var(--gray-100); color: var(--gray-400); }
+
+  .integration-desc {
+    font-size: 0.8rem;
+    color: var(--gray-400);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  .btn-integrate {
+    width: 100%;
+    padding: 0.65rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-integrate.connected {
+    background: var(--teal-50);
+    color: var(--teal-600);
+    border-color: var(--teal-600);
+  }
+
+  .btn-integrate:hover {
+    background: var(--blue-50);
+    border-color: var(--blue-600);
+    color: var(--blue-600);
+  }
+
+  /* ── Toggle Switch ── */
+  .toggle-switch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 1rem;
+  }
+
+  .toggle-info {
+    flex: 1;
+  }
+
+  .toggle-title {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--gray-900);
+    margin-bottom: 0.25rem;
+  }
+
+  .toggle-desc {
+    font-size: 0.75rem;
+    color: var(--gray-400);
+  }
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 26px;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--gray-100);
+    transition: .3s;
+    border-radius: 26px;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+  }
+
+  input:checked + .slider {
+    background-color: var(--blue-600);
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(22px);
+  }
+
+  /* ── Danger Zone ── */
+  .danger-zone {
+    border: 2px solid var(--coral-400);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    margin-top: 2rem;
+  }
+
+  .danger-title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--coral-400);
+    margin-bottom: 0.5rem;
+  }
+
+  .danger-desc {
+    font-size: 0.85rem;
+    color: var(--gray-800);
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .settings-container {
+      grid-template-columns: 1fr;
+    }
+
+    .settings-nav {
+      position: relative;
+      top: 0;
+    }
+  }
+</style>
+</head>
+
+<body>
+<!-- ── Top Navigation ── -->
+<nav class="top-nav">
+  <a href="{{ url_for('company_bp.dashboard', company_id=company_id) }}" class="logo">
+    <div class="logo-icon">TC</div>
+    <div>Tax<span>Copilot</span></div>
+  </a>
+  
+  <div class="user-menu">
+    <div class="user-avatar">{{user.initials}}</div>
+    <span style="font-size: 0.875rem; font-weight: 500;">{{user.name}}</span>
+  </div>
+</nav>
+
+<div class="container-fluid px-3 py-3" style="max-width:1400px">
+
+  <!-- ── Page Header ── -->
+  <div class="page-header">
+    <div class="breadcrumb-nav">
+      <a href="{{ url_for('company_bp.dashboard', company_id=company_id) }}">Dashboard</a>
+      <span>›</span>
+      <span>Settings</span>
+    </div>
+    <div class="page-title">Company Settings</div>
+    <div class="page-subtitle">Manage your organization profile, integrations, and preferences</div>
+  </div>
+
+  <!-- ── Settings Layout ── -->
+  <div class="settings-container">
+    
+    <!-- Settings Navigation -->
+    <div class="settings-nav">
+      <div class="settings-nav-item active" onclick="showSection('profile')">
+        <span>🏢</span>
+        <span>Company Profile</span>
+      </div>
+      <div class="settings-nav-item" onclick="showSection('integrations')">
+        <span>🔗</span>
+        <span>Integrations</span>
+      </div>
+      <div class="settings-nav-item" onclick="showSection('notifications')">
+        <span>🔔</span>
+        <span>Notifications</span>
+      </div>
+      <div class="settings-nav-item" onclick="showSection('security')">
+        <span>🔒</span>
+        <span>Security</span>
+      </div>
+      <div class="settings-nav-item" onclick="showSection('billing')">
+        <span>💳</span>
+        <span>Billing Info</span>
+      </div>
+      <div class="settings-nav-item" onclick="showSection('preferences')">
+        <span>⚙️</span>
+        <span>Preferences</span>
+      </div>
+    </div>
+
+    <!-- Settings Content -->
+    <div class="settings-content">
+      
+      <!-- Company Profile Section -->
+      <div class="settings-section active" id="section-profile">
+        <div class="section-title">Company Profile</div>
+        <div class="section-subtitle">Update your organization's basic information</div>
+
+        <form id="profileForm">
+          <div class="row g-3">
+            <div class="col-md-8">
+              <div class="form-group">
+                <label class="form-label">Legal Company Name</label>
+                <input type="text" class="form-control" name="legal_name" value="{{company.legal_name}}">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label class="form-label">Display Name</label>
+                <input type="text" class="form-control" name="display_name" value="{{company.display_name}}">
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">PAN Number</label>
+                <input type="text" class="form-control" name="pan" value="{{company.pan}}" readonly style="background: var(--gray-50);">
+                <div class="form-help">Contact support to update PAN</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">GSTIN</label>
+                <input type="text" class="form-control" name="gstin" value="{{company.gstin}}">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Registered Address</label>
+            <textarea class="form-control" name="address" rows="2">{{company.address}}</textarea>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label class="form-label">City</label>
+                <input type="text" class="form-control" name="city" value="{{company.city}}">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label class="form-label">State</label>
+                <input type="text" class="form-control" name="state" value="{{company.state}}">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label class="form-label">PIN Code</label>
+                <input type="text" class="form-control" name="pincode" value="{{company.pincode}}">
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Industry</label>
+                <select class="form-control" name="industry">
+                  <option>IT Services</option>
+                  <option>Manufacturing</option>
+                  <option>Finance</option>
+                  <option>Healthcare</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Company Website</label>
+                <input type="url" class="form-control" name="website" value="{{company.website}}">
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn-primary">Save Changes</button>
+            <button type="reset" class="btn-secondary">Reset</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Integrations Section -->
+      <div class="settings-section" id="section-integrations">
+        <div class="section-title">Integrations</div>
+        <div class="section-subtitle">Connect third-party services to streamline workflows</div>
+
+        <div class="integration-grid">
+          <div class="integration-card">
+            <div class="integration-header">
+              <div class="integration-icon">📊</div>
+              <div>
+                <div class="integration-name">Google Sheets</div>
+                <span class="integration-status status-connected">Connected</span>
+              </div>
+            </div>
+            <div class="integration-desc">Sync employee data and tax reports to Google Sheets automatically</div>
+            <button class="btn-integrate connected" onclick="disconnectIntegration('sheets')">Disconnect</button>
+          </div>
+
+          <div class="integration-card">
+            <div class="integration-header">
+              <div class="integration-icon">💼</div>
+              <div>
+                <div class="integration-name">Zoho People</div>
+                <span class="integration-status status-disconnected">Not Connected</span>
+              </div>
+            </div>
+            <div class="integration-desc">Import employee data from Zoho People HRMS platform</div>
+            <button class="btn-integrate" onclick="connectIntegration('zoho')">Connect</button>
+          </div>
+
+          <div class="integration-card">
+            <div class="integration-header">
+              <div class="integration-icon">📧</div>
+              <div>
+                <div class="integration-name">Slack</div>
+                <span class="integration-status status-connected">Connected</span>
+              </div>
+            </div>
+            <div class="integration-desc">Receive filing reminders and notifications in Slack channels</div>
+            <button class="btn-integrate connected" onclick="disconnectIntegration('slack')">Disconnect</button>
+          </div>
+
+          <div class="integration-card">
+            <div class="integration-header">
+              <div class="integration-icon">💰</div>
+              <div>
+                <div class="integration-name">Razorpay</div>
+                <span class="integration-status status-disconnected">Not Connected</span>
+              </div>
+            </div>
+            <div class="integration-desc">Process employee payment transactions through Razorpay</div>
+            <button class="btn-integrate" onclick="connectIntegration('razorpay')">Connect</button>
+          </div>
+
+          <div class="integration-card">
+            <div class="integration-header">
+              <div class="integration-icon">📁</div>
+              <div>
+                <div class="integration-name">Google Drive</div>
+                <span class="integration-status status-connected">Connected</span>
+              </div>
+            </div>
+            <div class="integration-desc">Store tax documents and reports in Google Drive folders</div>
+            <button class="btn-integrate connected" onclick="disconnectIntegration('drive')">Disconnect</button>
+          </div>
+
+          <div class="integration-card">
+            <div class="integration-header">
+              <div class="integration-icon">🔐</div>
+              <div>
+                <div class="integration-name">Okta SSO</div>
+                <span class="integration-status status-disconnected">Not Connected</span>
+              </div>
+            </div>
+            <div class="integration-desc">Enable single sign-on for employee access using Okta</div>
+            <button class="btn-integrate" onclick="connectIntegration('okta')">Connect</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notifications Section -->
+      <div class="settings-section" id="section-notifications">
+        <div class="section-title">Notification Preferences</div>
+        <div class="section-subtitle">Configure when and how you receive notifications</div>
+
+        <div style="margin-top: 1.5rem;">
+          <div class="toggle-switch">
+            <div class="toggle-info">
+              <div class="toggle-title">Email Notifications</div>
+              <div class="toggle-desc">Receive updates via email</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-switch">
+            <div class="toggle-info">
+              <div class="toggle-title">Filing Reminders</div>
+              <div class="toggle-desc">Notify when employees haven't filed by deadline</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-switch">
+            <div class="toggle-info">
+              <div class="toggle-title">Weekly Summary</div>
+              <div class="toggle-desc">Weekly digest of team progress and stats</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-switch">
+            <div class="toggle-info">
+              <div class="toggle-title">Payment Reminders</div>
+              <div class="toggle-desc">Alerts for upcoming billing and payments</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-switch">
+            <div class="toggle-info">
+              <div class="toggle-title">Slack Notifications</div>
+              <div class="toggle-desc">Send updates to connected Slack workspace</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <button class="btn-primary" style="margin-top: 1rem;">Save Preferences</button>
+        </div>
+      </div>
+
+      <!-- Security Section -->
+      <div class="settings-section" id="section-security">
+        <div class="section-title">Security Settings</div>
+        <div class="section-subtitle">Manage access controls and security policies</div>
+
+        <div style="margin-top: 1.5rem;">
+          <div class="toggle-switch">
+            <div class="toggle-info">
+              <div class="toggle-title">Two-Factor Authentication (2FA)</div>
+              <div class="toggle-desc">Require 2FA for all admin users</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-switch">
+            <div class="toggle-info">
+              <div class="toggle-title">SSO Enforcement</div>
+              <div class="toggle-desc">Require single sign-on for all employee logins</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-switch">
+            <div class="toggle-info">
+              <div class="toggle-title">Session Timeout</div>
+              <div class="toggle-desc">Auto-logout after 30 minutes of inactivity</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="form-group" style="margin-top: 1.5rem;">
+            <label class="form-label">IP Whitelist</label>
+            <textarea class="form-control" rows="3" placeholder="Enter IP addresses (one per line)"></textarea>
+            <div class="form-help">Restrict access to specific IP addresses</div>
+          </div>
+
+          <button class="btn-primary">Update Security Settings</button>
+        </div>
+      </div>
+
+      <!-- Billing Info Section -->
+      <div class="settings-section" id="section-billing">
+        <div class="section-title">Billing Information</div>
+        <div class="section-subtitle">Manage billing details and payment methods</div>
+
+        <form style="margin-top: 1.5rem;">
+          <div class="form-group">
+            <label class="form-label">Billing Email</label>
+            <input type="email" class="form-control" value="{{company.billing_email}}">
+            <div class="form-help">Invoices will be sent to this email</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Billing Address</label>
+            <textarea class="form-control" rows="2">{{company.billing_address}}</textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Purchase Order Number</label>
+            <input type="text" class="form-control" placeholder="Optional">
+          </div>
+
+          <button class="btn-primary">Update Billing Info</button>
+        </form>
+      </div>
+
+      <!-- Preferences Section -->
+      <div class="settings-section" id="section-preferences">
+        <div class="section-title">Company Preferences</div>
+        <div class="section-subtitle">Customize platform behavior for your organization</div>
+
+        <div style="margin-top: 1.5rem;">
+          <div class="form-group">
+            <label class="form-label">Default Tax Regime</label>
+            <select class="form-control">
+              <option>New Regime</option>
+              <option>Old Regime</option>
+              <option>Let employee choose</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Financial Year Start</label>
+            <select class="form-control">
+              <option>April (Default)</option>
+              <option>January</option>
+            </select>
+          </div>
+
+          <div class="toggle-switch">
+            <div class="toggle-info">
+              <div class="toggle-title">Auto-reminder</div>
+              <div class="toggle-desc">Automatically remind employees 15 days before deadline</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-switch">
+            <div class="toggle-info">
+              <div class="toggle-title">Anonymous Analytics</div>
+              <div class="toggle-desc">Share anonymized usage data to improve platform</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <button class="btn-primary" style="margin-top: 1rem;">Save Preferences</button>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="danger-zone">
+          <div class="danger-title">⚠️ Danger Zone</div>
+          <div class="danger-desc">Once you delete your company account, there is no going back. All employee data and filing history will be permanently removed.</div>
+          <button class="btn-danger" onclick="confirmDelete()">Delete Company Account</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showSection(sectionName) {
+  document.querySelectorAll('.settings-nav-item').forEach(item => item.classList.remove('active'));
+  document.querySelectorAll('.settings-section').forEach(section => section.classList.remove('active'));
+  
+  event.target.closest('.settings-nav-item').classList.add('active');
+  document.getElementById('section-' + sectionName).classList.add('active');
+}
+
+// Form submission handlers
+document.getElementById('profileForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  const data = Object.fromEntries(formData.entries());
+  
+  try {
+    const response = await fetch('/api/company/profile/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    
+    if (response.ok) {
+      alert('✅ Profile updated successfully!');
+    } else {
+      alert('❌ Failed to update profile');
+    }
+  } catch (error) {
+    alert('❌ Error updating profile');
+  }
+});
+
+function connectIntegration(service) {
+  alert(`Redirecting to ${service} OAuth...`);
+  // Implement OAuth flow
+}
+
+function disconnectIntegration(service) {
+  if (confirm(`Disconnect ${service} integration?`)) {
+    alert(`${service} disconnected successfully`);
+    location.reload();
+  }
+}
+
+function confirmDelete() {
+  const confirmation = prompt('Type "DELETE" to confirm account deletion:');
+  if (confirmation === 'DELETE') {
+    alert('Account deletion initiated. You will receive a confirmation email.');
+  }
+}
+</script>
+
+</body>
+</html>

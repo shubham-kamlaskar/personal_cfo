@@ -1,0 +1,1747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<parameter name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title>Investments | TaxCopilot</title>
+<style>
+  :root {
+    --primary: #1a56db;
+    --primary-light: #e8f0fe;
+    --accent: #16a34a;
+    --accent-light: #dcfce7;
+    --warning: #d97706;
+    --warning-light: #fef3c7;
+    --danger: #dc2626;
+    --danger-light: #fee2e2;
+    --purple: #7c3aed;
+    --purple-light: #f5f3ff;
+    --surface: #ffffff;
+    --surface-2: #f8fafc;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-hover: 0 8px 24px rgba(26,86,219,0.12);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f1f5f9;
+    color: var(--text);
+    min-height: 100vh;
+  }
+  h1, h2, h3, .heading { font-family: 'Sora', sans-serif; }
+
+  /* ── Page Banner ── */
+  .page-banner {
+    background: linear-gradient(135deg, #1a56db 0%, #1e40af 100%);
+    border-radius: var(--radius);
+    color: white;
+    padding: 1.5rem 1.75rem;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+  }
+  .page-banner::after {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+  .page-banner .banner-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+  .page-banner .banner-sub {
+    font-size: 0.875rem;
+    opacity: 0.82;
+    margin: 0 0 1.25rem;
+  }
+
+  /* ── Banner Stat Cards ── */
+  .banner-stat {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    color: white;
+    flex: 1;
+    min-width: 0;
+    transition: background 0.2s;
+  }
+  .banner-stat:hover { background: rgba(255,255,255,0.2); }
+  .banner-stat .bs-label {
+    font-size: 0.7rem;
+    opacity: 0.75;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.3rem;
+  }
+  .banner-stat .bs-value {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  .banner-stat .bs-change {
+    font-size: 0.72rem;
+    margin-top: 0.2rem;
+    opacity: 0.85;
+  }
+
+  /* ── Layout Fixes ── */
+  .col-lg-4 {
+    overflow-x: hidden;
+    word-wrap: break-word;
+  }
+  .section-card {
+    overflow-x: hidden;
+  }
+  .section-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+  .section-sub {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  /* ── Investment Category Cards ── */
+  .invest-cat-card {
+    background: var(--surface-2);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 1.1rem 1rem;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    text-align: center;
+    height: 100%;
+  }
+  .invest-cat-card:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-hover);
+  }
+  .invest-cat-card.active {
+    border-color: var(--primary);
+    background: var(--primary-light);
+  }
+  .invest-cat-card .icc-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    margin: 0 auto 0.6rem;
+  }
+  .invest-cat-card .icc-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+  .invest-cat-card .icc-sub {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+  .invest-cat-card .icc-saved {
+    margin-top: 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  /* ── Form Controls ── */
+  .form-label-custom {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.35rem;
+    display: block;
+  }
+  .form-control, .form-select {
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    padding: 0.6rem 0.9rem;
+    background: var(--surface-2);
+    color: var(--text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-control:focus, .form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(26,86,219,0.1);
+    background: white;
+  }
+  .form-control::placeholder { color: #b0bec5; }
+  .input-wrap { position: relative; }
+  .input-wrap .rupee {
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+  .input-wrap .form-control { padding-left: 2.2rem; }
+  
+  .btn-add {
+    background: var(--primary-light);
+    border: none;
+    border-radius: 8px;
+    color: var(--primary);
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding: 0.45rem 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-add:hover { background: #c7d9fb; }
+  
+  .btn-primary-custom {
+    background: var(--primary);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-primary-custom:hover { background: #1e40af; }
+  
+  /* ── Investment Row ── */
+  .invest-row {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  .invest-row:hover {
+    background: white;
+    box-shadow: var(--shadow);
+  }
+  .invest-row .ir-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .invest-row .ir-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .invest-row .ir-name {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .invest-row .ir-type {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 0.1rem;
+  }
+  .invest-row .ir-amount {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: var(--text);
+    text-align: right;
+  }
+  .invest-row .ir-tax {
+    font-size: 0.7rem;
+    color: var(--accent);
+    text-align: right;
+    margin-top: 0.15rem;
+  }
+  .invest-row .ir-delete {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    border: none;
+    background: var(--danger-light);
+    color: var(--danger);
+    font-size: 1rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  .invest-row .ir-delete:hover { background: #fecaca; }
+
+  /* ── Limit Progress Bar ── */
+  .limit-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .limit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  .limit-title {
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--text);
+  }
+  .limit-amount {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+  .limit-bar-wrap {
+    background: #e2e8f0;
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 0.4rem;
+  }
+  .limit-bar {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+    transition: width 0.3s, background 0.3s;
+  }
+  .limit-bar.warn { background: var(--warning); }
+  .limit-bar.full { background: var(--primary); }
+  .limit-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.68rem;
+    color: var(--text-muted);
+  }
+
+  /* ── Slide-in Sidebar ── */
+  .sidebar-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(2px);
+    z-index: 1040;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+  }
+  .sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  .sidebar-panel {
+    position: fixed;
+    top: 0; right: 0;
+    width: 420px;
+    max-width: 90vw;
+    height: 100vh;
+    background: white;
+    box-shadow: -4px 0 24px rgba(0,0,0,0.12);
+    z-index: 1050;
+    transform: translateX(100%);
+    transition: transform 0.3s;
+    overflow-y: auto;
+  }
+  .sidebar-overlay.active .sidebar-panel {
+    transform: translateX(0);
+  }
+  .sidebar-header {
+    padding: 1.5rem 1.75rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .sidebar-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text);
+  }
+  .sidebar-close {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    border: none;
+    background: var(--surface-2);
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .sidebar-close:hover { background: var(--border); }
+  .sidebar-body {
+    padding: 1.75rem;
+  }
+
+  /* ── Donut Chart Legend ── */
+  .donut-wrap {
+    text-align: center;
+    margin-bottom: 1.25rem;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .donut-wrap canvas {
+    max-width: 100%;
+    height: auto !important;
+    width: 100% !important;
+  }
+  .donut-total {
+    margin-top: 0.5rem;
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--text);
+  }
+  .donut-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+  .legend-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+    word-wrap: break-word;
+  }
+  .legend-item:last-child { border-bottom: none; }
+  .legend-left {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+  .legend-name {
+    font-size: 0.8rem;
+    color: var(--text);
+  }
+  .legend-amount {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--text);
+  }
+
+  /* ── Deduction Summary ── */
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .summary-row.total {
+    border-top: 2px solid var(--primary);
+    padding-top: 0.8rem;
+    margin-top: 0.5rem;
+    font-weight: 700;
+  }
+  .summary-row.tax-saved {
+    background: var(--accent-light);
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    margin-top: 0.75rem;
+  }
+  .summary-label {
+    font-size: 0.8rem;
+    color: var(--text);
+  }
+  .summary-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--text);
+  }
+
+  /* ── Smart Suggestions ── */
+  .suggestion-card {
+    background: var(--warning-light);
+    border: 1px solid #fbbf24;
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .suggestion-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .suggestion-content {
+    flex: 1;
+    min-width: 0;
+  }
+  .suggestion-text {
+    font-size: 0.8rem;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+  }
+  .suggestion-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+  }
+
+  /* ── Floating Save Button ── */
+  .save-button-wrap {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 1030;
+  }
+  .save-button {
+    background: var(--primary);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.85rem 1.5rem;
+    box-shadow: 0 4px 16px rgba(26,86,219,0.3);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  .save-button:hover {
+    background: #1e40af;
+    box-shadow: 0 6px 20px rgba(26,86,219,0.4);
+  }
+  .save-button.saving {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+  .save-spinner {
+    width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    display: none;
+  }
+  .save-button.saving .save-spinner { display: block; }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* ── Toast Notification ── */
+  .toast-notification {
+    position: fixed;
+    top: 1.5rem; right: 1.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    padding: 1rem 1.25rem;
+    z-index: 1060;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    min-width: 300px;
+    max-width: 400px;
+    opacity: 0;
+    transform: translateX(120%);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .toast-notification.show {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .toast-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .toast-notification.success .toast-icon {
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+  .toast-notification.error .toast-icon {
+    background: var(--danger-light);
+    color: var(--danger);
+  }
+  .toast-content { flex: 1; }
+  .toast-title {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+  .toast-message {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+  .toast-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+  }
+
+  /* ── Add Form (inline) ── */
+  .add-form-inline {
+    background: var(--primary-light);
+    border: 1px solid #b3d1ff;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-top: 0.75rem;
+    display: none;
+  }
+  .add-form-inline.active { display: block; }
+
+  /* ── FY Selector ── */
+  .fy-selector {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    color: white;
+  }
+  .fy-selector select {
+    background: transparent;
+    border: none;
+    color: white;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    outline: none;
+  }
+  .fy-selector select option {
+    background: var(--primary);
+    color: white;
+  }
+
+  /* ── Action Buttons ── */
+  .action-btn {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.5rem 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .action-btn:hover {
+    background: rgba(255,255,255,0.2);
+  }
+
+  /* ── Timeline View ── */
+  .timeline-item {
+    position: relative;
+    padding-left: 2rem;
+    padding-bottom: 1.5rem;
+    border-left: 2px solid var(--border);
+  }
+  .timeline-item:last-child {
+    border-left-color: transparent;
+    padding-bottom: 0;
+  }
+  .timeline-dot {
+    position: absolute;
+    left: -6px;
+    top: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--primary);
+    border: 2px solid white;
+  }
+  .timeline-date {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+  .timeline-content {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem;
+  }
+
+  /* ── Upload Area ── */
+  .upload-area {
+    border: 2px dashed var(--border);
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: center;
+    background: var(--surface-2);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .upload-area:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+  }
+  .upload-area.dragover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+  }
+  .upload-icon {
+    font-size: 2.5rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+  .upload-text {
+    font-size: 0.875rem;
+    color: var(--text);
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+  .upload-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  /* ── Comparison View ── */
+  .comparison-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .comparison-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+  .comparison-year {
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: var(--text);
+  }
+  .comparison-total {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: var(--primary);
+  }
+  .comparison-bar {
+    background: var(--surface-2);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+  }
+  .comparison-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    border-radius: 4px;
+    transition: width 0.3s;
+  }
+  .comparison-change {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+  .comparison-change.positive {
+    color: var(--accent);
+  }
+  .comparison-change.negative {
+    color: var(--danger);
+  }
+
+  @media (max-width: 768px) {
+    .sidebar-panel { width: 100%; max-width: 100%; }
+    .save-button-wrap { bottom: 1rem; right: 1rem; }
+    .toast-notification { top: 1rem; right: 1rem; min-width: auto; max-width: calc(100vw - 2rem); }
+    .donut-wrap canvas {
+      max-width: 150px;
+      height: 150px !important;
+    }
+    .col-lg-4 {
+      margin-top: 1rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container-fluid px-3 px-lg-4 py-3">
+  <!-- Page Banner with FY Selector & Actions -->
+  <div class="page-banner">
+    <div class="d-flex justify-content-between align-items-start mb-3">
+      <div>
+        <h1 class="banner-title">Investment Tracker FY 2025-26</h1>
+        <p class="banner-sub">Maximize tax benefits and track your wealth journey</p>
+      </div>
+      <div class="d-flex gap-2 align-items-center flex-wrap">
+        <div class="fy-selector">
+          <span>📅</span>
+          <select id="fySelector" onchange="changeFY(this.value)">
+            <option value="2025-26" selected>FY 2025-26</option>
+            <option value="2024-25">FY 2024-25</option>
+            <option value="2023-24">FY 2023-24</option>
+          </select>
+        </div>
+        <button class="action-btn" onclick="openTimeline()">
+          <span>🕐</span> Timeline
+        </button>
+        <button class="action-btn" onclick="openExport()">
+          <span>📊</span> Export
+        </button>
+        <button class="action-btn" onclick="openBulkUpload()">
+          <span>📤</span> Upload
+        </button>
+        <button class="action-btn" onclick="openComparison()">
+          <span>📈</span> Compare
+        </button>
+      </div>
+    </div>
+
+    <!-- Banner Stats -->
+    <div class="d-flex gap-2 flex-wrap">
+      <div class="banner-stat">
+        <div class="bs-label">Section 80C</div>
+        <div class="bs-value" id="bstat-80c">0 / 1.5L</div>
+        <div class="bs-change" id="bstat-80c-rem">₹1,50,000 remaining</div>
+      </div>
+      <div class="banner-stat">
+        <div class="bs-label">Section 80D</div>
+        <div class="bs-value" id="bstat-80d">0 / 25K</div>
+        <div class="bs-change" id="bstat-80d-rem">₹25,000 remaining</div>
+      </div>
+      <div class="banner-stat">
+        <div class="bs-label">Total Invested</div>
+        <div class="bs-value" id="bstat-total">₹0</div>
+        <div class="bs-change" id="bstat-total-change">Track all investments</div>
+      </div>
+      <div class="banner-stat">
+        <div class="bs-label">Tax Saved</div>
+        <div class="bs-value" id="bstat-saved">₹0</div>
+        <div class="bs-change">@ 31.2% slab</div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Main Content -->
+    <div class="col-lg-8">
+      <!-- Smart Suggestions -->
+      <div class="section-card mb-3">
+        <div class="section-title">💡 Smart Suggestions</div>
+        <div class="section-sub">AI-powered recommendations to optimize your tax savings</div>
+        
+        <div id="sug-80c" class="suggestion-card">
+          <div class="suggestion-icon">📚</div>
+          <div class="suggestion-content">
+            <div class="suggestion-text">Maximise 80C — ₹1,50,000 more capacity available</div>
+            <span class="suggestion-badge">Save ₹46,800</span>
+          </div>
+        </div>
+        
+        <div class="suggestion-card">
+          <div class="suggestion-icon">💊</div>
+          <div class="suggestion-content">
+            <div class="suggestion-text">Health insurance premiums under 80D can save you up to ₹7,800</div>
+            <span class="suggestion-badge">Recommended</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Investment Categories -->
+      <div class="section-card mb-3">
+        <div class="section-title">Investment Categories</div>
+        <div class="section-sub">Click on any category to add or manage investments</div>
+        
+        <div class="row g-2">
+          <div class="col-6 col-md-4">
+            <div class="invest-cat-card" onclick="openSidebar('80c')">
+              <div class="icc-icon" style="background:var(--primary-light);color:var(--primary)">💰</div>
+              <div class="icc-title">Section 80C</div>
+              <div class="icc-sub">EPF, PPF, ELSS, etc.</div>
+              <div class="icc-saved" id="cat-saved-80c">₹0</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4">
+            <div class="invest-cat-card" onclick="openSidebar('80d')">
+              <div class="icc-icon" style="background:var(--accent-light);color:var(--accent)">🏥</div>
+              <div class="icc-title">Section 80D</div>
+              <div class="icc-sub">Health Insurance</div>
+              <div class="icc-saved" id="cat-saved-80d">₹0</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4">
+            <div class="invest-cat-card" onclick="openSidebar('nps')">
+              <div class="icc-icon" style="background:var(--purple-light);color:var(--purple)">🎯</div>
+              <div class="icc-title">NPS (80CCD)</div>
+              <div class="icc-sub">Additional ₹50K</div>
+              <div class="icc-saved" id="cat-saved-nps">₹0</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4">
+            <div class="invest-cat-card" onclick="openSidebar('hl')">
+              <div class="icc-icon" style="background:var(--warning-light);color:var(--warning)">🏠</div>
+              <div class="icc-title">Home Loan</div>
+              <div class="icc-sub">Section 24(b)</div>
+              <div class="icc-saved" id="cat-saved-hl">₹0</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4">
+            <div class="invest-cat-card" onclick="openSidebar('mf')">
+              <div class="icc-icon" style="background:#e0f2fe;color:#0284c7">📈</div>
+              <div class="icc-title">Mutual Funds</div>
+              <div class="icc-sub">LTCG tracking</div>
+              <div class="icc-saved" id="cat-saved-mf">₹0</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4">
+            <div class="invest-cat-card" onclick="openSidebar('other')">
+              <div class="icc-icon" style="background:#fef3c7;color:#d97706">📝</div>
+              <div class="icc-title">Other</div>
+              <div class="icc-sub">Misc. investments</div>
+              <div class="icc-saved" id="cat-saved-other">₹0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deduction Limits -->
+      <div class="section-card">
+        <div class="section-title">Deduction Limits & Progress</div>
+        <div class="section-sub">Track your progress towards maximum tax benefits</div>
+
+        <div class="limit-card">
+          <div class="limit-header">
+            <div class="limit-title">Section 80C (Max ₹1,50,000)</div>
+            <div class="limit-amount" id="lbl-80c-used">₹0 used</div>
+          </div>
+          <div class="limit-bar-wrap">
+            <div id="bar-80c" class="limit-bar" style="width:0%"></div>
+          </div>
+          <div class="limit-labels">
+            <span id="lbl-80c-rem">₹1,50,000 remaining</span>
+            <span>Limit: ₹1,50,000</span>
+          </div>
+        </div>
+
+        <div class="limit-card">
+          <div class="limit-header">
+            <div class="limit-title">Section 80D (Max ₹25,000)</div>
+            <div class="limit-amount" id="lbl-80d-used">₹0 used</div>
+          </div>
+          <div class="limit-bar-wrap">
+            <div id="bar-80d" class="limit-bar" style="width:0%"></div>
+          </div>
+          <div class="limit-labels">
+            <span id="lbl-80d-rem">₹25,000 remaining</span>
+            <span>Limit: ₹25,000</span>
+          </div>
+        </div>
+
+        <div class="limit-card">
+          <div class="limit-header">
+            <div class="limit-title">NPS 80CCD(1B) (Max ₹50,000)</div>
+            <div class="limit-amount" id="lbl-nps-used">₹0 used</div>
+          </div>
+          <div class="limit-bar-wrap">
+            <div id="bar-nps" class="limit-bar" style="width:0%"></div>
+          </div>
+          <div class="limit-labels">
+            <span id="lbl-nps-rem">₹50,000 remaining</span>
+            <span>Limit: ₹50,000</span>
+          </div>
+        </div>
+
+        <div class="limit-card">
+          <div class="limit-header">
+            <div class="limit-title">Home Loan Interest 24(b) (Max ₹2,00,000)</div>
+            <div class="limit-amount" id="lbl-hl-used">₹0 used</div>
+          </div>
+          <div class="limit-bar-wrap">
+            <div id="bar-hl" class="limit-bar" style="width:0%"></div>
+          </div>
+          <div class="limit-labels">
+            <span id="lbl-hl-rem">₹2,00,000 remaining</span>
+            <span>Limit: ₹2,00,000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Sidebar - Summary -->
+    <div class="col-lg-4">
+      <!-- Tax Savings Summary -->
+      <div class="section-card mb-3">
+        <div class="section-title">Tax Deduction Summary</div>
+        <div class="section-sub">Your total tax benefits</div>
+
+        <div class="donut-wrap">
+          <canvas id="donutChart" width="180" height="180"></canvas>
+          <div class="donut-total" id="donut-total">₹0</div>
+          <div class="donut-label">Total Invested</div>
+        </div>
+
+        <div id="chartLegend">
+          <div class="legend-item">
+            <div class="legend-left">
+              <div class="legend-dot" style="background:#1a56db"></div>
+              <div class="legend-name">Section 80C</div>
+            </div>
+            <div class="legend-amount" id="leg-80c">₹0</div>
+          </div>
+          <div class="legend-item">
+            <div class="legend-left">
+              <div class="legend-dot" style="background:#16a34a"></div>
+              <div class="legend-name">Section 80D</div>
+            </div>
+            <div class="legend-amount" id="leg-80d">₹0</div>
+          </div>
+          <div class="legend-item">
+            <div class="legend-left">
+              <div class="legend-dot" style="background:#7c3aed"></div>
+              <div class="legend-name">NPS 80CCD</div>
+            </div>
+            <div class="legend-amount" id="leg-nps">₹0</div>
+          </div>
+          <div class="legend-item">
+            <div class="legend-left">
+              <div class="legend-dot" style="background:#d97706"></div>
+              <div class="legend-name">Home Loan</div>
+            </div>
+            <div class="legend-amount" id="leg-hl">₹0</div>
+          </div>
+          <div class="legend-item">
+            <div class="legend-left">
+              <div class="legend-dot" style="background:#0284c7"></div>
+              <div class="legend-name">Mutual Funds</div>
+            </div>
+            <div class="legend-amount" id="leg-mf">₹0</div>
+          </div>
+          <div class="legend-item">
+            <div class="legend-left">
+              <div class="legend-dot" style="background:#64748b"></div>
+              <div class="legend-name">Other</div>
+            </div>
+            <div class="legend-amount" id="leg-other">₹0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calculation Breakdown -->
+      <div class="section-card">
+        <div class="section-title">Deduction Breakdown</div>
+        <div class="section-sub">Under New Tax Regime</div>
+
+        <div class="summary-row total">
+          <div class="summary-label">Total Eligible Deductions</div>
+          <div class="summary-value" id="sum-total">₹0</div>
+        </div>
+        
+        <div class="summary-row tax-saved">
+          <div class="summary-label">💰 Estimated Tax Saved</div>
+          <div class="summary-value" id="sum-taxsaved">₹0</div>
+        </div>
+
+        <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
+          <p style="font-size:0.75rem;color:var(--text-muted);margin:0">
+            <strong>Note:</strong> Calculations assume 31.2% tax slab (30% + 4% cess). Actual savings may vary based on your income and applicable regime.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide-in Sidebar for Adding Investments -->
+<div id="sidebar-overlay" class="sidebar-overlay" onclick="closeSidebar()">
+  <div class="sidebar-panel" onclick="event.stopPropagation()">
+    <div class="sidebar-header">
+      <div class="sidebar-title" id="sidebar-title">Add Investment</div>
+      <button class="sidebar-close" onclick="closeSidebar()">✕</button>
+    </div>
+    <div class="sidebar-body" id="sidebar-content">
+      <!-- Dynamic content loaded here -->
+    </div>
+  </div>
+</div>
+
+<!-- Floating Save Button -->
+<div class="save-button-wrap">
+  <button id="saveBtn" class="save-button" onclick="saveInvestments()">
+    <div class="save-spinner"></div>
+    <span>💾 Save All Changes</span>
+  </button>
+</div>
+
+<!-- Toast Notification -->
+<div id="toastNotification" class="toast-notification">
+  <div class="toast-icon"></div>
+  <div class="toast-content">
+    <div class="toast-title"></div>
+    <div class="toast-message"></div>
+  </div>
+  <button class="toast-close" onclick="hideToast()">×</button>
+</div>
+
+<script>
+  const employee_id = "{{ employee_id }}";
+  const fmt = (n) => '₹' + n.toLocaleString('en-IN');
+  const fmtShort = (n) => n >= 100000 ? (n/100000).toFixed(1)+'L' : n >= 1000 ? (n/1000).toFixed(1)+'K' : n.toString();
+  
+  const limits = { '80c': 150000, '80d': 25000, 'nps': 50000, 'hl': 200000, 'mf': Infinity, 'other': Infinity };
+  const totals = { '80c': 0, '80d': 0, 'nps': 0, 'hl': 0, 'mf': 0, 'other': 0 };
+  const investments = { '80c': [], '80d': [], 'nps': [], 'hl': [], 'mf': [], 'other': [] };
+  const icons = { '80c':'💰', '80d':'🏥', 'nps':'🎯', 'hl':'🏠', 'mf':'📈', 'other':'📝' };
+
+  let donut = null;
+  let currentFY = '2025-26';
+
+  /* ───── Initialize Chart ───── */
+  window.addEventListener('load', function() {
+    const ctx = document.getElementById('donutChart');
+    if (ctx) {
+      donut = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['80C','80D','NPS','Home Loan','Mutual Funds','Other'],
+          datasets: [{
+            data: [1,0,0,0,0,0],
+            backgroundColor: ['#1a56db','#16a34a','#7c3aed','#d97706','#0284c7','#64748b'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '70%',
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) {
+                  return ctx.label + ': ' + fmt(ctx.parsed);
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+    loadBackendData();
+  });
+
+  /* ───── Load Backend Data ───── */
+  async function loadBackendData() {
+    try {
+      const response = await fetch(`/${employee_id}/get_investments?fy=${currentFY}`);
+      if (!response.ok) {
+        console.error('Failed to load investments');
+        return;
+      }
+      const data = await response.json();
+      
+      // Clear current data
+      Object.keys(totals).forEach(k => totals[k] = 0);
+      Object.keys(investments).forEach(k => investments[k] = []);
+      
+      // Load data
+      if (data.investments) {
+        Object.keys(data.investments).forEach(section => {
+          if (data.investments[section] && Array.isArray(data.investments[section])) {
+            data.investments[section].forEach(inv => {
+              investments[section].push(inv);
+              totals[section] += inv.amount;
+            });
+          }
+        });
+      }
+      
+      updateAll();
+    } catch (error) {
+      console.error('Error loading investments:', error);
+    }
+  }
+
+  /* ───── Open Sidebar ───── */
+  function openSidebar(section) {
+    const titles = {
+      '80c': 'Section 80C Investments',
+      '80d': 'Section 80D - Health Insurance',
+      'nps': 'NPS under 80CCD(1B)',
+      'hl': 'Home Loan Interest',
+      'mf': 'Mutual Funds',
+      'other': 'Other Investments'
+    };
+    
+    const options = {
+      '80c': [
+        { value: 'ppf', label: 'PPF (Public Provident Fund)' },
+        { value: 'epf', label: 'EPF (Employee Provident Fund)' },
+        { value: 'elss', label: 'ELSS Mutual Funds' },
+        { value: 'life_insurance', label: 'Life Insurance Premium' },
+        { value: 'nsc', label: 'NSC (National Savings Certificate)' },
+        { value: 'sukanya', label: 'Sukanya Samriddhi Yojana' },
+        { value: 'tax_saver_fd', label: 'Tax Saver Fixed Deposit' },
+        { value: 'tuition_fees', label: 'Children Tuition Fees' },
+        { value: 'home_loan_principal', label: 'Home Loan Principal Repayment' },
+        { value: 'scss', label: 'Senior Citizen Savings Scheme' }
+      ],
+      '80d': [
+        { value: 'self_health', label: 'Health Insurance - Self & Family' },
+        { value: 'parents_health', label: 'Health Insurance - Parents' },
+        { value: 'preventive_checkup', label: 'Preventive Health Checkup' }
+      ],
+      'nps': [
+        { value: 'nps_tier1', label: 'NPS Tier I Contribution' }
+      ],
+      'hl': [
+        { value: 'home_loan_interest', label: 'Home Loan Interest (Self-Occupied)' },
+        { value: 'home_loan_let_out', label: 'Home Loan Interest (Let-Out Property)' }
+      ],
+      'mf': [
+        { value: 'equity_mf', label: 'Equity Mutual Funds' },
+        { value: 'debt_mf', label: 'Debt Mutual Funds' },
+        { value: 'hybrid_mf', label: 'Hybrid Mutual Funds' },
+        { value: 'index_funds', label: 'Index Funds' }
+      ],
+      'other': [
+        { value: 'shares', label: 'Shares/Stocks' },
+        { value: 'bonds', label: 'Bonds' },
+        { value: 'gold', label: 'Gold/Silver' },
+        { value: 'real_estate', label: 'Real Estate' },
+        { value: 'crypto', label: 'Cryptocurrency' },
+        { value: 'other_custom', label: 'Other' }
+      ]
+    };
+
+    document.getElementById('sidebar-title').textContent = titles[section];
+    const listHtml = investments[section].map(inv => `
+      <div class="invest-row" data-id="${inv.id}">
+        <div class="ir-icon" style="background:var(--primary-light)">${icons[section]}</div>
+        <div class="ir-info">
+          <div class="ir-name">${inv.name}</div>
+          <div class="ir-type">FY ${inv.fy || currentFY}</div>
+        </div>
+        <div>
+          <div class="ir-amount">${fmt(inv.amount)}</div>
+          ${section !== 'other' && section !== 'mf' ? `<div class="ir-tax">Saves ~${fmt(Math.round(inv.amount * 0.312))}</div>` : ''}
+        </div>
+        <button class="ir-delete" onclick="deleteInvestment('${section}', ${inv.id})">✕</button>
+      </div>
+    `).join('');
+
+    const contentHtml = `
+      <div style="margin-bottom:1.5rem">
+        ${investments[section].length > 0 ? listHtml : '<div style="text-align:center;padding:1.5rem 0;color:var(--text-muted);font-size:0.85rem">No entries yet. Add your first investment below.</div>'}
+      </div>
+      
+      <div style="border-top:2px solid var(--border);padding-top:1.25rem">
+        <div class="section-title" style="margin-bottom:1rem">Add New Entry</div>
+        
+        <label class="form-label-custom">Investment Type</label>
+        <select id="invest-type-${section}" class="form-select mb-3">
+          ${options[section].map(opt => `<option value="${opt.value}">${opt.label}</option>`).join('')}
+        </select>
+        
+        <label class="form-label-custom">Amount</label>
+        <div class="input-wrap mb-3">
+          <span class="rupee">₹</span>
+          <input type="number" id="invest-amount-${section}" class="form-control" placeholder="Enter amount" min="1">
+        </div>
+        
+        ${section === 'mf' || section === 'other' ? `
+          <label class="form-label-custom">Purchase Date (Optional)</label>
+          <input type="date" id="invest-date-${section}" class="form-control mb-3">
+        ` : ''}
+        
+        <button class="btn-primary-custom w-100" onclick="addInvestment('${section}')">
+          ✓ Add Investment
+        </button>
+      </div>
+    `;
+
+    document.getElementById('sidebar-content').innerHTML = contentHtml;
+    document.getElementById('sidebar-overlay').classList.add('active');
+  }
+
+  function closeSidebar() {
+    document.getElementById('sidebar-overlay').classList.remove('active');
+  }
+
+  /* ───── Add Investment ───── */
+  function addInvestment(section) {
+    const typeEl = document.getElementById(`invest-type-${section}`);
+    const amtEl = document.getElementById(`invest-amount-${section}`);
+    const typeName = typeEl.options[typeEl.selectedIndex].text;
+    const amt = parseFloat(amtEl.value) || 0;
+    
+    if (!amt || amt <= 0) {
+      amtEl.focus();
+      return;
+    }
+
+    const lim = limits[section] || Infinity;
+    const used = totals[section];
+    const apply = Math.min(amt, Math.max(0, lim - used));
+    
+    if (apply <= 0 && lim !== Infinity) {
+      alert(`Limit of ${fmt(lim)} for this section is already reached.`);
+      return;
+    }
+    
+    const actual = (lim !== Infinity) ? apply : amt;
+    const investmentData = {
+      id: Date.now(),
+      name: typeName,
+      amount: actual,
+      section: section,
+      fy: currentFY
+    };
+    
+    const dateEl = document.getElementById(`invest-date-${section}`);
+    if (dateEl && dateEl.value) {
+      investmentData.purchase_date = dateEl.value;
+    }
+    
+    investments[section].push(investmentData);
+    totals[section] += actual;
+    
+    updateAll();
+    closeSidebar();
+    showToast('success', 'Added!', `${typeName} - ${fmt(actual)} added successfully`);
+  }
+
+  /* ───── Delete Investment ───── */
+  function deleteInvestment(section, id) {
+    const investment = investments[section].find(inv => inv.id === id);
+    if (!investment) return;
+    
+    if (!confirm(`Delete ${investment.name} - ${fmt(investment.amount)}?`)) return;
+    
+    totals[section] = Math.max(0, totals[section] - investment.amount);
+    investments[section] = investments[section].filter(inv => inv.id !== id);
+    
+    updateAll();
+    openSidebar(section); // Refresh sidebar
+    showToast('success', 'Deleted', 'Investment removed successfully');
+  }
+
+  /* ───── Update All UI ───── */
+  function updateAll() {
+    const { '80c': c80, '80d': d80, nps, hl, mf, other } = totals;
+    const totalInvested = c80 + d80 + nps + hl + mf + other;
+    const totalDed = Math.min(c80, 150000) + Math.min(d80, 25000) + Math.min(nps, 50000) + Math.min(hl, 200000);
+    const taxSaved = Math.round(totalDed * 0.312);
+
+    // Banner stats
+    document.getElementById('bstat-80c').textContent = fmtShort(c80) + ' / 1.5L';
+    document.getElementById('bstat-80c-rem').textContent = fmt(Math.max(0, 150000 - c80)) + ' remaining';
+    document.getElementById('bstat-80d').textContent = fmtShort(d80) + ' / 25K';
+    document.getElementById('bstat-80d-rem').textContent = fmt(Math.max(0, 25000 - d80)) + ' remaining';
+    document.getElementById('bstat-total').textContent = fmt(totalInvested);
+    document.getElementById('bstat-saved').textContent = fmt(taxSaved);
+
+    // Limit bars
+    updateBar('80c', c80, 150000);
+    updateBar('80d', d80, 25000);
+    updateBar('nps', nps, 50000);
+    updateBar('hl', hl, 200000);
+
+    // Category cards
+    document.getElementById('cat-saved-80c').textContent = fmt(c80);
+    document.getElementById('cat-saved-80d').textContent = fmt(d80);
+    document.getElementById('cat-saved-nps').textContent = fmt(nps);
+    document.getElementById('cat-saved-hl').textContent = fmt(hl);
+    document.getElementById('cat-saved-mf').textContent = fmt(mf);
+    document.getElementById('cat-saved-other').textContent = fmt(other);
+
+    // Summary
+    document.getElementById('sum-total').textContent = fmt(totalDed);
+    document.getElementById('sum-taxsaved').textContent = fmt(taxSaved);
+
+    // Legend
+    document.getElementById('leg-80c').textContent = fmt(c80);
+    document.getElementById('leg-80d').textContent = fmt(d80);
+    document.getElementById('leg-nps').textContent = fmt(nps);
+    document.getElementById('leg-hl').textContent = fmt(hl);
+    document.getElementById('leg-mf').textContent = fmt(mf);
+    document.getElementById('leg-other').textContent = fmt(other);
+
+    // Donut chart
+    const vals = [c80, d80, nps, hl, mf, other];
+    const hasData = vals.some(v => v > 0);
+    if (donut) {
+      donut.data.datasets[0].data = hasData ? vals : [1, 0, 0, 0, 0, 0];
+      donut.update();
+    }
+    document.getElementById('donut-total').textContent = fmt(totalInvested);
+
+    // Smart suggestions
+    const rem80c = Math.max(0, 150000 - c80);
+    const sugEl = document.getElementById('sug-80c');
+    sugEl.querySelector('.suggestion-text').textContent =
+      rem80c > 0
+        ? `Maximise 80C — ${fmt(rem80c)} more capacity available`
+        : '✓ 80C limit fully utilised!';
+    sugEl.querySelector('.suggestion-badge').textContent =
+      rem80c > 0 ? `Save ${fmt(Math.round(rem80c * 0.312))}` : 'Done ✓';
+  }
+
+  function updateBar(sec, used, limit) {
+    const pct = Math.min(100, (used / limit) * 100);
+    const bar = document.getElementById('bar-' + sec);
+    if (!bar) return;
+    bar.style.width = pct + '%';
+    bar.className = 'limit-bar' + (pct >= 100 ? ' full' : pct >= 80 ? ' warn' : '');
+    document.getElementById('lbl-' + sec + '-used').textContent = fmt(used) + ' used';
+    document.getElementById('lbl-' + sec + '-rem').textContent = fmt(Math.max(0, limit - used)) + ' remaining';
+  }
+
+  /* ───── Save Investments ───── */
+  async function saveInvestments() {
+    const saveBtn = document.getElementById('saveBtn');
+    saveBtn.classList.add('saving');
+    
+    try {
+      const payload = {
+        fy: currentFY,
+        investments: investments,
+        totals: totals,
+        summary: {
+          total_invested: totals['80c'] + totals['80d'] + totals['nps'] + totals['hl'] + totals['mf'] + totals['other'],
+          total_deduction: Math.min(totals['80c'], 150000) + Math.min(totals['80d'], 25000) + Math.min(totals['nps'], 50000) + Math.min(totals['hl'], 200000),
+          tax_saved: Math.round((Math.min(totals['80c'], 150000) + Math.min(totals['80d'], 25000) + Math.min(totals['nps'], 50000) + Math.min(totals['hl'], 200000)) * 0.312)
+        }
+      };
+
+      const response = await fetch(`/${employee_id}/add_investments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+      
+      if (response.ok && result.status === 'success') {
+        showToast('success', 'Success!', 'All investments saved successfully!');
+        setTimeout(() => window.location.reload(), 1200);
+      } else {
+        showToast('error', 'Error', result.message || 'Failed to save investments');
+      }
+    } catch (error) {
+      console.error('Error saving investments:', error);
+      showToast('error', 'Error', 'Network error. Please try again.');
+    } finally {
+      saveBtn.classList.remove('saving');
+    }
+  }
+
+  /* ───── Toast Notification ───── */
+  function showToast(type, title, message) {
+    const toast = document.getElementById('toastNotification');
+    toast.className = `toast-notification ${type}`;
+    toast.querySelector('.toast-title').textContent = title;
+    toast.querySelector('.toast-message').textContent = message;
+    toast.querySelector('.toast-icon').textContent = type === 'success' ? '✓' : '✕';
+    
+    setTimeout(() => toast.classList.add('show'), 100);
+    setTimeout(() => hideToast(), 4000);
+  }
+
+  function hideToast() {
+    document.getElementById('toastNotification').classList.remove('show');
+  }
+
+  /* ───── FY Change ───── */
+  function changeFY(fy) {
+    currentFY = fy;
+    loadBackendData();
+    showToast('success', 'FY Changed', `Now viewing FY ${fy}`);
+  }
+
+  /* ───── Timeline View ───── */
+  function openTimeline() {
+    const allInvestments = [];
+    Object.keys(investments).forEach(section => {
+      investments[section].forEach(inv => {
+        allInvestments.push({...inv, section});
+      });
+    });
+    
+    allInvestments.sort((a, b) => (b.purchase_date || b.id) - (a.purchase_date || a.id));
+    
+    const timelineHtml = allInvestments.length > 0 
+      ? allInvestments.map(inv => `
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">${inv.purchase_date || 'FY ' + inv.fy}</div>
+            <div class="timeline-content">
+              <div style="font-weight:600;margin-bottom:0.25rem">${inv.name}</div>
+              <div style="font-size:0.8rem;color:var(--text-muted)">
+                ${icons[inv.section]} ${inv.section.toUpperCase()} • ${fmt(inv.amount)}
+              </div>
+            </div>
+          </div>
+        `).join('')
+      : '<div style="text-align:center;padding:2rem;color:var(--text-muted)">No investments yet</div>';
+    
+    document.getElementById('sidebar-title').textContent = 'Investment Timeline';
+    document.getElementById('sidebar-content').innerHTML = `
+      <div style="margin-top:0.5rem">
+        ${timelineHtml}
+      </div>
+    `;
+    document.getElementById('sidebar-overlay').classList.add('active');
+  }
+
+  /* ───── Export Data ───── */
+  function openExport() {
+    document.getElementById('sidebar-title').textContent = 'Export Data';
+    document.getElementById('sidebar-content').innerHTML = `
+      <p style="color:var(--text-muted);font-size:0.875rem;margin-bottom:1.5rem">
+        Export your investment data for record-keeping or tax filing purposes.
+      </p>
+      
+      <div class="d-grid gap-2">
+        <button class="btn-primary-custom" onclick="exportCSV()">
+          📊 Download as CSV
+        </button>
+        <button class="btn-primary-custom" onclick="exportJSON()">
+          📄 Download as JSON
+        </button>
+        <button class="btn-primary-custom" onclick="exportPDF()">
+          📑 Generate PDF Report
+        </button>
+      </div>
+    `;
+    document.getElementById('sidebar-overlay').classList.add('active');
+  }
+
+  function exportCSV() {
+    let csv = 'Section,Investment Type,Amount,FY,Purchase Date\n';
+    Object.keys(investments).forEach(section => {
+      investments[section].forEach(inv => {
+        csv += `${section},${inv.name},${inv.amount},${inv.fy},${inv.purchase_date || ''}\n`;
+      });
+    });
+    
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `investments_${currentFY}.csv`;
+    a.click();
+    showToast('success', 'Exported!', 'CSV file downloaded successfully');
+  }
+
+  function exportJSON() {
+    const data = {
+      fy: currentFY,
+      investments: investments,
+      totals: totals,
+      exported_at: new Date().toISOString()
+    };
+    
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `investments_${currentFY}.json`;
+    a.click();
+    showToast('success', 'Exported!', 'JSON file downloaded successfully');
+  }
+
+  function exportPDF() {
+    showToast('success', 'Processing', 'PDF report generation coming soon!');
+  }
+
+  /* ───── Bulk Upload ───── */
+  function openBulkUpload() {
+    document.getElementById('sidebar-title').textContent = 'Bulk Upload';
+    document.getElementById('sidebar-content').innerHTML = `
+      <p style="color:var(--text-muted);font-size:0.875rem;margin-bottom:1.5rem">
+        Upload a CSV file to add multiple investments at once. Download the template to see the required format.
+      </p>
+      
+      <button class="btn-add w-100 mb-3" onclick="downloadTemplate()">
+        📥 Download CSV Template
+      </button>
+      
+      <div class="upload-area" id="uploadArea">
+        <div class="upload-icon">📤</div>
+        <div class="upload-text">Drag & drop CSV file here</div>
+        <div class="upload-hint">or click to browse</div>
+        <input type="file" id="csvFile" accept=".csv" style="display:none" onchange="handleFileUpload(event)">
+      </div>
+    `;
+    
+    const uploadArea = document.getElementById('uploadArea');
+    uploadArea.onclick = () => document.getElementById('csvFile').click();
+    
+    uploadArea.ondragover = (e) => {
+      e.preventDefault();
+      uploadArea.classList.add('dragover');
+    };
+    
+    uploadArea.ondragleave = () => {
+      uploadArea.classList.remove('dragover');
+    };
+    
+    uploadArea.ondrop = (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      if (file && file.name.endsWith('.csv')) {
+        processCSV(file);
+      }
+    };
+    
+    document.getElementById('sidebar-overlay').classList.add('active');
+  }
+
+  function downloadTemplate() {
+    const template = 'Section,Investment Type,Amount,Purchase Date\n80c,PPF,50000,2025-01-15\n80d,Health Insurance,25000,2025-02-01';
+    const blob = new Blob([template], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'investment_upload_template.csv';
+    a.click();
+    showToast('success', 'Downloaded', 'Template downloaded successfully');
+  }
+
+  function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (file) processCSV(file);
+  }
+
+  function processCSV(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const text = e.target.result;
+      const lines = text.split('\n').slice(1); // Skip header
+      let count = 0;
+      
+      lines.forEach(line => {
+        const [section, type, amount, date] = line.split(',').map(s => s.trim());
+        if (section && amount && investments[section]) {
+          const inv = {
+            id: Date.now() + count,
+            name: type || 'Imported Investment',
+            amount: parseFloat(amount),
+            section: section,
+            fy: currentFY
+          };
+          if (date) inv.purchase_date = date;
+          
+          investments[section].push(inv);
+          totals[section] += inv.amount;
+          count++;
+        }
+      });
+      
+      updateAll();
+      closeSidebar();
+      showToast('success', 'Uploaded!', `${count} investments imported successfully`);
+    };
+    reader.readAsText(file);
+  }
+
+  /* ───── Year Comparison ───── */
+  function openComparison() {
+    document.getElementById('sidebar-title').textContent = 'Year-over-Year Comparison';
+    document.getElementById('sidebar-content').innerHTML = `
+      <p style="color:var(--text-muted);font-size:0.875rem;margin-bottom:1.5rem">
+        Compare your investment patterns across financial years.
+      </p>
+      
+      <div class="comparison-card">
+        <div class="comparison-header">
+          <div class="comparison-year">FY 2025-26</div>
+          <div class="comparison-total">${fmt(totals['80c'] + totals['80d'] + totals['nps'] + totals['hl'] + totals['mf'] + totals['other'])}</div>
+        </div>
+        <div class="comparison-bar">
+          <div class="comparison-fill" style="width:100%"></div>
+        </div>
+        <div class="comparison-change">Current year (baseline)</div>
+      </div>
+      
+      <div class="comparison-card">
+        <div class="comparison-header">
+          <div class="comparison-year">FY 2024-25</div>
+          <div class="comparison-total">₹0</div>
+        </div>
+        <div class="comparison-bar">
+          <div class="comparison-fill" style="width:0%"></div>
+        </div>
+        <div class="comparison-change">No data available</div>
+      </div>
+      
+      <div class="comparison-card">
+        <div class="comparison-header">
+          <div class="comparison-year">FY 2023-24</div>
+          <div class="comparison-total">₹0</div>
+        </div>
+        <div class="comparison-bar">
+          <div class="comparison-fill" style="width:0%"></div>
+        </div>
+        <div class="comparison-change">No data available</div>
+      </div>
+    `;
+    document.getElementById('sidebar-overlay').classList.add('active');
+  }
+</script>
+
+</body>
+</html>

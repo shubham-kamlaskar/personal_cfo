@@ -205,3 +205,13 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+knowledge/
+*.docx
+*.pptx
+*.pdf
+*.xlsx
+
+admin/
+TODO.md
+ai_agent_list.md

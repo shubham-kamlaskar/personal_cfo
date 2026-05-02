@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<title>Billing & Invoices | TaxCopilot</title>
+<style>
+  :root {
+    --blue-50: #E6F1FB;
+    --blue-100: #B5D4F4;
+    --blue-400: #378ADD;
+    --blue-600: #185FA5;
+    --blue-800: #0C447C;
+    --teal-50: #E1F5EE;
+    --teal-400: #1D9E75;
+    --teal-600: #0F6E56;
+    --amber-50: #FAEEDA;
+    --amber-400: #BA7517;
+    --coral-50: #FAECE7;
+    --coral-400: #D85A30;
+    --gray-50: #F1EFE8;
+    --gray-100: #D3D1C7;
+    --gray-400: #888780;
+    --gray-800: #444441;
+    --gray-900: #2C2C2A;
+    --surface: #ffffff;
+    --border: #e2e8f0;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-hover: 0 8px 24px rgba(55,138,221,0.12);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f1f5f9;
+    color: var(--gray-900);
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, .heading {
+    font-family: 'Sora', sans-serif;
+  }
+
+  /* ── Navigation ── */
+  .top-nav {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--blue-800);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--blue-600), var(--blue-400));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  .logo span { color: var(--teal-400); }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .user-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    background: var(--gray-50);
+    cursor: pointer;
+  }
+
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue-600), var(--blue-400));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.75rem;
+  }
+
+  /* ── Page Header ── */
+  .page-header {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow);
+  }
+
+  .page-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 0.25rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.875rem;
+    color: var(--gray-400);
+  }
+
+  .breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--gray-400);
+    margin-bottom: 1rem;
+  }
+
+  .breadcrumb-nav a {
+    color: var(--blue-600);
+    text-decoration: none;
+  }
+
+  /* ── Billing Overview Cards ── */
+  .billing-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    box-shadow: var(--shadow);
+    height: 100%;
+  }
+
+  .card-label {
+    font-size: 0.75rem;
+    color: var(--gray-400);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+  }
+
+  .card-value {
+    font-family: 'Sora', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 0.5rem;
+  }
+
+  .card-detail {
+    font-size: 0.8rem;
+    color: var(--gray-400);
+  }
+
+  .card-highlight {
+    background: linear-gradient(135deg, var(--blue-800) 0%, var(--blue-600) 100%);
+    color: white;
+  }
+
+  .card-highlight .card-label {
+    color: rgba(255,255,255,0.7);
+  }
+
+  .card-highlight .card-value {
+    color: white;
+  }
+
+  .card-highlight .card-detail {
+    color: rgba(255,255,255,0.8);
+  }
+
+  .btn-pay {
+    background: white;
+    color: var(--blue-800);
+    padding: 0.65rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border: none;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.2s;
+  }
+
+  .btn-pay:hover {
+    background: var(--blue-50);
+  }
+
+  /* ── Plan Card ── */
+  .plan-card {
+    background: var(--blue-50);
+    border: 2px solid var(--blue-400);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .plan-badge {
+    display: inline-block;
+    background: var(--blue-600);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .plan-name {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 0.5rem;
+  }
+
+  .plan-price {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    color: var(--gray-800);
+    margin-bottom: 1rem;
+  }
+
+  .plan-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--gray-800);
+  }
+
+  .btn-upgrade {
+    background: var(--blue-600);
+    color: white;
+    padding: 0.65rem 1.5rem;
+    border-radius: 10px;
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-upgrade:hover {
+    background: var(--blue-800);
+  }
+
+  /* ── Invoice Table ── */
+  .invoice-section {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .section-header {
+    padding: 1.5rem 1.75rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .section-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--gray-900);
+  }
+
+  .invoice-table {
+    width: 100%;
+    font-size: 0.875rem;
+  }
+
+  .invoice-table thead {
+    background: var(--gray-50);
+    border-bottom: 2px solid var(--border);
+  }
+
+  .invoice-table th {
+    padding: 1rem 1.25rem;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--gray-400);
+    text-align: left;
+  }
+
+  .invoice-table td {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .invoice-table tbody tr:hover {
+    background: var(--blue-50);
+  }
+
+  .invoice-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--blue-600);
+  }
+
+  .invoice-amount {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: var(--gray-900);
+  }
+
+  .status-pill {
+    padding: 5px 12px;
+    border-radius: 99px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .status-paid { background: var(--teal-50); color: var(--teal-600); }
+  .status-pending { background: var(--amber-50); color: var(--amber-400); }
+  .status-overdue { background: var(--coral-50); color: var(--coral-400); }
+
+  .btn-action {
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--gray-800);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-action:hover {
+    background: var(--blue-50);
+    border-color: var(--blue-600);
+    color: var(--blue-600);
+  }
+
+  /* ── Usage Chart ── */
+  .chart-container {
+    position: relative;
+    height: 300px;
+    padding: 1.5rem;
+  }
+
+  /* ── Payment Method Card ── */
+  .payment-method-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    box-shadow: var(--shadow);
+  }
+
+  .card-icon {
+    width: 50px;
+    height: 35px;
+    background: linear-gradient(135deg, var(--blue-600), var(--blue-400));
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .card-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: 0.5rem;
+  }
+
+  .card-meta {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.75rem;
+    color: var(--gray-400);
+  }
+
+  .btn-change {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--gray-800);
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    .card-value {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+</head>
+
+<body>
+<!-- ── Top Navigation ── -->
+<nav class="top-nav">
+  <a href="{{ url_for('company_bp.dashboard', company_id=company_id) }}" class="logo">
+    <div class="logo-icon">TC</div>
+    <div>Tax<span>Copilot</span></div>
+  </a>
+  
+  <div class="nav-right">
+    <div class="user-menu">
+      <div class="user-avatar">{{user.initials}}</div>
+      <span style="font-size: 0.875rem; font-weight: 500;">{{user.name}}</span>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid px-3 py-3" style="max-width:1400px">
+
+  <!-- ── Page Header ── -->
+  <div class="page-header">
+    <div class="breadcrumb-nav">
+      <a href="{{ url_for('company_bp.dashboard', company_id=company_id) }}">Dashboard</a>
+      <span>›</span>
+      <span>Billing & Invoices</span>
+    </div>
+    <div class="page-title">Billing & Invoices</div>
+    <div class="page-subtitle">Manage payments and view billing history</div>
+  </div>
+
+  <!-- ── Current Plan ── -->
+  <div class="plan-card">
+    <span class="plan-badge">Current Plan</span>
+    <div class="plan-name">{{company.plan}} Plan</div>
+    <div class="plan-price">₹{{company.plan_price}} per employee/month · Billed monthly</div>
+    <div class="plan-features">
+      <div class="feature-item">✓ {{company.total_employees}} Employees</div>
+      <div class="feature-item">✓ HR Dashboard</div>
+      <div class="feature-item">✓ AI Tax Assistant</div>
+      <div class="feature-item">✓ Broker Integration</div>
+      <div class="feature-item">✓ Priority Support</div>
+    </div>
+    <button class="btn-upgrade" onclick="openUpgradeModal()">Upgrade Plan</button>
+  </div>
+
+  <!-- ── Billing Overview ── -->
+  <div class="row g-3 mb-3">
+    <div class="col-md-3">
+      <div class="billing-card card-highlight">
+        <div class="card-label">Current Balance</div>
+        <div class="card-value">₹{{billing.current_balance}}</div>
+        <div class="card-detail">Due on {{billing.due_date}}</div>
+        <button class="btn-pay" onclick="initiatePayment()">Pay Now</button>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="billing-card">
+        <div class="card-label">This Month</div>
+        <div class="card-value">₹{{billing.this_month}}</div>
+        <div class="card-detail">{{billing.active_employees}} active employees</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="billing-card">
+        <div class="card-label">Total Paid</div>
+        <div class="card-value">₹{{billing.total_paid}}</div>
+        <div class="card-detail">Since {{billing.member_since}}</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="billing-card">
+        <div class="card-label">Next Billing</div>
+        <div class="card-value">{{billing.next_billing_date}}</div>
+        <div class="card-detail">Estimated: ₹{{billing.estimated_amount}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <!-- ── Usage Chart ── -->
+    <div class="col-lg-8">
+      <div class="invoice-section">
+        <div class="section-header">
+          <div class="section-title">📊 Monthly Usage Trend</div>
+        </div>
+        <div class="chart-container">
+          <canvas id="usageChart"></canvas>
+        </div>
+      </div>
+
+      <!-- ── Invoice History ── -->
+      <div class="invoice-section mt-3">
+        <div class="section-header">
+          <div class="section-title">🧾 Invoice History</div>
+          <button class="btn-action" onclick="downloadAllInvoices()">📥 Download All</button>
+        </div>
+        <table class="invoice-table">
+          <thead>
+            <tr>
+              <th>Invoice #</th>
+              <th>Date</th>
+              <th>Period</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for invoice in invoices %}
+            <tr>
+              <td><span class="invoice-number">{{invoice.number}}</span></td>
+              <td>{{invoice.date}}</td>
+              <td>{{invoice.period}}</td>
+              <td><span class="invoice-amount">₹{{invoice.amount}}</span></td>
+              <td><span class="status-pill status-{{invoice.status_class}}">{{invoice.status}}</span></td>
+              <td>
+                <button class="btn-action" onclick="downloadInvoice('{{invoice.id}}')">📄 PDF</button>
+                {% if invoice.status == 'Pending' %}
+                <button class="btn-action" onclick="payInvoice('{{invoice.id}}')">💳 Pay</button>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── Payment Method & Details ── -->
+    <div class="col-lg-4">
+      <div class="payment-method-card mb-3">
+        <div class="section-title" style="margin-bottom: 1rem;">💳 Payment Method</div>
+        <div class="card-icon">VISA</div>
+        <div class="card-number">•••• •••• •••• {{payment.last4}}</div>
+        <div class="card-meta">
+          <span>Expires {{payment.expiry}}</span>
+          <span>{{payment.cardholder}}</span>
+        </div>
+        <button class="btn-change" onclick="updatePaymentMethod()">Change Method</button>
+      </div>
+
+      <div class="billing-card">
+        <div class="section-title" style="margin-bottom: 1rem;">🏢 Billing Details</div>
+        <div style="font-size: 0.875rem; line-height: 1.8;">
+          <div><strong>{{company.legal_name}}</strong></div>
+          <div>{{company.address}}</div>
+          <div>{{company.city}}, {{company.state}} - {{company.pincode}}</div>
+          <div style="margin-top: 0.75rem;">
+            <strong>GSTIN:</strong> {{company.gstin}}
+          </div>
+          <div><strong>PAN:</strong> {{company.pan}}</div>
+        </div>
+        <button class="btn-change" style="margin-top: 1rem;" onclick="editBillingDetails()">Edit Details</button>
+      </div>
+
+      <div class="billing-card mt-3">
+        <div class="section-title" style="margin-bottom: 1rem;">📧 Billing Notifications</div>
+        <div style="font-size: 0.875rem; line-height: 1.8;">
+          <div style="margin-bottom: 0.5rem;">
+            <input type="checkbox" id="invoiceEmail" checked>
+            <label for="invoiceEmail" style="margin-left: 0.5rem;">Invoice generation</label>
+          </div>
+          <div style="margin-bottom: 0.5rem;">
+            <input type="checkbox" id="paymentEmail" checked>
+            <label for="paymentEmail" style="margin-left: 0.5rem;">Payment confirmations</label>
+          </div>
+          <div style="margin-bottom: 0.5rem;">
+            <input type="checkbox" id="reminderEmail" checked>
+            <label for="reminderEmail" style="margin-left: 0.5rem;">Payment reminders</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Usage Chart
+const ctx = document.getElementById('usageChart').getContext('2d');
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    datasets: [{
+      label: 'Active Employees',
+      data: [45, 48, 52, 55, 58, 62, 65, 68, 72, 75, 78, 80],
+      borderColor: '#185FA5',
+      backgroundColor: 'rgba(24, 95, 165, 0.1)',
+      tension: 0.4,
+      fill: true,
+      pointRadius: 4,
+      pointBackgroundColor: '#185FA5'
+    }, {
+      label: 'Monthly Cost (₹000s)',
+      data: [45, 48, 52, 55, 58, 62, 65, 68, 72, 75, 78, 80],
+      borderColor: '#1D9E75',
+      backgroundColor: 'rgba(29, 158, 117, 0.1)',
+      tension: 0.4,
+      fill: true,
+      pointRadius: 4,
+      pointBackgroundColor: '#1D9E75'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: {
+          font: {
+            family: "'DM Sans', sans-serif",
+            size: 12
+          },
+          usePointStyle: true,
+          padding: 15
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: '#e2e8f0'
+        }
+      },
+      x: {
+        grid: {
+          display: false
+        }
+      }
+    }
+  }
+});
+
+function initiatePayment() {
+  alert('Redirecting to payment gateway...');
+  // Implement payment gateway integration
+}
+
+function downloadInvoice(id) {
+  window.location.href = `/api/invoices/${id}/download`;
+}
+
+function payInvoice(id) {
+  if (confirm('Proceed with payment?')) {
+    alert('Redirecting to payment gateway...');
+  }
+}
+
+function downloadAllInvoices() {
+  window.location.href = '/api/invoices/download-all';
+}
+
+function updatePaymentMethod() {
+  alert('Redirecting to payment method update...');
+}
+
+function editBillingDetails() {
+  alert('Opening billing details editor...');
+}
+
+function openUpgradeModal() {
+  alert('Opening plan upgrade options...');
+}
+</script>
+
+</body>
+</html>

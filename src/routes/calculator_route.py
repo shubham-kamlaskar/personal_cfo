@@ -1,0 +1,53 @@
+import os
+from dotenv import load_dotenv
+from flask import Blueprint, render_template, request, jsonify
+import logging
+
+from src.database.infodb.strategy.calculate_tax_strategy import update_calculate_tax_in_db
+from src.util.calculation_helper import TaxEngine
+from src.database.infodb.service.mongo_client import MongoDBClient
+from src.util.access_provider import login_required
+
+load_dotenv()
+tax_engine = TaxEngine()
+mongodb_client = MongoDBClient()
+db_name = str(os.getenv('DB_NAME'))
+tax_calculator_collection = str(os.getenv("TAX_CALCULATOR_COLLECTION"))
+user_info_collection = str(os.getenv('USER_INFO_COLLECTION'))
+logger = logging.getLogger(__name__)
+
+calculator_bp = Blueprint('calculator_bp', __name__, template_folder='templates', static_folder='static')
+
+@calculator_bp.route("/<client_id>/<employee_id>/calculator", methods=["GET"])
+@login_required
+def calculator(client_id: str, employee_id: str):
+    try:
+        fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, "employee_id", employee_id)
+        return render_template("employee/calculator.html", user=fetch_user_info, employee_id=employee_id)
+    except Exception as e:
+        logger.error(f"An error occured in calculator route: {str(e)}")
+        
+@calculator_bp.route("/<client_id>/<employee_id>/tax_calculator", methods=["POST"])
+@login_required
+def tax_calculator(client_id: str, employee_id: str):
+    try:
+        if request.method == "POST":
+            data = request.get_json()
+            if data:
+                selected: dict = update_calculate_tax_in_db(data, employee_id)
+
+                return jsonify({
+                    "selected_regime": selected.get('selected_regime'),
+                    "gross": round(selected.get('gross_income'), 2),
+                    "taxable_income": round(selected.get('taxable_income'), 2),
+                    "total_tax": round(selected.get('selected_tax'), 2),
+                    "total_deductions": round(selected.get('total_deductions'), 2),
+                    "tax_before_cess": round(selected.get('selected_base_tax'), 2),
+                    "cess": round(selected.get('selected_extra_cess'), 2),
+                    "old_regime_tax": round(selected.get('old_regime_tax'), 2),
+                    "new_regime_tax": round(selected.get('new_regime_tax'), 2)
+                })
+
+        return jsonify({"error": "Invalid request"}), 400
+    except Exception as e:
+        logger.error(f"An error occured in tax_calculator route: {str(e)}")

@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<title>Calculator | Personal CFO</title>
+<style>
+  :root {
+    --primary: #1a56db;
+    --primary-light: #e8f0fe;
+    --accent: #16a34a;
+    --accent-light: #dcfce7;
+    --warning: #d97706;
+    --warning-light: #fef3c7;
+    --danger: #dc2626;
+    --danger-light: #fee2e2;
+    --surface: #ffffff;
+    --surface-2: #f8fafc;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-hover: 0 8px 24px rgba(26,86,219,0.12);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f1f5f9;
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, .heading {
+    font-family: 'Sora', sans-serif;
+  }
+
+  /* ── Page Header Banner ── */
+  .page-banner {
+    background: linear-gradient(135deg, #1a56db 0%, #1e40af 100%);
+    border-radius: var(--radius);
+    color: white;
+    padding: 1.5rem 1.75rem;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+  }
+  .page-banner::after {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+  .page-banner .banner-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+  .page-banner .banner-sub {
+    font-size: 0.875rem;
+    opacity: 0.82;
+    margin: 0;
+  }
+
+  /* ── Section Cards ── */
+  .section-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    box-shadow: var(--shadow);
+  }
+  .section-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+  .section-sub {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  /* ── Form Controls ── */
+  .form-label-custom {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.35rem;
+    display: block;
+  }
+  .form-control, .form-select {
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    padding: 0.6rem 0.9rem;
+    background: var(--surface-2);
+    color: var(--text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-control:focus, .form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(26,86,219,0.1);
+    background: white;
+  }
+  .form-control::placeholder { color: #b0bec5; }
+
+  /* Input prefix wrapper */
+  .input-wrap {
+    position: relative;
+  }
+  .input-wrap .rupee {
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    pointer-events: none;
+  }
+  .input-wrap .form-control {
+    padding-left: 1.75rem;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.1rem 0;
+  }
+
+  /* ── Calculate Button ── */
+  .btn-calc {
+    width: 100%;
+    background: var(--primary);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.75rem 1rem;
+    transition: background 0.2s, transform 0.15s;
+    margin-top: 0.5rem;
+  }
+  .btn-calc:hover {
+    background: #1e40af;
+    transform: translateY(-1px);
+    color: white;
+  }
+
+  /* ── Summary Stats Row ── */
+  .summary-stat {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    text-align: center;
+    flex: 1;
+    min-width: 0;
+  }
+  .summary-stat .s-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 0.3rem;
+  }
+  .summary-stat .s-value {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--text);
+  }
+
+  /* ── Tax Breakdown Table ── */
+  .tax-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.875rem;
+  }
+  .tax-row:last-child { border-bottom: none; }
+  .tax-row .t-label { color: var(--text-muted); }
+  .tax-row .t-value { font-weight: 600; color: var(--text); }
+  .tax-row.total-row .t-label {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    color: var(--text);
+    font-size: 0.95rem;
+  }
+  .tax-row.total-row .t-value {
+    font-family: 'Sora', sans-serif;
+    font-size: 1rem;
+    color: var(--primary);
+  }
+
+  /* ── Regime Comparison Cards ── */
+  .regime-card {
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+    flex: 1;
+    min-width: 0;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+  .regime-card.better {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+  .regime-card .rc-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.3rem;
+  }
+  .regime-card .rc-tax {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+  .regime-card .rc-savings {
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .better-badge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: var(--accent);
+    color: white;
+    font-size: 0.65rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  /* ── Deduction Breakdown ── */
+  .deduction-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+  }
+  .deduction-item .d-label { color: var(--text-muted); }
+  .deduction-item .d-value { font-weight: 600; color: var(--text); }
+  .deduction-bar-wrap {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 0.6rem;
+  }
+  .deduction-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    transition: width 0.4s;
+  }
+
+  @media (max-width: 768px) {
+    .summary-stat { font-size: 0.85rem; }
+    .summary-stat .s-value { font-size: 0.95rem; }
+    .regime-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+{% include 'employee/header.html' %}
+<div class="container py-4">
+  <!-- Page Header -->
+  <div class="page-banner">
+    <div class="banner-title">💰 Tax Calculator</div>
+    <p class="banner-sub">Calculate your income tax for FY 2024-25 with both Old & New regimes</p>
+  </div>
+
+  <div class="row g-3">
+    <!-- ═══════════════════════════════════════════════════════════════════════════════════ -->
+    <!-- LEFT COLUMN: Inputs -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════════════ -->
+    <div class="col-lg-4">
+      <form id="taxForm" onsubmit="TaxCalculator(event)">
+        
+        <!-- Basic Details Card -->
+        <div class="section-card mb-3">
+          <div class="section-title">📝 Basic Details</div>
+          <div class="section-sub">Enter your age and preferred tax regime</div>
+
+          <div class="mb-3">
+            <label class="form-label-custom">Age Category</label>
+            <select class="form-select" name="age" id="age_category">
+              <option value="below_60">Below 60 years</option>
+              <option value="60_80">60 - 80 years</option>
+              <option value="above_80">Above 80 years</option>
+            </select>
+          </div>
+
+          <div class="mb-0">
+            <label class="form-label-custom">Tax Regime</label>
+            <select class="form-select" name="tax_regime" id="tax_regime">
+              <option value="old_regime"
+                {% if user.tax_info.tax_regime == "Old" %}selected{% endif %}>
+                Old Regime (With Deductions)
+              </option>
+
+              <option value="new_regime"
+                {% if user.tax_info.tax_regime == "New" %}selected{% endif %}>
+                New Regime (Lower Rates)
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Income Card -->
+        <div class="section-card mb-3">
+          <div class="section-title">💵 Annual Income</div>
+          <div class="section-sub">Enter your total gross annual income</div>
+
+          <div class="mb-3">
+            <label class="form-label-custom">Gross Annual Income</label>
+            <div class="input-wrap">
+              <span class="rupee">₹</span>
+              <input type="number" class="form-control" name="gross_annual_income" id="gross_annual_income" placeholder="1,200,000" value="{{ user.income_info.gross_salary}}" required>
+            </div>
+          </div>
+
+          <div class="mb-0">
+            <label class="form-label-custom">Standard Deduction</label>
+            <div class="input-wrap">
+              <span class="rupee">₹</span>
+              <input type="number" class="form-control" name="standard_deduction" id="std_deduction" placeholder="50,000" value="50000">
+            </div>
+            <div class="form-text text-muted mt-1" id="std-note">Old regime standard deduction is ₹50,000; other deductions apply.</div>
+          </div>
+        </div>
+
+        <!-- Deductions Card (Hidden for New Regime) -->
+        <div class="section-card mb-3">
+          <div class="section-title">🎯 Tax Deductions</div>
+          <div class="section-sub">Available only in Old Regime</div>
+
+          <div class="mb-3">
+            <label class="form-label-custom">Section 80C (PPF, ELSS, etc.)</label>
+            <div class="input-wrap">
+              <span class="rupee">₹</span>
+              <input type="number" class="form-control" name="sec_80c" id="sec_80c" placeholder="150,000" max="150000" value="{{ user.investments_info.total_80c }}">
+            </div>
+            <div class="form-text text-muted mt-1">Max limit: ₹1,50,000</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label-custom">Section 80D (Health Insurance)</label>
+            <div class="input-wrap">
+              <span class="rupee">₹</span>
+              <input type="number" class="form-control" name="sec_80d" id="sec_80d" placeholder="25,000" value="{{ user.investments_info.total_80d }}">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label-custom">HRA Exemption</label>
+            <div class="input-wrap">
+              <span class="rupee">₹</span>
+              <input type="number" class="form-control" name="hra" id="hra" placeholder="100,000">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label-custom">Home Loan Interest (24b)</label>
+            <div class="input-wrap">
+              <span class="rupee">₹</span>
+              <input type="number" class="form-control" name="home_loan" id="home_loan" placeholder="200,000" value="{{ user.investments_info.total_24b }}">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label-custom">Education Loan Interest (80E)</label>
+            <div class="input-wrap">
+              <span class="rupee">₹</span>
+              <input type="number" class="form-control" name="home_loan" id="education_loan" placeholder="200,000" value="{{ user.investments_info.total_24b }}">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label-custom">Donations (80G)</label>
+            <div class="input-wrap">
+              <span class="rupee">₹</span>
+              <input type="number" class="form-control" name="donation" id="education_loan" placeholder="200,000" value="{{ user.investments_info.total_24b }}">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label-custom">Saving Account Interest</label>
+            <div class="input-wrap">
+              <span class="rupee">₹</span>
+              <input type="number" class="form-control" name="saving_interest" id="education_loan" placeholder="10,000" value="{{ user.investments_info.total_24b }}">
+            </div>
+            <div class="form-text text-muted mt-1">Max limit: ₹10,000</div>
+          </div>
+
+          <div class="mb-0">
+            <label class="form-label-custom">NPS (80CCD1B)</label>
+            <div class="input-wrap">
+              <span class="rupee">₹</span>
+              <input type="number" class="form-control" name="nps" id="nps" placeholder="50,000" value="{{ user.investments_info.total_80ccd }}">
+            </div>
+            <div class="form-text text-muted mt-1">Additional ₹50,000 over 80C limit</div>
+          </div>
+        </div>
+
+        <!-- Calculate Button -->
+        <button type="submit" class="btn btn-calc">
+          🧮 Calculate Tax
+        </button>
+      </form>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════════════════ -->
+    <!-- RIGHT COLUMN: Results -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════════════ -->
+    <div class="col-lg-8">
+      
+      <!-- Summary Stats -->
+      <div class="section-card mb-3">
+        <div class="section-title">📊 Quick Summary</div>
+        <div class="section-sub">Your tax calculation at a glance</div>
+
+        <div class="d-flex gap-2 flex-wrap">
+          <div class="summary-stat">
+            <div class="s-label">Gross Income</div>
+            <div class="s-value" id="s-gross">₹ 0</div>
+          </div>
+          <div class="summary-stat">
+            <div class="s-label">Deductions</div>
+            <div class="s-value" id="s-deductions">₹ 0</div>
+          </div>
+          <div class="summary-stat">
+            <div class="s-label">Taxable Income</div>
+            <div class="s-value" id="s-taxable">₹ 0</div>
+          </div>
+          <div class="summary-stat">
+            <div class="s-label">Total Tax</div>
+            <div class="s-value" id="s-totaltax">₹ 0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tax Breakdown -->
+      <div class="section-card mb-3">
+        <div class="section-title">📋 Tax Breakdown</div>
+        <div class="section-sub">Selected Regime: <strong id="tax-regime">—</strong></div>
+
+        <div class="tax-row">
+          <span class="t-label">Tax Before Cess</span>
+          <span class="t-value" id="tax-before-cess">₹ 0</span>
+        </div>
+        <div class="tax-row">
+          <span class="t-label">Health & Education Cess (4%)</span>
+          <span class="t-value" id="cess-amount">₹ 0</span>
+        </div>
+        <div class="tax-row total-row">
+          <span class="t-label">Total Tax Payable</span>
+          <span class="t-value" id="total-tax-payable">₹ 0</span>
+        </div>
+      </div>
+
+      <!-- Old vs New Regime Comparison -->
+      <div class="section-card mb-3">
+        <div class="section-title">Old vs New Regime Comparison</div>
+        <div class="section-sub">Which regime is better for you?</div>
+
+        <div class="d-flex gap-3 flex-wrap regime-row">
+          <div class="regime-card" id="old-regime-card">
+            <div class="rc-title">🏛 Old Regime</div>
+            <div class="rc-tax" id="old-regime-tax">₹ 0</div>
+            <div class="rc-savings" id="old-regime-note" style="color:var(--text-muted)">—</div>
+          </div>
+          <div class="regime-card" id="new-regime-card">
+            <div class="rc-title">✨ New Regime</div>
+            <div class="rc-tax" id="new-regime-tax">₹ 0</div>
+            <div class="rc-savings" id="new-regime-note" style="color:var(--text-muted)">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deduction Breakdown -->
+      <div class="section-card">
+        <div class="section-title">📊 Deduction Breakdown</div>
+        <div class="section-sub">Total deductions: <strong id="total-deductions-label">₹ 0</strong></div>
+
+        <div class="deduction-item">
+          <span class="d-label">Standard Deduction</span>
+          <span class="d-value" id="d-std">₹ 0</span>
+        </div>
+        <div class="deduction-bar-wrap"><div class="deduction-bar" id="bar-std" style="width:0%"></div></div>
+
+        <div class="deduction-item mt-2">
+          <span class="d-label">Section 80C</span>
+          <span class="d-value" id="d-80c">₹ 0</span>
+        </div>
+        <div class="deduction-bar-wrap"><div class="deduction-bar" id="bar-80c" style="width:0%"></div></div>
+
+        <div class="deduction-item mt-2">
+          <span class="d-label">Section 80D</span>
+          <span class="d-value" id="d-80d">₹ 0</span>
+        </div>
+        <div class="deduction-bar-wrap"><div class="deduction-bar" id="bar-80d" style="width:0%"></div></div>
+
+        <div class="deduction-item mt-2">
+          <span class="d-label">HRA Exemption</span>
+          <span class="d-value" id="d-hra">₹ 0</span>
+        </div>
+        <div class="deduction-bar-wrap"><div class="deduction-bar" id="bar-hra" style="width:0%"></div></div>
+
+        <div class="deduction-item mt-2">
+          <span class="d-label">Home Loan Interest</span>
+          <span class="d-value" id="d-hl">₹ 0</span>
+        </div>
+        <div class="deduction-bar-wrap"><div class="deduction-bar" id="bar-hl" style="width:0%"></div></div>
+
+        <div class="deduction-item mt-2">
+          <span class="d-label">NPS (80CCD1B)</span>
+          <span class="d-value" id="d-nps">₹ 0</span>
+        </div>
+        <div class="deduction-bar-wrap"><div class="deduction-bar" id="bar-nps" style="width:0%"></div></div>
+      </div>
+
+      
+
+    </div><!-- /right col -->
+  </div><!-- /row -->
+</div>
+
+<script>
+  const employee_id = "{{employee_id}}"
+  const deductionFields = ['sec_80c', 'sec_80d', 'hra', 'home_loan', 'nps'];
+  const regimeStandardDeduction = {
+    old_regime: 50000,
+    new_regime: 75000
+  };
+
+  function fmt(value) {
+    return "₹ " + Math.round(value).toLocaleString("en-IN");
+  }
+
+  function pct(value, total) {
+    if (total === 0) return "0%";
+    return ((value / total) * 100).toFixed(1) + "%";
+  }
+
+  function toggleDeductionFields(regime) {
+    const isOld = regime === 'old_regime';
+    deductionFields.forEach(id => {
+      const field = document.getElementById(id);
+      if (!field) return;
+      const wrapper = field.closest('.mb-3, .mb-0');
+      if (wrapper) wrapper.style.display = isOld ? '' : 'none';
+      if (!isOld) field.value = 0;
+    });
+
+    const note = document.getElementById('std-note');
+    if (note) {
+      note.textContent = isOld
+        ? 'Old regime standard deduction is ₹50,000; other deductions apply.'
+        : 'New regime standard deduction is ₹75,000; other deductions are ignored.';
+    }
+  }
+
+  function updateRegimeDefaults() {
+    const regime = document.getElementById('tax_regime').value;
+    const stdInput = document.getElementById('std_deduction');
+    stdInput.value = regimeStandardDeduction[regime] || 50000;
+    toggleDeductionFields(regime);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('tax_regime').addEventListener('change', updateRegimeDefaults);
+    updateRegimeDefaults();
+  });
+
+  async function TaxCalculator(event) {
+    event.preventDefault();
+
+    const age    = document.getElementById('age_category').value;
+    const regime = document.getElementById('tax_regime').value;
+    const gross  = parseFloat(document.getElementById('gross_annual_income').value) || 0;
+    const std = parseFloat(document.getElementById('std_deduction').value) || regimeStandardDeduction[regime];
+    const d80c   = Math.min(parseFloat(document.getElementById('sec_80c').value)  || 0, 150000);
+    const d80d   = parseFloat(document.getElementById('sec_80d').value)   || 0;
+    const hra    = parseFloat(document.getElementById('hra').value)        || 0;
+    const hl     = parseFloat(document.getElementById('home_loan').value)  || 0;
+    const nps    = parseFloat(document.getElementById('nps').value)        || 0;
+
+    try {
+      const response = await fetch(`/${employee_id}/tax_calculator`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ age, regime, gross, std, d80c, d80d, hra, hl, nps })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Update summary stats
+        document.getElementById("s-gross").textContent = fmt(data.gross);
+        document.getElementById("s-deductions").textContent = fmt(data.total_deductions);
+        document.getElementById("s-taxable").textContent = fmt(data.taxable_income);
+        document.getElementById("s-totaltax").textContent = fmt(data.total_tax);
+
+        // Update tax breakdown
+        document.getElementById("tax-before-cess").textContent = fmt(data.tax_before_cess);
+        document.getElementById("cess-amount").textContent = fmt(data.cess);
+        document.getElementById("total-tax-payable").textContent = fmt(data.total_tax);
+
+        // Update regime comparison
+        document.getElementById('old-regime-tax').textContent = fmt(data.old_regime_tax);
+        document.getElementById('new-regime-tax').textContent = fmt(data.new_regime_tax);
+
+        // Update selected regime display
+        document.getElementById('tax-regime').textContent = `${data.selected_regime} Regime`;
+
+        // Regime comparison logic
+        const oldCard = document.getElementById('old-regime-card');
+        const newCard = document.getElementById('new-regime-card');
+        oldCard.classList.remove('better');
+        newCard.classList.remove('better');
+        document.querySelectorAll('.better-badge').forEach(b => b.remove());
+        document.getElementById('old-regime-note').style.color = 'var(--text-muted)';
+        document.getElementById('new-regime-note').style.color = 'var(--text-muted)';
+
+        if (data.old_regime_tax < data.new_regime_tax) {
+          oldCard.classList.add('better');
+          const badge = document.createElement('span');
+          badge.className = 'better-badge';
+          badge.textContent = '✓ Better';
+          oldCard.appendChild(badge);
+          const saving = data.new_regime_tax - data.old_regime_tax;
+          document.getElementById('old-regime-note').textContent  = `Save ${fmt(saving)} vs New`;
+          document.getElementById('old-regime-note').style.color  = 'var(--accent)';
+          document.getElementById('new-regime-note').textContent  = `${fmt(saving)} more than Old`;
+        } else if (data.new_regime_tax < data.old_regime_tax) {
+          newCard.classList.add('better');
+          const badge = document.createElement('span');
+          badge.className = 'better-badge';
+          badge.textContent = '✓ Better';
+          newCard.appendChild(badge);
+          const saving = data.old_regime_tax - data.new_regime_tax;
+          document.getElementById('new-regime-note').textContent  = `Save ${fmt(saving)} vs Old`;
+          document.getElementById('new-regime-note').style.color  = 'var(--accent)';
+          document.getElementById('old-regime-note').textContent  = `${fmt(saving)} more than New`;
+        } else {
+          document.getElementById('old-regime-note').textContent = 'Same tax as New';
+          document.getElementById('new-regime-note').textContent = 'Same tax as Old';
+        }
+
+        // Update deduction breakdown
+        const dedList = [
+          { id: 'd-std',  bar: 'bar-std',  val: std },
+          { id: 'd-80c',  bar: 'bar-80c',  val: d80c },
+          { id: 'd-80d',  bar: 'bar-80d',  val: d80d },
+          { id: 'd-hra',  bar: 'bar-hra',  val: hra },
+          { id: 'd-hl',   bar: 'bar-hl',   val: hl },
+          { id: 'd-nps',  bar: 'bar-nps',  val: nps },
+        ];
+        dedList.forEach(d => {
+          document.getElementById(d.id).textContent        = fmt(d.val);
+          document.getElementById(d.bar).style.width       = pct(d.val, data.total_deductions);
+        });
+        document.getElementById('total-deductions-label').textContent = fmt(data.total_deductions);
+      }
+      else {
+        alert("Something went wrong while calculating tax.");
+      }
+    } catch (error) {
+      console.error("Tax calculation error:", error);
+      alert("Tax calculation failed. Please try again.");
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<title>My Profile | TaxCopilot</title>
+<style>
+  :root {
+    --primary: #1a56db;
+    --primary-light: #e8f0fe;
+    --primary-dark: #1e40af;
+    --accent: #16a34a;
+    --accent-light: #dcfce7;
+    --warning: #d97706;
+    --warning-light: #fef3c7;
+    --danger: #dc2626;
+    --danger-light: #fee2e2;
+    --surface: #ffffff;
+    --surface-2: #f8fafc;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 32px rgba(26,86,219,0.15);
+  }
+ 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f1f5f9;
+    color: var(--text);
+    line-height: 1.6;
+  }
+ 
+  h1, h2, h3, h4, .heading { font-family: 'Sora', sans-serif; }
+ 
+  /* ── Page Container ── */
+  .page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  /* ── Profile Header ── */
+  .profile-header {
+    background: linear-gradient(135deg, #1a56db 0%, #1e40af 100%);
+    border-radius: var(--radius);
+    padding: 2.5rem 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .profile-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: float 20s infinite ease-in-out;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(30px, -30px) rotate(5deg); }
+    66% { transform: translate(-20px, 20px) rotate(-5deg); }
+  }
+
+  .profile-header-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+
+  .profile-avatar-wrapper {
+    position: relative;
+  }
+
+  .profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 24px;
+    background: white;
+    border: 4px solid rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .avatar-badge {
+    position: absolute;
+    bottom: -8px;
+    right: -8px;
+    background: var(--accent);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    border: 3px solid #1a56db;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+
+  .profile-info {
+    flex: 1;
+    color: white;
+  }
+
+  .profile-name {
+    font-family: 'Sora', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 0.3rem;
+    letter-spacing: -0.02em;
+  }
+
+  .profile-role {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+
+  .profile-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1.5rem;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stat-value {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    margin-top: 0.3rem;
+  }
+
+  .btn-edit-profile {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 0.65rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-edit-profile:hover {
+    background: rgba(255,255,255,0.3);
+    transform: translateY(-2px);
+  }
+
+  /* ── Content Grid ── */
+  .profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .profile-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.8rem;
+    box-shadow: var(--shadow);
+    transition: all 0.3s;
+  }
+
+  .profile-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .card-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  .card-action {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .card-action:hover {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: var(--primary);
+  }
+
+  /* ── Info Fields ── */
+  .info-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .info-group:last-child {
+    margin-bottom: 0;
+  }
+
+  .info-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+  }
+
+  .info-value {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text);
+    background: var(--surface-2);
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .info-value.editable {
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .info-value.editable:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+  }
+
+  /* ── Badge Styles ── */
+  .badge-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .profile-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    border-radius: 99px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1.5px solid;
+  }
+
+  .profile-badge.verified {
+    background: var(--accent-light);
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .profile-badge.premium {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: white;
+    border-color: #f59e0b;
+  }
+
+  .profile-badge.active {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: var(--primary);
+  }
+
+  /* ── Timeline ── */
+  .activity-timeline {
+    position: relative;
+  }
+
+  .timeline-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+
+  .timeline-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 18px;
+    top: 40px;
+    width: 2px;
+    height: calc(100% + 1.5rem);
+    background: var(--border);
+  }
+
+  .timeline-item:last-child::before {
+    display: none;
+  }
+
+  .timeline-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(26,86,219,0.3);
+    z-index: 1;
+    position: relative;
+  }
+
+  .timeline-content {
+    flex: 1;
+    padding-top: 0.3rem;
+  }
+
+  .timeline-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+
+  .timeline-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.3rem;
+  }
+
+  .timeline-time {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── Settings List ── */
+  .settings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.2rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .setting-item:hover {
+    background: var(--primary-light);
+    border-color: var(--primary);
+  }
+
+  .setting-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .setting-icon {
+    font-size: 1.3rem;
+  }
+
+  .setting-info .setting-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text);
+  }
+
+  .setting-info .setting-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .setting-toggle {
+    width: 48px;
+    height: 26px;
+    background: var(--border);
+    border-radius: 99px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .setting-toggle.active {
+    background: var(--accent);
+  }
+
+  .setting-toggle::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    top: 3px;
+    left: 3px;
+    transition: transform 0.3s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  .setting-toggle.active::before {
+    transform: translateX(22px);
+  }
+
+  /* ── Full Width Card ── */
+  .profile-card-full {
+    grid-column: 1 / -1;
+  }
+
+  /* ── Tax Summary Cards ── */
+  .tax-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tax-card {
+    background: linear-gradient(135deg, var(--surface-2) 0%, var(--surface) 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    transition: all 0.3s;
+  }
+
+  .tax-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .tax-card-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .tax-card-value {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+
+  .tax-card-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* ── Progress Bar ── */
+  .progress-bar-wrapper {
+    margin-top: 1rem;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .progress-label-left {
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .progress-label-right {
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 8px;
+    background: var(--surface-2);
+    border-radius: 99px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+    border-radius: 99px;
+    transition: width 0.6s ease;
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { opacity: 1; }
+    50% { opacity: 0.8; }
+    100% { opacity: 1; }
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 991.98px) {
+    .profile-grid {
+      grid-template-columns: 1fr;
+    }
+    .tax-summary {
+      grid-template-columns: 1fr;
+    }
+    .profile-header-content {
+      flex-direction: column;
+    }
+    .profile-stats {
+      gap: 1.5rem;
+    }
+    .btn-edit-profile {
+      position: static;
+      margin-top: 1rem;
+      align-self: flex-start;
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .page-container {
+      padding: 1rem 0.75rem;
+    }
+    .profile-header {
+      padding: 1.5rem 1rem;
+    }
+    .profile-name {
+      font-size: 1.5rem;
+    }
+    .profile-avatar {
+      width: 90px;
+      height: 90px;
+      font-size: 2.5rem;
+    }
+    .profile-stats {
+      flex-wrap: wrap;
+    }
+    .profile-card {
+      padding: 1.2rem;
+    }
+  }
+
+  /* ── Action Buttons ── */
+  .action-buttons {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .btn-primary-action {
+    flex: 1;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.85rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .btn-primary-action:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(26,86,219,0.3);
+  }
+
+  .btn-secondary-action {
+    flex: 1;
+    background: var(--surface-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 0.85rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .btn-secondary-action:hover {
+    background: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+</style>
+</head>
+
+<body>
+{% include 'employee/header.html' %}
+
+<div class="page-container">
+
+  <!-- ── Profile Header ── -->
+  <div class="profile-header">
+    <button class="btn-edit-profile"
+onclick="window.location.href='{{ url_for('user_profile_bp.edit_profile', employee_id=employee_id) }}';">
+  ✏️ Edit Profile
+</button>
+    
+    <div class="profile-header-content">
+      <div class="profile-avatar-wrapper">
+        <div class="profile-avatar">
+          <span>👤</span>
+        </div>
+        <div class="avatar-badge">✓</div>
+      </div>
+      
+      <div class="profile-info">
+        <h1 class="profile-name">{{ user.personal_info.name or "Guest User" }}</h1>
+        <div class="profile-role">{{user.employment_info.designation or "None"}} • {{user.billing_info.subscription_plan or "None" }}</div>
+        
+        <div class="profile-stats">
+          <div class="stat-item">
+            <div class="stat-value">₹ {{user.tax_info.tax_saved or "None"}}</div>
+            <div class="stat-label">Tax Saved</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">₹ {{user.billing_info.days_active or "None"}}</div>
+            <div class="stat-label">Days Active</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">₹ {{user.billing_info.documents_len or "None"}}</div>
+            <div class="stat-label">Documents</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Profile Grid ── -->
+  <div class="profile-grid">
+
+    <!-- Personal Information -->
+    <div class="profile-card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="card-icon">👤</div>
+          <span>Personal Information</span>
+        </div>
+      </div>
+      
+      <div class="info-group">
+        <div class="info-label">Full Name</div>
+        <div class="info-value editable">{{ user.personal_info.name or "Not provided" }}</div>
+      </div>
+      
+      <div class="info-group">
+        <div class="info-label">Email Address</div>
+        <div class="info-value editable">{{ user.personal_info.email or "user@example.com" }}</div>
+      </div>
+      
+      <div class="info-group">
+        <div class="info-label">Phone Number</div>
+        <div class="info-value editable">{{ user.personal_info.phone or "+91 XXXXX XXXXX" }}</div>
+      </div>
+      
+      <div class="info-group">
+        <div class="info-label">Date of Birth</div>
+        <div class="info-value editable">{{ user.personal_info.dob or "DD/MM/YYYY" }}</div>
+      </div>
+    </div>
+
+    <!-- Tax Information -->
+    <div class="profile-card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="card-icon">📊</div>
+          <span>Tax Information</span>
+        </div>
+      </div>
+      
+      <div class="info-group">
+        <div class="info-label">PAN Number</div>
+        <div class="info-value editable">{{ user.tax_info.pan or "XXXXX1234X" }}</div>
+      </div>
+      
+      <div class="info-group">
+        <div class="info-label">Aadhar Number</div>
+        <div class="info-value editable">{{ user.tax_info.aadhar or "XXXX XXXX XXXX" }}</div>
+      </div>
+      
+      <div class="info-group">
+        <div class="info-label">Tax Regime</div>
+        <div class="info-value">{{ user.tax_info.tax_regime or "New Regime" }}</div>
+      </div>
+      
+      <div class="info-group">
+        <div class="info-label">Financial Year</div>
+        <div class="info-value">FY 2025-26</div>
+      </div>
+    </div>
+
+    <!-- Employment Details -->
+    <div class="profile-card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="card-icon">💼</div>
+          <span>Employment Details</span>
+        </div>
+
+      </div>
+      
+      <div class="info-group">
+        <div class="info-label">Employment Type</div>
+        <div class="info-value">{{ user.employment_info.employment_type or "None" }}</div>
+      </div>
+      
+      <div class="info-group">
+        <div class="info-label">Company Name</div>
+        <div class="info-value editable">{{ user.employment_info.company or "None" }}</div>
+      </div>
+      
+      <div class="info-group">
+        <div class="info-label">Annual Salary</div>
+        <div class="info-value editable">{{ user.income_info.gross_salary or "None" }}</div>
+      </div>
+      
+      <div class="info-group">
+        <div class="info-label">City</div>
+        <div class="info-value editable">{{ user.address_info.city or "None" }}</div>
+      </div>
+    </div>
+
+    <!-- Account Status -->
+    <div class="profile-card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="card-icon">⭐</div>
+          <span>Account Status</span>
+        </div>
+      </div>
+      
+      <div class="badge-list" style="margin-bottom: 1.5rem;">
+        <span class="profile-badge verified">✓ Verified</span>
+        <span class="profile-badge premium">👑 Premium</span>
+        <span class="profile-badge active">🔥 Active</span>
+      </div>
+      
+      <div class="info-group">
+        <div class="info-label">Member Since</div>
+        <div class="info-value" id="memberSince">
+          {{ user.billing_info.member_since or "None" }}
+        </div>
+      </div>
+      
+      <div class="info-group">
+        <div class="info-label">Subscription Plan</div>
+        <div class="info-value">{{user.billing_info.subscription_plan or "None" }}</div>
+      </div>
+      
+      <div class="info-group">
+        <div class="info-label">Next Billing Date</div>
+        <div class="info-value">{{user.billing_info.next_billing_date or "None"}}</div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn-primary-action">
+          <span>🚀</span>
+          <span>Upgrade Plan</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="profile-card profile-card-full">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="card-icon">📈</div>
+          <span>Recent Activity</span>
+        </div>
+        <button class="card-action">View All</button>
+      </div>
+      
+      <div class="activity-timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">📄</div>
+          <div class="timeline-content">
+            <div class="timeline-title">ITR Form Downloaded</div>
+            <div class="timeline-desc">Downloaded ITR-1 form for FY 2024-25</div>
+            <div class="timeline-time">2 hours ago</div>
+          </div>
+        </div>
+        
+        <div class="timeline-item">
+          <div class="timeline-icon">💰</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Tax Calculation Completed</div>
+            <div class="timeline-desc">Estimated tax liability: ₹1,24,500</div>
+            <div class="timeline-time">Yesterday, 3:42 PM</div>
+          </div>
+        </div>
+        
+        <div class="timeline-item">
+          <div class="timeline-icon">📊</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Investment Added</div>
+            <div class="timeline-desc">Added PPF investment of ₹50,000</div>
+            <div class="timeline-time">3 days ago</div>
+          </div>
+        </div>
+        
+        <div class="timeline-item">
+          <div class="timeline-icon">🤖</div>
+          <div class="timeline-content">
+            <div class="timeline-title">AI Consultation</div>
+            <div class="timeline-desc">Discussed HRA exemption calculation</div>
+            <div class="timeline-time">5 days ago</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tax Overview -->
+    <div class="profile-card profile-card-full">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="card-icon">💸</div>
+          <span>Tax Overview FY 2025-26</span>
+        </div>
+      </div>
+      
+      <div class="tax-summary">
+        <div class="tax-card">
+          <div class="tax-card-icon">💰</div>
+          <div class="tax-card-value">₹ {{user.income_info.gross_salary}}</div>
+          <div class="tax-card-label">Gross Income</div>
+        </div>
+        
+        <div class="tax-card">
+          <div class="tax-card-icon">🎯</div>
+          <div class="tax-card-value">₹ {{user.tax_info.deductions}}</div>
+          <div class="tax-card-label">Total Deductions</div>
+        </div>
+        
+        <div class="tax-card">
+          <div class="tax-card-icon">📊</div>
+          <div class="tax-card-value">₹ {{user.tax_info.tax_liability}}</div>
+          <div class="tax-card-label">Tax Liability</div>
+        </div>
+      </div>
+
+      <div class="progress-bar-wrapper">
+        <div class="progress-label">
+          <span class="progress-label-left">Tax Filing Progress</span>
+          <span class="progress-label-right">65% Complete</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width: 65%;"></div>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn-primary-action">
+          <span>📝</span>
+          <span>Continue Filing</span>
+        </button>
+        <button class="btn-secondary-action">
+          <span>📥</span>
+          <span>Download Summary</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Preferences & Settings -->
+    <div class="profile-card profile-card-full">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="card-icon">⚙️</div>
+          <span>Preferences & Settings</span>
+        </div>
+      </div>
+      
+      <div class="settings-list">
+        <div class="setting-item">
+          <div class="setting-left">
+            <div class="setting-icon">🔔</div>
+            <div class="setting-info">
+              <div class="setting-label">Email Notifications</div>
+              <div class="setting-desc">Receive updates about tax deadlines and tips</div>
+            </div>
+          </div>
+          <div class="setting-toggle active" onclick="toggleSetting(this)"></div>
+        </div>
+        
+        <div class="setting-item">
+          <div class="setting-left">
+            <div class="setting-icon">📱</div>
+            <div class="setting-info">
+              <div class="setting-label">SMS Alerts</div>
+              <div class="setting-desc">Get important reminders via text message</div>
+            </div>
+          </div>
+          <div class="setting-toggle active" onclick="toggleSetting(this)"></div>
+        </div>
+        
+        <div class="setting-item">
+          <div class="setting-left">
+            <div class="setting-icon">🔐</div>
+            <div class="setting-info">
+              <div class="setting-label">Two-Factor Authentication</div>
+              <div class="setting-desc">Add an extra layer of security to your account</div>
+            </div>
+          </div>
+          <div class="setting-toggle" onclick="toggleSetting(this)"></div>
+        </div>
+        
+        <div class="setting-item">
+          <div class="setting-left">
+            <div class="setting-icon">🌙</div>
+            <div class="setting-info">
+              <div class="setting-label">Dark Mode</div>
+              <div class="setting-desc">Switch to dark theme for better viewing</div>
+            </div>
+          </div>
+          <div class="setting-toggle" onclick="toggleSetting(this)"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /profile-grid -->
+
+</div><!-- /page-container -->
+
+<script>
+  const employee_id = "{{ employee_id }}"
+  function toggleSetting(element) {
+    element.classList.toggle('active');
+  }
+
+  // Auto-animate progress bar on load
+  window.addEventListener('load', function() {
+    const progressFill = document.querySelector('.progress-fill');
+    const targetWidth = progressFill.style.width;
+    progressFill.style.width = '0%';
+    setTimeout(() => {
+      progressFill.style.width = targetWidth;
+    }, 100);
+  });
+
+// member since
+const el = document.getElementById("memberSince");
+const memberDate = el.innerText;
+
+if (memberDate && memberDate !== "None") {
+    const start = new Date(memberDate);
+    const now = new Date();
+
+    const diffTime = now - start;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    el.innerText = diffDays + " days";
+}
+</script>
+
+
+</body>
+</html>
