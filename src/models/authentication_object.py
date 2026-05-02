@@ -8,7 +8,7 @@ class LoginObject(BaseModel):
     employee_id: Optional[str] = None
     email: Optional[str] = None
     password: Optional[str] = None
-    rbac_role: Optional[str] = None
+    rbac_role: Optional[list[str]] = None
     createdAt: Optional[datetime] = None
     updatedAt: Optional[datetime] = None
 
@@ -131,7 +131,7 @@ class UserInfoObject(BaseModel):
 class UserInfo(BaseModel):
     client_id: str
     employee_id: str
-    rbac_role: str
+    rbac_role: Optional[list[str]] = None
 
 
 class ForgotPasswordObject(BaseModel):

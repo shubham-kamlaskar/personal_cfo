@@ -16,7 +16,7 @@
       <!-- Dashboard -->
       <li class="nav-item">
         <a class="nav-link"
-           href="{{ url_for('admin_dashboard_bp.admin_dashboard', admin_id=admin_id) }}">
+           href="{{ url_for('admin_dashboard_bp.admin_dashboard', employee_id=employee_id, client_id=client_id) }}">
            Dashboard
         </a>
       </li>
@@ -30,7 +30,7 @@
         <ul class="dropdown-menu">
           <li>
             <a class="dropdown-item"
-               href="{{ url_for('admin_dashboard_bp.billing', admin_id=admin_id) }}">
+               href="{{ url_for('admin_dashboard_bp.billing', employee_id=employee_id, client_id=client_id) }}">
                Subscription
             </a>
           </li>
@@ -41,7 +41,7 @@
       <!-- Analytics -->
       <li class="nav-item">
         <a class="nav-link"
-           href="{{ url_for('admin_dashboard_bp.analytics', admin_id=admin_id) }}">
+           href="{{ url_for('admin_dashboard_bp.analytics', employee_id=employee_id, client_id=client_id) }}">
            Analytics
         </a>
       </li>
@@ -49,7 +49,7 @@
        <!-- Users -->
       <li class="nav-item">
         <a class="nav-link"
-           href="{{ url_for('admin_dashboard_bp.employee_list', admin_id=admin_id) }}">
+           href="{{ url_for('admin_dashboard_bp.employee_list', employee_id=employee_id, client_id=client_id) }}">
            Employees
         </a>
       </li>
@@ -57,7 +57,7 @@
       <!-- Support -->
       <li class="nav-item">
         <a class="nav-link"
-           href="{{ url_for('admin_dashboard_bp.support', admin_id=admin_id) }}">
+           href="{{ url_for('admin_dashboard_bp.support', employee_id=employee_id, client_id=client_id) }}">
            Support
         </a>
       </li>

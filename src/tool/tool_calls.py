@@ -30,16 +30,16 @@ def suggest_tax_saving_investments(query: str, tax_regime: str) -> str:
         saving_options = """
                     Based on the Old Tax Regime, you can reduce taxable income using the following investments and deductions:
 
-                    1. ELSS (Equity Linked Savings Scheme) – Section 80C, limit ₹1.5L
-                    2. PPF (Public Provident Fund) – Section 80C, long-term tax-free returns
-                    3. NPS (National Pension System) – Additional ₹50K deduction under 80CCD(1B)
-                    4. Tax Saving Fixed Deposits – Section 80C with 5-year lock-in
-                    5. ULIPs – Section 80C with insurance + investment benefits
-                    6. Senior Citizen Savings Scheme – Good for retirees
-                    7. Sukanya Samriddhi Yojana – For girl child savings
-                    8. Life Insurance Premium – Eligible under Section 80C
-                    9. Home Loan Principal Repayment – Section 80C
-                    10. Health Insurance Premium – Section 80D deduction
+                    1. ELSS (Equity Linked Savings Scheme) - Section 80C, limit ₹1.5L
+                    2. PPF (Public Provident Fund) - Section 80C, long-term tax-free returns
+                    3. NPS (National Pension System) - Additional ₹50K deduction under 80CCD(1B)
+                    4. Tax Saving Fixed Deposits - Section 80C with 5-year lock-in
+                    5. ULIPs - Section 80C with insurance + investment benefits
+                    6. Senior Citizen Savings Scheme - Good for retirees
+                    7. Sukanya Samriddhi Yojana - For girl child savings
+                    8. Life Insurance Premium - Eligible under Section 80C
+                    9. Home Loan Principal Repayment - Section 80C
+                    10. Health Insurance Premium - Section 80D deduction
 
                     Maximum deduction possible under 80C: ₹1.5 lakh.
                     """

@@ -31,7 +31,7 @@ class PersonalInfo(BaseModel):
     createdAt: Optional[datetime] = None
     updatedAt: Optional[datetime] = None
 
-class ProfessionalInfo(BaseModel):
+class CAProfessionalInfo(BaseModel):
     client_id: Optional[str] = None
     employee_id: Optional[str] = None
     icai_number: Optional[str] = None
@@ -49,7 +49,7 @@ class ProfessionalInfo(BaseModel):
     createdAt: Optional[datetime] = None
     updatedAt: Optional[datetime] = None
 
-class Specialization(BaseModel):
+class CASpecialization(BaseModel):
     client_id: Optional[str] = None
     employee_id: Optional[str] = None
     primary_specialization: Optional[str] = None
@@ -61,7 +61,7 @@ class Specialization(BaseModel):
     createdAt: Optional[datetime] = None
     updatedAt: Optional[datetime] = None
 
-class Documents(BaseModel):
+class CADocuments(BaseModel):
     client_id: Optional[str] = None
     employee_id: Optional[str] = None
     icai_cert: Optional[str] = None
@@ -74,7 +74,7 @@ class Documents(BaseModel):
     createdAt: Optional[datetime] = None
     updatedAt: Optional[datetime] = None
 
-class ServiceAgreement(BaseModel):
+class CAServiceAgreement(BaseModel):
     client_id: Optional[str] = None
     employee_id: Optional[str] = None
     engagement_type: Optional[str] = None
@@ -98,12 +98,11 @@ class ServiceAgreement(BaseModel):
 class CAOnboarding(BaseModel):
     client_id: Optional[str] = None
     employee_id: Optional[str] = None
-    password: Optional[bytes] = None
     personal_info: Optional[PersonalInfo] = None
-    professional_info: Optional[ProfessionalInfo] = None
-    specialization: Optional[Specialization] = None
-    documents: Optional[Documents] = None
-    service_agreement: Optional[ServiceAgreement] = None
+    professional_info: Optional[CAProfessionalInfo] = None
+    specialization: Optional[CASpecialization] = None
+    documents: Optional[CADocuments] = None
+    service_agreement: Optional[CAServiceAgreement] = None
     status: Optional[str] = None
     createdAt: Optional[datetime] = None
     updatedAt: Optional[datetime] = None

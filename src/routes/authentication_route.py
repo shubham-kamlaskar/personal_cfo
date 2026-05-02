@@ -53,10 +53,17 @@ def loginUser():
                                         "employee_id": user_info.employee_id}
                         mongodb_client.update_one_item_in_collection(db_name, user_info_collection,
                                                                     filter_items, last_user_activity )
-                        return jsonify({
-                                    "status": "success",
-                                    "redirect": url_for("dashboard_bp.dashboard", client_id= user_info.client_id, employee_id=user_info.employee_id)
-                                })
+                        if user_info.client_id != "CLT-2600000":
+                            return jsonify({
+                                        "status": "success",
+                                        "redirect": url_for("dashboard_bp.dashboard", client_id= user_info.client_id, employee_id=user_info.employee_id)
+                                    })
+                        else:
+                            return jsonify({
+                                        "status": "success",
+                                        "redirect": url_for("admin_dashboard_bp.admin_dashboard", client_id= user_info.client_id, employee_id=user_info.employee_id)
+                                    })
+                            
             else:
                 return render_template("authentication/login.html")
     except Exception as e:
