@@ -10,7 +10,7 @@ user_info_collection = str(os.getenv('USER_INFO_COLLECTION'))
 db_name = str(os.getenv('DB_NAME'))
 tax_engine = TaxEngine()
 
-def update_user_investments_in_db(user_info: dict, investments: dict, totals: dict, user_id: str):
+def update_user_investments_in_db(user_info: dict, investments: dict, totals: dict, employee_id: str):
     tax_info: dict = user_info.get('tax_info', {})
     tax_regime: str = tax_info.get('tax_regime', "old")
     income_info: dict = user_info.get('income_info', {})
@@ -173,7 +173,7 @@ def update_user_investments_in_db(user_info: dict, investments: dict, totals: di
     mongodb_client.update_one_item_in_collection(
             db_name,
             user_info_collection,
-                "user_id",
-                user_id,
+                "employee_id",
+                employee_id,
                 update_data
         )

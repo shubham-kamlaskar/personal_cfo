@@ -9,9 +9,9 @@ mongodb_client = MongoDBClient()
 user_info_collection = str(os.getenv('USER_INFO_COLLECTION'))
 db_name = str(os.getenv('DB_NAME')) 
 
-def update_signup_form_in_db(user_id, name, email, password_hash):
+def update_signup_form_in_db(employee_id, name, email, password_hash):
     signup_data = UserInfoObject(
-        user_id = user_id,
+        employee_id = employee_id,
         password=password_hash,
         personal_info= PersonalInfo(
                 name=name.title(),

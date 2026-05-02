@@ -547,7 +547,9 @@
 </div>
 
 <script>
-  const user_id = "{{user_id}}"
+  const client_id = "{{client_id}}"
+  const employee_id = "{{employee_id}}"
+  
   const deductionFields = ['sec_80c', 'sec_80d', 'hra', 'home_loan', 'nps'];
   const regimeStandardDeduction = {
     old_regime: 50000,
@@ -607,7 +609,7 @@
     const nps    = parseFloat(document.getElementById('nps').value)        || 0;
 
     try {
-      const response = await fetch(`/${user_id}/tax_calculator`, {
+      const response = await fetch(`/${employee_id}/tax_calculator`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ age, regime, gross, std, d80c, d80d, hra, hl, nps })

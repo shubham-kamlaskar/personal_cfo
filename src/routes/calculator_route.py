@@ -18,23 +18,23 @@ logger = logging.getLogger(__name__)
 
 calculator_bp = Blueprint('calculator_bp', __name__, template_folder='templates', static_folder='static')
 
-@calculator_bp.route("/<user_id>/calculator", methods=["GET"])
+@calculator_bp.route("/<client_id>/<employee_id>/calculator", methods=["GET"])
 @login_required
-def calculator(user_id: str):
+def calculator(client_id: str, employee_id: str):
     try:
-        fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, "user_id", user_id)
-        return render_template("employee/calculator.html", user=fetch_user_info, user_id=user_id)
+        fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, "employee_id", employee_id)
+        return render_template("employee/calculator.html", user=fetch_user_info, employee_id=employee_id)
     except Exception as e:
         logger.error(f"An error occured in calculator route: {str(e)}")
         
-@calculator_bp.route("/<user_id>/tax_calculator", methods=["POST"])
+@calculator_bp.route("/<client_id>/<employee_id>/tax_calculator", methods=["POST"])
 @login_required
-def tax_calculator(user_id: str):
+def tax_calculator(client_id: str, employee_id: str):
     try:
         if request.method == "POST":
             data = request.get_json()
             if data:
-                selected: dict = update_calculate_tax_in_db(data, user_id)
+                selected: dict = update_calculate_tax_in_db(data, employee_id)
 
                 return jsonify({
                     "selected_regime": selected.get('selected_regime'),

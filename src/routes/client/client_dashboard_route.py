@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 @login_required
 def client_dashboard():
     try:
-        # fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, "user_id", user_id)
+        # fetch_user_info = mongodb_client.find_one_item_from_collection(db_name, user_info_collection, "employee_id", employee_id)
         # return render_template("employee/dashboard.html", client=fetch_user_info, client_id=client_id)
         company = {
             "name": "ABC Corporation",
@@ -31,6 +31,13 @@ def client_dashboard():
             "next_billing_date": "2026-12-30",
             "pending_amount": 0,
             "payment_due_date": "2026-12-30",
+            "pending_payments": 10000,
+            "status_counts": {
+                "filed": 500,
+                "review": 200,
+                "pending": 100,
+                "not_started": 50
+            }
         }
         user= {
             "initials": "JDK",

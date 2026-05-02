@@ -13,12 +13,12 @@ class HistoryClient:
         self.db_name = str(os.getenv('DB_NAME'))
         self.conversation_collection = str(os.getenv("CONVERSATION_COLLETION"))
 
-    def get_user_conversation_history(self, user_id: str):
+    def get_user_conversation_history(self, client_id: str, employee_id: str):
+        filter_items = {"client_id": client_id, "employee_id": employee_id}
         user_conversation_history = self.mongodb_client.find_many_item_from_collection(
                 database_name=self.db_name,
                 collection_name=self.conversation_collection,
-                search_field=VariableConstant.USER_ID_FIELD_DB,
-                search_item=user_id
+                filter_items=filter_items
             )
             
         conv_history = []
