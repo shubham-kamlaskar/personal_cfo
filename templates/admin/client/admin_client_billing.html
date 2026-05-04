@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&amp;family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-surface": "#e1e2ed",
+                "primary-fixed": "#dbe1ff",
+                "secondary": "#4cd7f6",
+                "surface-container": "#1d1f27",
+                "error-container": "#93000a",
+                "on-primary-fixed-variant": "#003ea8",
+                "on-primary-fixed": "#00174b",
+                "surface-tint": "#b4c5ff",
+                "on-tertiary": "#581e00",
+                "surface-variant": "#32343d",
+                "on-secondary": "#003640",
+                "on-secondary-fixed-variant": "#004e5c",
+                "card-base": "#0f1929",
+                "inverse-surface": "#e1e2ed",
+                "on-primary-container": "#eeefff",
+                "tertiary": "#ffb596",
+                "surface-container-low": "#191b23",
+                "primary-container": "#2563eb",
+                "on-tertiary-container": "#ffede6",
+                "ink-base": "#05080f",
+                "on-primary": "#002a78",
+                "status-success": "#10b981",
+                "inverse-on-surface": "#2e3039",
+                "ink-elevated": "#3d4d6a",
+                "secondary-fixed": "#acedff",
+                "tertiary-fixed": "#ffdbcd",
+                "on-tertiary-fixed-variant": "#7d2d00",
+                "on-error-container": "#ffdad6",
+                "on-surface-variant": "#c3c6d7",
+                "surface": "#11131b",
+                "outline-variant": "#434655",
+                "error": "#ffb4ab",
+                "tertiary-container": "#bc4800",
+                "card-hover": "#131f32",
+                "on-secondary-container": "#00424e",
+                "status-error": "#f43f5e",
+                "primary": "#b4c5ff",
+                "surface-container-high": "#282a32",
+                "secondary-container": "#03b5d3",
+                "text-pure": "#ffffff",
+                "muted-text": "#7a8aa8",
+                "accent-blue-light": "#3b82f6",
+                "outline": "#8d90a0",
+                "surface-container-lowest": "#0c0e16",
+                "on-secondary-fixed": "#001f26",
+                "primary-fixed-dim": "#b4c5ff",
+                "border-subtle": "rgba(255,255,255,0.08)",
+                "secondary-fixed-dim": "#4cd7f6",
+                "surface-bright": "#373942",
+                "on-tertiary-fixed": "#360f00",
+                "ink-surface": "#1a2236",
+                "on-background": "#e1e2ed",
+                "surface-container-highest": "#32343d",
+                "status-warning": "#f59e0b",
+                "surface-dim": "#11131b",
+                "on-error": "#690005",
+                "inverse-primary": "#0053db",
+                "background": "#11131b",
+                "text-on-dark": "#e8edf5",
+                "tertiary-fixed-dim": "#ffb596",
+                "background-main": "#0b1120"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "lg": "1.5rem",
+                "md": "1rem",
+                "sm": "0.5rem",
+                "xs": "0.25rem",
+                "xl": "2rem",
+                "xxxl": "4rem",
+                "xxl": "3rem"
+            },
+            "fontFamily": {
+                "h2": ["Bricolage Grotesque"],
+                "h1": ["Bricolage Grotesque"],
+                "body-lg": ["DM Sans"],
+                "display": ["Bricolage Grotesque"],
+                "label-sm": ["DM Sans"],
+                "body-md": ["DM Sans"],
+                "accent": ["DM Sans"]
+            },
+            "fontSize": {
+                "h2": ["1.75rem", {"lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "h1": ["2.5rem", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "body-lg": ["1.125rem", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "display": ["3.5rem", {"lineHeight": "1.05", "letterSpacing": "-0.03em", "fontWeight": "800"}],
+                "label-sm": ["0.875rem", {"lineHeight": "1.4", "fontWeight": "500"}],
+                "body-md": ["1rem", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "accent": ["1rem", {"lineHeight": "1.6", "fontWeight": "500"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body {
+            background-color: #05080f;
+            background-image: radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.05) 0px, transparent 50%), 
+                              radial-gradient(at 100% 100%, rgba(37, 99, 235, 0.05) 0px, transparent 50%);
+            min-height: 100vh;
+        }
+        .grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-surface">
+<div class="grain"></div>
+<!-- TopAppBar -->
+  <!-- Top App Bar -->
+{% include 'admin/header.html' %}
+<main class="lg:ml-64 pt-24 pb-32 px-4 md:px-8 max-w-7xl mx-auto">
+<!-- Header & Stats -->
+<div class="mb-7">
+<h1 class="font-h1 text-h1 text-text-pure mb-2">Billing &amp; Expenses Ledger</h1>
+<p class="text-muted-text max-w-2xl">Real-time oversight of enterprise financial movements, fiscal compliance verification, and client reconciliation data.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+<div class="bg-card-base border border-border-subtle p-6 rounded-xl shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-status-success/10 rounded-lg">
+<span class="material-symbols-outlined text-status-success" data-icon="trending_up">trending_up</span>
+</div>
+<span class="text-xs font-medium text-status-success">+12.4%</span>
+</div>
+<p class="text-label-sm text-muted-text font-accent">Total Receivables</p>
+<p class="text-h2 font-h2 text-text-pure">$428,930.00</p>
+</div>
+<div class="bg-card-base border border-border-subtle p-6 rounded-xl shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-status-error/10 rounded-lg">
+<span class="material-symbols-outlined text-status-error" data-icon="trending_down">trending_down</span>
+</div>
+<span class="text-xs font-medium text-status-error">-2.1%</span>
+</div>
+<p class="text-label-sm text-muted-text font-accent">Operating Expenses</p>
+<p class="text-h2 font-h2 text-text-pure">$156,244.50</p>
+</div>
+<div class="bg-card-base border border-border-subtle p-6 rounded-xl shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-secondary-container/10 rounded-lg">
+<span class="material-symbols-outlined text-secondary-container" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<span class="text-xs font-medium text-secondary-container">Stable</span>
+</div>
+<p class="text-label-sm text-muted-text font-accent">Net Position</p>
+<p class="text-h2 font-h2 text-text-pure">$272,685.50</p>
+</div>
+</div>
+<!-- Filters Bar -->
+<div class="bg-surface-container-low border border-border-subtle p-4 rounded-xl mb-6 flex flex-wrap gap-4 items-center justify-between">
+<div class="flex flex-wrap gap-3 items-center">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-muted-text text-sm" data-icon="calendar_today">calendar_today</span>
+<select class="bg-card-base border border-border-subtle rounded-lg pl-10 pr-8 py-2 text-sm text-on-surface focus:ring-2 focus:ring-primary-container focus:border-transparent outline-none appearance-none">
+<option>Last 30 Days</option>
+<option>Current Quarter</option>
+<option>Fiscal Year 2023</option>
+<option>All Time</option>
+</select>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-muted-text text-sm" data-icon="filter_list">filter_list</span>
+<select class="bg-card-base border border-border-subtle rounded-lg pl-10 pr-8 py-2 text-sm text-on-surface focus:ring-2 focus:ring-primary-container focus:border-transparent outline-none appearance-none">
+<option>All Transaction Types</option>
+<option>Vendor Payment</option>
+<option>Client Invoice</option>
+<option>Internal Transfer</option>
+<option>Tax Remittance</option>
+</select>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-muted-text text-sm" data-icon="payments">payments</span>
+<select class="bg-card-base border border-border-subtle rounded-lg pl-10 pr-8 py-2 text-sm text-on-surface focus:ring-2 focus:ring-primary-container focus:border-transparent outline-none appearance-none">
+<option>Any Amount</option>
+<option>&gt; $1,000</option>
+<option>&gt; $10,000</option>
+<option>&gt; $50,000</option>
+</select>
+</div>
+</div>
+<button class="bg-primary-container hover:bg-blue-700 text-on-primary-container px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all shadow-[0_0_15px_rgba(37,99,235,0.3)]">
+<span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+                Export CSV
+            </button>
+</div>
+<!-- Ledger Table -->
+<div class="bg-card-base border border-border-subtle rounded-2xl overflow-hidden shadow-2xl">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container border-b border-border-subtle">
+<th class="px-6 py-4 text-label-sm font-accent text-muted-text uppercase tracking-wider">Date</th>
+<th class="px-6 py-4 text-label-sm font-accent text-muted-text uppercase tracking-wider">Description</th>
+<th class="px-6 py-4 text-label-sm font-accent text-muted-text uppercase tracking-wider text-right">Amount</th>
+<th class="px-6 py-4 text-label-sm font-accent text-muted-text uppercase tracking-wider text-center">Status</th>
+<th class="px-6 py-4 text-label-sm font-accent text-muted-text uppercase tracking-wider">Reference</th>
+<th class="px-6 py-4"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-subtle">
+<!-- Transaction 1 -->
+<tr class="hover:bg-card-hover transition-colors group">
+<td class="px-6 py-5 whitespace-nowrap">
+<span class="text-sm font-medium text-on-surface">Oct 24, 2023</span>
+<p class="text-[10px] text-muted-text">09:42 AM</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="p-2 bg-status-success/10 rounded-full">
+<span class="material-symbols-outlined text-status-success text-sm" data-icon="add_circle">add_circle</span>
+</div>
+<div>
+<p class="text-sm font-bold text-text-pure">Client Invoice #8821</p>
+<p class="text-xs text-muted-text">MetaSystems Global Ltd.</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<span class="text-sm font-bold text-status-success">+$12,450.00</span>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-status-success/10 text-status-success">Completed</span>
+</td>
+<td class="px-6 py-5">
+<span class="text-xs font-mono text-muted-text">TXN_992104</span>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="text-muted-text hover:text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Transaction 2 -->
+<tr class="hover:bg-card-hover transition-colors group">
+<td class="px-6 py-5 whitespace-nowrap">
+<span class="text-sm font-medium text-on-surface">Oct 23, 2023</span>
+<p class="text-[10px] text-muted-text">02:15 PM</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="p-2 bg-status-error/10 rounded-full">
+<span class="material-symbols-outlined text-status-error text-sm" data-icon="remove_circle">remove_circle</span>
+</div>
+<div>
+<p class="text-sm font-bold text-text-pure">Vendor Payment</p>
+<p class="text-xs text-muted-text">Amazon Web Services</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<span class="text-sm font-bold text-status-error">-$2,840.12</span>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-status-success/10 text-status-success">Completed</span>
+</td>
+<td class="px-6 py-5">
+<span class="text-xs font-mono text-muted-text">TXN_881290</span>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="text-muted-text hover:text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Transaction 3 -->
+<tr class="hover:bg-card-hover transition-colors group">
+<td class="px-6 py-5 whitespace-nowrap">
+<span class="text-sm font-medium text-on-surface">Oct 22, 2023</span>
+<p class="text-[10px] text-muted-text">11:05 AM</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="p-2 bg-status-warning/10 rounded-full">
+<span class="material-symbols-outlined text-status-warning text-sm" data-icon="sync_alt">sync_alt</span>
+</div>
+<div>
+<p class="text-sm font-bold text-text-pure">Tax Remittance (VAT)</p>
+<p class="text-xs text-muted-text">Internal Revenue Service</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<span class="text-sm font-bold text-status-error">-$45,000.00</span>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-status-warning/10 text-status-warning">Pending</span>
+</td>
+<td class="px-6 py-5">
+<span class="text-xs font-mono text-muted-text">TXN_772019</span>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="text-muted-text hover:text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Transaction 4 -->
+<tr class="hover:bg-card-hover transition-colors group">
+<td class="px-6 py-5 whitespace-nowrap">
+<span class="text-sm font-medium text-on-surface">Oct 20, 2023</span>
+<p class="text-[10px] text-muted-text">04:30 PM</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="p-2 bg-status-success/10 rounded-full">
+<span class="material-symbols-outlined text-status-success text-sm" data-icon="add_circle">add_circle</span>
+</div>
+<div>
+<p class="text-sm font-bold text-text-pure">Client Invoice #8820</p>
+<p class="text-xs text-muted-text">Velocity Ventures</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<span class="text-sm font-bold text-status-success">+$8,200.00</span>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-status-success/10 text-status-success">Completed</span>
+</td>
+<td class="px-6 py-5">
+<span class="text-xs font-mono text-muted-text">TXN_556102</span>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="text-muted-text hover:text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Transaction 5 -->
+<tr class="hover:bg-card-hover transition-colors group">
+<td class="px-6 py-5 whitespace-nowrap">
+<span class="text-sm font-medium text-on-surface">Oct 19, 2023</span>
+<p class="text-[10px] text-muted-text">09:00 AM</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="p-2 bg-status-error/10 rounded-full">
+<span class="material-symbols-outlined text-status-error text-sm" data-icon="remove_circle">remove_circle</span>
+</div>
+<div>
+<p class="text-sm font-bold text-text-pure">Vendor Payment</p>
+<p class="text-xs text-muted-text">Databricks Enterprise</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<span class="text-sm font-bold text-status-error">-$14,500.00</span>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-status-error/10 text-status-error">Flagged</span>
+</td>
+<td class="px-6 py-5">
+<span class="text-xs font-mono text-muted-text">TXN_440112</span>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="text-muted-text hover:text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 bg-surface-container border-t border-border-subtle flex items-center justify-between">
+<p class="text-xs text-muted-text">Showing 5 of 1,240 transactions</p>
+<div class="flex gap-2">
+<button class="px-3 py-1 bg-card-base border border-border-subtle rounded text-xs text-on-surface hover:bg-surface-variant transition-colors disabled:opacity-50">Previous</button>
+<button class="px-3 py-1 bg-primary-container text-on-primary-container rounded text-xs font-bold shadow-sm">1</button>
+<button class="px-3 py-1 bg-card-base border border-border-subtle rounded text-xs text-on-surface hover:bg-surface-variant transition-colors">2</button>
+<button class="px-3 py-1 bg-card-base border border-border-subtle rounded text-xs text-on-surface hover:bg-surface-variant transition-colors">3</button>
+<button class="px-3 py-1 bg-card-base border border-border-subtle rounded text-xs text-on-surface hover:bg-surface-variant transition-colors">Next</button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-slate-950/90 backdrop-blur-lg border-t border-white/10 shadow-[0_-8px_30px_rgb(0,0,0,0.5)] rounded-t-2xl">
+<a class="flex flex-col items-center justify-center text-slate-500 tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="text-[10px] uppercase tracking-widest font-bold mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="text-[10px] uppercase tracking-widest font-bold mt-1">Clients</span>
+</a>
+<a class="flex flex-col items-center justify-center text-blue-500 scale-110 tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span class="text-[10px] uppercase tracking-widest font-bold mt-1">Billing</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 tap-highlight-transparent" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="text-[10px] uppercase tracking-widest font-bold mt-1">Ops</span>
+</a>
+</nav>
+</body></html>

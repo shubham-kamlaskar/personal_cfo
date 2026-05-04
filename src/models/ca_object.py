@@ -106,3 +106,11 @@ class CAOnboarding(BaseModel):
     status: Optional[str] = None
     createdAt: Optional[datetime] = None
     updatedAt: Optional[datetime] = None
+    
+class ActiveStatus(BaseModel):
+    client_id: Optional[str] = None 
+    employee_id: Optional[str] = None
+    is_approved: Optional[bool] = None
+    is_active: Optional[bool] = None
+    last_active_datetime: Optional[datetime] = None
+        

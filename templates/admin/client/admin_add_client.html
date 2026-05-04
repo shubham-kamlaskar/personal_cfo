@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<title>Add New Client | TaxCopilot</title>
+<style>
+  :root {
+    --blue-50: #E6F1FB;
+    --blue-100: #B5D4F4;
+    --blue-400: #378ADD;
+    --blue-600: #185FA5;
+    --blue-800: #0C447C;
+    --teal-50: #E1F5EE;
+    --teal-400: #1D9E75;
+    --teal-600: #0F6E56;
+    --amber-50: #FAEEDA;
+    --amber-400: #BA7517;
+    --purple-50: #F3E8FF;
+    --purple-400: #9333EA;
+    --gray-50: #F1EFE8;
+    --gray-100: #D3D1C7;
+    --gray-400: #888780;
+    --gray-800: #444441;
+    --gray-900: #2C2C2A;
+    --surface: #ffffff;
+    --border: #e2e8f0;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f1f5f9;
+    color: var(--gray-900);
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, .heading {
+    font-family: 'Sora', sans-serif;
+  }
+
+  /* ── Navigation ── */
+  .top-nav {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--blue-800);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--blue-600), var(--blue-400));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  .logo span { color: var(--teal-400); }
+
+  /* ── Progress Stepper ── */
+  .stepper-container {
+    background: white;
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+  }
+
+  .stepper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  .step::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    right: -50%;
+    height: 2px;
+    background: var(--border);
+    z-index: 0;
+  }
+
+  .step:last-child::after {
+    display: none;
+  }
+
+  .step.active::after,
+  .step.completed::after {
+    background: var(--blue-600);
+  }
+
+  .step-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gray-100);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: var(--gray-400);
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .step.active .step-circle {
+    background: var(--blue-600);
+    border-color: var(--blue-600);
+    color: white;
+  }
+
+  .step.completed .step-circle {
+    background: var(--teal-600);
+    border-color: var(--teal-600);
+    color: white;
+  }
+
+  .step-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--gray-400);
+    text-align: center;
+  }
+
+  .step.active .step-label {
+    color: var(--blue-600);
+  }
+
+  .step.completed .step-label {
+    color: var(--teal-600);
+  }
+
+  /* ── Form Container ── */
+  .form-container {
+    background: white;
+    border-radius: var(--radius);
+    padding: 2rem 2.5rem;
+    box-shadow: var(--shadow);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .form-step {
+    display: none;
+  }
+
+  .form-step.active {
+    display: block;
+  }
+
+  .form-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 0.5rem;
+  }
+
+  .form-subtitle {
+    font-size: 0.9rem;
+    color: var(--gray-400);
+    margin-bottom: 2rem;
+  }
+
+  .form-label {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--gray-800);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .form-label-optional {
+    font-weight: 400;
+    color: var(--gray-400);
+    font-size: 0.75rem;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.875rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: var(--blue-600);
+    box-shadow: 0 0 0 3px rgba(55,138,221,0.12);
+  }
+
+  .form-control::placeholder {
+    color: var(--gray-400);
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-help {
+    font-size: 0.75rem;
+    color: var(--gray-400);
+    margin-top: 0.35rem;
+  }
+
+  /* ── Plan Selection ── */
+  .plan-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.20rem;
+    margin-bottom: 2rem;
+  }
+
+  .plan-option {
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .plan-option:hover {
+    border-color: var(--blue-400);
+    box-shadow: var(--shadow);
+  }
+
+  .plan-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+  }
+
+  .plan-option input[type="radio"]:checked + .plan-content {
+    border-color: var(--blue-600);
+  }
+
+  .plan-option input[type="radio"]:checked ~ .plan-checkmark {
+    display: block;
+  }
+
+  .plan-content {
+    transition: all 0.2s;
+  }
+
+  .plan-checkmark {
+    display: none;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 24px;
+    height: 24px;
+    background: var(--blue-600);
+    border-radius: 50%;
+    color: white;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+  }
+
+  .plan-option input[type="radio"]:checked ~ .plan-checkmark {
+    display: flex;
+  }
+
+  .plan-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .badge-starter { background: var(--teal-50); color: var(--teal-600); }
+  .badge-business { background: var(--blue-50); color: var(--blue-600); }
+  .badge-enterprise { background: var(--purple-50); color: var(--purple-400); }
+
+  .plan-name {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--gray-900);
+    margin-bottom: 0.5rem;
+  }
+
+  .plan-price {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--blue-600);
+    margin-bottom: 0.25rem;
+  }
+
+  .plan-period {
+    font-size: 0.75rem;
+    color: var(--gray-400);
+    margin-bottom: 1rem;
+  }
+
+  .plan-features {
+    list-style: none;
+    padding: 0;
+  }
+
+  .plan-features li {
+    font-size: 0.8rem;
+    color: var(--gray-800);
+    padding: 0.4rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* ── Form Navigation ── */
+  .form-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+
+  .btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+  }
+
+  .btn-secondary {
+    background: var(--gray-50);
+    color: var(--gray-800);
+  }
+
+  .btn-secondary:hover {
+    background: var(--gray-100);
+  }
+
+  .btn-primary {
+    background: var(--blue-600);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: var(--blue-800);
+    transform: translateY(-1px);
+  }
+
+  .btn-success {
+    background: var(--teal-600);
+    color: white;
+  }
+
+  .btn-success:hover {
+    background: var(--teal-400);
+  }
+
+  /* ── Summary Card ── */
+  .summary-card {
+    background: var(--blue-50);
+    border: 1px solid var(--blue-400);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .summary-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--gray-900);
+    margin-bottom: 1rem;
+  }
+
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--blue-100);
+  }
+
+  .summary-item:last-child {
+    border-bottom: none;
+  }
+
+  .summary-label {
+    font-size: 0.85rem;
+    color: var(--gray-800);
+  }
+
+  .summary-value {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--gray-900);
+  }
+
+  /* ── Save Button (Fixed) ── */
+  .save-investments-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--accent);
+    color: black;
+    border: none;
+    padding: 1rem 1rem;
+    border-radius: 12px;
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(22, 163, 74, 0.4);
+    transition: all 0.3s;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .save-investments-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(22, 163, 74, 0.5);
+  }
+  .save-investments-btn.saving {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  .save-investments-btn .spinner {
+    display: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: orange;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+  .save-investments-btn.saving .spinner {
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .stepper {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .save-investments-btn {
+      bottom: 1rem;
+      right: 1rem;
+      padding: 0.85rem 1.5rem;
+      font-size: 0.85rem;
+    }
+
+    .step::after {
+      display: none;
+    }
+
+    .plan-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+
+<body>
+<!-- ── Top Navigation ── -->
+  {% include 'admin/header.html' %}
+
+    <!-- Save Button (Fixed) -->
+  <button class="save-investments-btn" id="saveBtn">
+    <span class="spinner"></span>
+    <span>Hi! Ask me</span>
+  </button>
+
+
+<div class="container-fluid px-3 py-4" style="max-width:1200px">
+
+  <!-- ── Progress Stepper ── -->
+  <div class="stepper-container">
+    <div class="stepper">
+      <div class="step active" id="step1">
+        <div class="step-circle">1</div>
+        <div class="step-label">Company Details</div>
+      </div>
+      <div class="step" id="step2">
+        <div class="step-circle">2</div>
+        <div class="step-label">Select Plan</div>
+      </div>
+      <div class="step" id="step3">
+        <div class="step-circle">3</div>
+        <div class="step-label">Admin Setup</div>
+      </div>
+      <div class="step" id="step4">
+        <div class="step-circle">4</div>
+        <div class="step-label">Review & Confirm</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Onboarding Form ── -->
+  <div class="form-container">
+    <form id="onboardingForm">
+      
+      <!-- Step 1: Company Details -->
+      <div class="form-step active" data-step="1">
+        <div class="form-title">Company Information</div>
+        <div class="form-subtitle">Tell us about the organization you're onboarding</div>
+
+        <div class="row g-3">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label class="form-label">Company Legal Name *</label>
+              <input type="text" class="form-control" name="legal_name" required placeholder="e.g., Acme Technologies Pvt Ltd">
+              <div class="form-help">As registered with MCA</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">Company Short Name *</label>
+              <input type="text" class="form-control" name="short_name" required placeholder="e.g., Acme">
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">PAN Number *</label>
+              <input type="text" class="form-control" name="pan" required placeholder="AAAAA1234A" maxlength="10" style="text-transform: uppercase;">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">GSTIN <span class="form-label-optional">(Optional)</span></label>
+              <input type="text" class="form-control" name="gstin" placeholder="22AAAAA1234A1Z5" maxlength="15" style="text-transform: uppercase;">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Registered Address *</label>
+          <input type="text" class="form-control" name="address" required placeholder="Building, Street, Locality">
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">City *</label>
+              <input type="text" class="form-control" name="city" required>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">State *</label>
+              <select class="form-control" name="state" required>
+                <option value="">Select State</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Tamil Nadu">Tamil Nadu</option>
+                <option value="Gujarat">Gujarat</option>
+                <!-- Add more states -->
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">PIN Code *</label>
+              <input type="text" class="form-control" name="pincode" required placeholder="411001" maxlength="6">
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Industry *</label>
+              <select class="form-control" name="industry" required>
+                <option value="">Select Industry</option>
+                <option value="IT Services">IT Services</option>
+                <option value="Software">Software Products</option>
+                <option value="Manufacturing">Manufacturing</option>
+                <option value="Retail">Retail</option>
+                <option value="Finance">Financial Services</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Number of Employees *</label>
+              <input type="number" class="form-control" name="employee_count" required placeholder="50" min="1">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Plan Selection -->
+      <div class="form-step" data-step="2">
+        <div class="form-title">Choose a Plan</div>
+        <div class="form-subtitle">Select the best plan for your client's needs</div>
+
+        <div class="plan-grid">
+
+          <label class="plan-option">
+            <input type="radio" name="plan" value="starter" required>
+            <div class="plan-content">
+              <span class="plan-badge badge-starter">Starter</span>
+              <div class="plan-name">Starter</div>
+              <div class="plan-price">₹499</div>
+              <div class="plan-period">per employee/month</div>
+              <ul class="plan-features">
+                <li>✓ ITR Filing</li>
+                <li>✓ Tax Calculator</li>
+                <li>✓ Basic AI Assistant</li>
+                <li>✓ Email Support</li>
+                <li>✓ Up to 50 employees</li>
+              </ul>
+            </div>
+            <div class="plan-checkmark">✓</div>
+          </label>
+
+          <label class="plan-option">
+            <input type="radio" name="plan" value="growth" required>
+            <div class="plan-content">
+              <span class="plan-badge badge-business">Most Popular</span>
+              <div class="plan-name">Growth</div>
+              <div class="plan-price">₹999</div>
+              <div class="plan-period">per employee/month</div>
+              <ul class="plan-features">
+                <li>✓ Everything in Starter</li>
+                <li>✓ Advanced Analytics</li>
+                <li>✓ Investment Tracking</li>
+                <li>✓ Priority Support</li>
+                <li>✓ Unlimited employees</li>
+              </ul>
+            </div>
+            <div class="plan-checkmark">✓</div>
+          </label>
+
+          <label class="plan-option">
+            <input type="radio" name="plan" value="enterprise" required>
+            <div class="plan-content">
+              <span class="plan-badge badge-enterprise">Enterprise</span>
+              <div class="plan-name">Enterprise</div>
+              <div class="plan-price">₹1799</div>
+              <div class="plan-period">Contact for pricing</div>
+              <ul class="plan-features">
+                <li>✓ Everything in Business</li>
+                <li>✓ Dedicated Support</li>
+                <li>✓ Custom Integrations</li>
+                <li>✓ API Access</li>
+                <li>✓ SLA Guaranteed</li>
+              </ul>
+            </div>
+            <div class="plan-checkmark">✓</div>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Billing Cycle</label>
+          <select class="form-control" name="billing_cycle">
+            <option value="monthly">Monthly</option>
+            <option value="quarterly">Quarterly (5% discount)</option>
+            <option value="annually">Annual (15% discount)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Step 3: Admin Setup -->
+      <div class="form-step" data-step="3">
+        <div class="form-title">Admin Account Setup</div>
+        <div class="form-subtitle">Create an admin account for the client company</div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Admin Full Name *</label>
+              <input type="text" class="form-control" name="admin_name" required>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Admin Email *</label>
+              <input type="email" class="form-control" name="admin_email" required>
+              <div class="form-help">Login credentials will be sent to this email</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3">
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Admin Department</label>
+              <input type="text" class="form-control" name="admin_designation" placeholder="e.g., HR">
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Admin Phone *</label>
+              <input type="tel" class="form-control" name="admin_phone" required placeholder="+91 9876543210">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Designation</label>
+              <input type="text" class="form-control" name="admin_designation" placeholder="e.g., HR Manager">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Additional Notes <span class="form-label-optional">(Optional)</span></label>
+          <textarea class="form-control" name="notes" rows="4" placeholder="Any special requirements or notes..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <input type="checkbox" name="send_welcome_email" checked>
+            <span style="font-size: 0.875rem;">Send welcome email to admin</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Step 4: Review & Confirm -->
+      <div class="form-step" data-step="4">
+        <div class="form-title">Review & Confirm</div>
+        <div class="form-subtitle">Please verify all details before creating the client account</div>
+
+        <div class="summary-card">
+          <div class="summary-title">📋 Company Details</div>
+          <div class="summary-item">
+            <span class="summary-label">Legal Name:</span>
+            <span class="summary-value" id="summary-legal-name">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">PAN:</span>
+            <span class="summary-value" id="summary-pan">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Location:</span>
+            <span class="summary-value" id="summary-location">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Employees:</span>
+            <span class="summary-value" id="summary-employees">-</span>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-title">💼 Plan & Billing</div>
+          <div class="summary-item">
+            <span class="summary-label">Plan:</span>
+            <span class="summary-value" id="summary-plan">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Billing Cycle:</span>
+            <span class="summary-value" id="summary-billing">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Estimated Monthly:</span>
+            <span class="summary-value" id="summary-monthly" style="color: var(--blue-600);">-</span>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-title">👤 Admin Account</div>
+          <div class="summary-item">
+            <span class="summary-label">Name:</span>
+            <span class="summary-value" id="summary-admin-name">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Email:</span>
+            <span class="summary-value" id="summary-admin-email">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Phone:</span>
+            <span class="summary-value" id="summary-admin-phone">-</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Navigation -->
+      <div class="form-navigation">
+        <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">← Previous</button>
+        <button type="button" class="btn btn-primary" id="nextBtn">Next →</button>
+        <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">✓ Create Client</button>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+
+<script>
+  const client_id = "{{client_id}}"
+  const employee_id = "{{employee_id}}"
+
+let currentStep = 1;
+const totalSteps = 4;
+
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const submitBtn = document.getElementById('submitBtn');
+
+function showStep(step) {
+  document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
+  document.querySelector(`[data-step="${step}"]`).classList.add('active');
+
+  document.querySelectorAll('.step').forEach((el, idx) => {
+    el.classList.remove('active', 'completed');
+    if (idx + 1 === step) el.classList.add('active');
+    if (idx + 1 < step) el.classList.add('completed');
+  });
+
+  prevBtn.style.display = step > 1 ? 'block' : 'none';
+  nextBtn.style.display = step < totalSteps ? 'block' : 'none';
+  submitBtn.style.display = step === totalSteps ? 'block' : 'none';
+
+  if (step === totalSteps) {
+    updateSummary();
+  }
+}
+
+nextBtn.addEventListener('click', () => {
+  if (validateStep(currentStep)) {
+    currentStep++;
+    showStep(currentStep);
+  }
+});
+
+prevBtn.addEventListener('click', () => {
+  currentStep--;
+  showStep(currentStep);
+});
+
+function validateStep(step) {
+  const currentStepEl = document.querySelector(`[data-step="${step}"]`);
+  const inputs = currentStepEl.querySelectorAll('[required]');
+  let isValid = true;
+
+  inputs.forEach(input => {
+    if (!input.value.trim()) {
+      input.style.borderColor = 'var(--coral-400)';
+      isValid = false;
+    } else {
+      input.style.borderColor = 'var(--border)';
+    }
+  });
+
+  if (!isValid) {
+    alert('Please fill in all required fields');
+  }
+
+  return isValid;
+}
+
+function updateSummary() {
+  const formData = new FormData(document.getElementById('onboardingForm'));
+  
+  document.getElementById('summary-legal-name').textContent = formData.get('legal_name');
+  document.getElementById('summary-pan').textContent = formData.get('pan');
+  document.getElementById('summary-location').textContent = `${formData.get('city')}, ${formData.get('state')}`;
+  document.getElementById('summary-employees').textContent = formData.get('employee_count');
+  
+  const plan = formData.get('plan');
+  document.getElementById('summary-plan').textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
+  document.getElementById('summary-billing').textContent = formData.get('billing_cycle');
+  
+  const planPrices = { starter: 499, growth: 999, enterprise: 1799 };
+  const employeeCount = parseInt(formData.get('employee_count'));
+  const monthly = planPrices[plan] * employeeCount;
+  document.getElementById('summary-monthly').textContent = plan === 'enterprise' ? 'Custom' : `₹${monthly.toLocaleString()}`;
+  
+  document.getElementById('summary-admin-name').textContent = formData.get('admin_name');
+  document.getElementById('summary-admin-email').textContent = formData.get('admin_email');
+  document.getElementById('summary-admin-phone').textContent = formData.get('admin_phone');
+}
+
+document.getElementById('onboardingForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const formData = new FormData(e.target);
+  const data = Object.fromEntries(formData.entries());
+  
+  try {
+    const response = await fetch(`/${client_id}/${employee_id}/admin/client/add/confirm`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    
+    const result = await response.json();
+    
+    if (response.ok) {
+      alert('✅ Client created successfully!');
+      window.location.href = '/admin/dashboard';
+    } else {
+      alert('❌ Error: ' + result.message);
+    }
+  } catch (error) {
+    alert('❌ Failed to create client. Please try again.');
+  }
+});
+
+showStep(1);
+</script>
+
+</body>
+</html>

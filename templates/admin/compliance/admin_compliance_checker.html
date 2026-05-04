@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&amp;family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#dbe1ff",
+                    "on-secondary-container": "#00424e",
+                    "surface-container": "#1d1f27",
+                    "on-primary-fixed": "#00174b",
+                    "card-hover": "#131f32",
+                    "status-error": "#f43f5e",
+                    "ink-base": "#05080f",
+                    "secondary-fixed-dim": "#4cd7f6",
+                    "error": "#ffb4ab",
+                    "on-primary-container": "#eeefff",
+                    "inverse-surface": "#e1e2ed",
+                    "tertiary-container": "#bc4800",
+                    "surface-bright": "#373942",
+                    "inverse-primary": "#0053db",
+                    "secondary-fixed": "#acedff",
+                    "on-secondary-fixed-variant": "#004e5c",
+                    "on-surface-variant": "#c3c6d7",
+                    "surface-container-low": "#191b23",
+                    "background": "#11131b",
+                    "surface": "#11131b",
+                    "on-primary": "#002a78",
+                    "primary-container": "#2563eb",
+                    "error-container": "#93000a",
+                    "on-secondary-fixed": "#001f26",
+                    "border-subtle": "rgba(255,255,255,0.08)",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary-fixed": "#360f00",
+                    "background-main": "#0b1120",
+                    "text-pure": "#ffffff",
+                    "outline": "#8d90a0",
+                    "muted-text": "#7a8aa8",
+                    "accent-blue-light": "#3b82f6",
+                    "surface-container-high": "#282a32",
+                    "secondary-container": "#03b5d3",
+                    "ink-elevated": "#3d4d6a",
+                    "ink-surface": "#1a2236",
+                    "text-on-dark": "#e8edf5",
+                    "tertiary": "#ffb596",
+                    "on-error": "#690005",
+                    "secondary": "#4cd7f6",
+                    "surface-tint": "#b4c5ff",
+                    "outline-variant": "#434655",
+                    "status-warning": "#f59e0b",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "surface-dim": "#11131b",
+                    "primary": "#b4c5ff",
+                    "on-tertiary": "#581e00",
+                    "tertiary-fixed": "#ffdbcd",
+                    "on-surface": "#e1e2ed",
+                    "on-background": "#e1e2ed",
+                    "card-base": "#0f1929",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "on-tertiary-container": "#ffede6",
+                    "surface-variant": "#32343d",
+                    "surface-container-highest": "#32343d",
+                    "inverse-on-surface": "#2e3039",
+                    "status-success": "#10b981",
+                    "on-secondary": "#003640",
+                    "on-tertiary-fixed-variant": "#7d2d00",
+                    "surface-container-lowest": "#0c0e16"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "1rem",
+                    "xs": "0.25rem",
+                    "lg": "1.5rem",
+                    "xxl": "3rem",
+                    "xxxl": "4rem",
+                    "xl": "2rem",
+                    "sm": "0.5rem"
+            },
+            "fontFamily": {
+                    "h2": ["Bricolage Grotesque"],
+                    "display": ["Bricolage Grotesque"],
+                    "body-lg": ["DM Sans"],
+                    "label-sm": ["DM Sans"],
+                    "accent": ["DM Sans"],
+                    "h1": ["Bricolage Grotesque"],
+                    "body-md": ["DM Sans"]
+            },
+            "fontSize": {
+                    "h2": ["1.75rem", {"lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display": ["3.5rem", {"lineHeight": "1.05", "letterSpacing": "-0.03em", "fontWeight": "800"}],
+                    "body-lg": ["1.125rem", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-sm": ["0.875rem", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "accent": ["1rem", {"lineHeight": "1.6", "fontWeight": "500"}],
+                    "h1": ["2.5rem", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["1rem", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0b1120;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.08) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, rgba(3, 181, 211, 0.05) 0, transparent 50%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+        }
+        .glass-effect {
+            backdrop-filter: blur(12px);
+            background: rgba(15, 25, 41, 0.7);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-surface selection:bg-primary-container selection:text-white">
+<!-- Top Navigation Bar -->
+  <!-- Top App Bar -->
+{% include 'admin/header.html' %}
+<main class="pt-24 pb-32 px-4 md:px-8 max-w-7xl mx-auto">
+<!-- Header & Primary Action -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div>
+<h1 class="font-h1 text-h1 text-white mb-2">Compliance Checker</h1>
+<p class="text-muted-text font-body-lg max-w-lg">Advanced AI diagnostics for real-time regulatory alignment and risk mitigation.</p>
+</div>
+<button class="bg-primary-container hover:bg-blue-600 text-white px-8 py-4 rounded-xl font-bold flex items-center gap-3 transition-all active:scale-95 shadow-[0_0_20px_rgba(37,99,235,0.4)]">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+                Run Check
+            </button>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Overall Health Card -->
+<div class="md:col-span-4 bg-card-base rounded-xl border border-border-subtle p-8 flex flex-col items-center justify-center relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="relative z-10 text-center">
+<span class="text-label-sm text-muted-text block mb-2 uppercase tracking-widest">Overall Health</span>
+<div class="relative w-40 h-40 flex items-center justify-center mb-4">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-slate-800" cx="80" cy="80" fill="transparent" r="70" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-blue-500 shadow-[0_0_15px_rgba(37,99,235,0.5)]" cx="80" cy="80" fill="transparent" r="70" stroke="currentColor" stroke-dasharray="440" stroke-dashoffset="26.4" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<span class="absolute font-display text-5xl text-white">94<span class="text-2xl text-blue-400">%</span></span>
+</div>
+<p class="text-status-success flex items-center justify-center gap-1 font-medium">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+                        +2.4% from last month
+                    </p>
+</div>
+</div>
+<!-- Next Major Deadline -->
+<div class="md:col-span-8 bg-card-base rounded-xl border border-border-subtle p-8 relative overflow-hidden flex flex-col justify-between">
+<div class="absolute top-0 right-0 w-64 h-64 bg-secondary-container/10 blur-[100px] -z-10"></div>
+<div class="flex justify-between items-start">
+<div>
+<span class="bg-status-warning/10 text-status-warning px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4 inline-block">High Priority</span>
+<h2 class="font-h2 text-h2 text-white mb-2">Corporate Tax Filing</h2>
+<p class="text-muted-text font-body-md">Q3 2024 Submission Deadline</p>
+</div>
+<div class="text-right">
+<div class="text-blue-400 font-display text-4xl mb-1">12:04:18</div>
+<span class="text-muted-text text-sm uppercase">Days : Hours : Mins</span>
+</div>
+</div>
+<div class="mt-8 pt-8 border-t border-border-subtle flex gap-4 overflow-x-auto">
+<div class="bg-surface-container/50 px-4 py-3 rounded-lg border border-border-subtle min-w-[140px]">
+<span class="text-xs text-muted-text block mb-1">Threshold</span>
+<span class="text-white font-bold">$2.4M USD</span>
+</div>
+<div class="bg-surface-container/50 px-4 py-3 rounded-lg border border-border-subtle min-w-[140px]">
+<span class="text-xs text-muted-text block mb-1">Documents</span>
+<span class="text-white font-bold">14/15 Verified</span>
+</div>
+<div class="bg-surface-container/50 px-4 py-3 rounded-lg border border-border-subtle min-w-[140px]">
+<span class="text-xs text-muted-text block mb-1">Entity</span>
+<span class="text-white font-bold">Global Ops LTD</span>
+</div>
+</div>
+</div>
+<!-- Critical Alerts -->
+<div class="md:col-span-5 flex flex-col gap-4">
+<h3 class="font-h2 text-xl text-white px-2">Critical Alerts</h3>
+<div class="bg-ink-surface/40 backdrop-blur-sm rounded-xl border-l-4 border-status-error p-5 group hover:bg-ink-surface transition-all cursor-pointer">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-status-error mt-1" data-icon="warning">warning</span>
+<div>
+<h4 class="text-white font-bold mb-1">Suspicious Transactions Detected</h4>
+<p class="text-sm text-muted-text mb-3">Found 3 anomalies in the Benelux division matching AML patterns.</p>
+<span class="text-xs font-bold text-status-error uppercase underline decoration-2 underline-offset-4">Review required</span>
+</div>
+</div>
+</div>
+<div class="bg-ink-surface/40 backdrop-blur-sm rounded-xl border-l-4 border-status-warning p-5 group hover:bg-ink-surface transition-all cursor-pointer">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-status-warning mt-1" data-icon="lock">lock</span>
+<div>
+<h4 class="text-white font-bold mb-1">GDPR Data Linkage</h4>
+<p class="text-sm text-muted-text mb-3">Payroll API exposing PII without secondary encryption layer.</p>
+<span class="text-xs font-bold text-status-warning uppercase underline decoration-2 underline-offset-4">Update pending</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Compliance Queue -->
+<div class="md:col-span-7 bg-card-base rounded-xl border border-border-subtle overflow-hidden">
+<div class="p-6 border-b border-border-subtle flex justify-between items-center bg-surface-container/30">
+<h3 class="font-h2 text-xl text-white">Compliance Queue</h3>
+<button class="text-blue-400 text-sm font-bold flex items-center gap-1 hover:underline">
+                        View All <span class="material-symbols-outlined text-xs" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+<div class="divide-y divide-border-subtle">
+<!-- Task 1 -->
+<div class="p-6 flex items-center justify-between hover:bg-slate-900/30 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center text-status-success border border-status-success/20">
+<span class="material-symbols-outlined" data-icon="verified">verified</span>
+</div>
+<div>
+<h4 class="text-white font-bold">VAT Reconciliation</h4>
+<p class="text-xs text-muted-text">EU Entities • Period 08</p>
+</div>
+</div>
+<span class="px-3 py-1 bg-status-success/10 text-status-success rounded-full text-[10px] font-black uppercase tracking-widest">Completed</span>
+</div>
+<!-- Task 2 -->
+<div class="p-6 flex items-center justify-between hover:bg-slate-900/30 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 border border-blue-400/20">
+<span class="material-symbols-outlined" data-icon="pending">pending</span>
+</div>
+<div>
+<h4 class="text-white font-bold">Payroll Tax</h4>
+<p class="text-xs text-muted-text">Monthly Withholding • 120 Staff</p>
+</div>
+</div>
+<span class="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-[10px] font-black uppercase tracking-widest">Pending</span>
+</div>
+<!-- Task 3 -->
+<div class="p-6 flex items-center justify-between hover:bg-slate-900/30 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-rose-500/10 flex items-center justify-center text-status-error border border-status-error/20">
+<span class="material-symbols-outlined" data-icon="event_busy">event_busy</span>
+</div>
+<div>
+<h4 class="text-white font-bold">Foreign Asset Disclosure</h4>
+<p class="text-xs text-muted-text">FATCA Form 8938 • Overseas Holdings</p>
+</div>
+</div>
+<span class="px-3 py-1 bg-rose-500/10 text-status-error rounded-full text-[10px] font-black uppercase tracking-widest">Overdue</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile) -->
+<nav class="fixed bottom-0 left-0 right-0 h-16 bg-slate-950/95 backdrop-blur-lg border-t border-slate-800/50 flex items-center justify-around px-4 md:hidden z-50">
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-bold">Dashboard</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-blue-400">
+<span class="material-symbols-outlined" data-icon="verified_user" data-weight="fill">verified_user</span>
+<span class="text-[10px] font-bold">Compliance</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span class="text-[10px] font-bold">Invoices</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+<span class="text-[10px] font-bold">AI Chat</span>
+</button>
+</nav>
+<!-- Floating AI Action Button (Desktop Only) -->
+<button class="hidden md:flex fixed bottom-8 right-8 w-14 h-14 bg-primary-container text-white rounded-full items-center justify-center shadow-[0_8px_30px_rgba(37,99,235,0.4)] hover:scale-110 transition-transform active:scale-95 group">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+<div class="absolute right-16 bg-slate-900 border border-border-subtle px-4 py-2 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+            Ask Copilot
+        </div>
+</button>
+</body></html>

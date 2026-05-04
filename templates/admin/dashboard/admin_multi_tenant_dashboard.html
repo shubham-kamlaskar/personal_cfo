@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<title>Multi-Tenant Dashboard | TaxCopilot</title>
+<style>
+  :root {
+    --blue-50: #E6F1FB;
+    --blue-100: #B5D4F4;
+    --blue-400: #378ADD;
+    --blue-600: #185FA5;
+    --blue-800: #0C447C;
+    --teal-50: #E1F5EE;
+    --teal-400: #1D9E75;
+    --teal-600: #0F6E56;
+    --amber-50: #FAEEDA;
+    --amber-400: #BA7517;
+    --coral-50: #FAECE7;
+    --coral-400: #D85A30;
+    --purple-50: #F3E8FF;
+    --purple-400: #9333EA;
+    --gray-50: #F1EFE8;
+    --gray-100: #D3D1C7;
+    --gray-400: #888780;
+    --gray-800: #444441;
+    --gray-900: #2C2C2A;
+    --surface: #ffffff;
+    --border: #e2e8f0;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-hover: 0 8px 24px rgba(55,138,221,0.12);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f1f5f9;
+    color: var(--gray-900);
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, .heading {
+    font-family: 'Sora', sans-serif;
+  }
+
+  /* ── Navigation ── */
+  .top-nav {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--blue-800);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--blue-600), var(--blue-400));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  .logo span { color: var(--teal-400); }
+
+  .nav-center {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .nav-link {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--gray-400);
+    text-decoration: none;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--blue-600);
+    border-bottom-color: var(--blue-600);
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .admin-badge {
+    background: var(--purple-50);
+    color: var(--purple-400);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .user-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    background: var(--gray-50);
+    cursor: pointer;
+  }
+
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--purple-400), var(--blue-600));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.75rem;
+  }
+
+  /* ── Welcome Banner ── */
+  .welcome-banner {
+    background: linear-gradient(135deg, var(--blue-800) 0%, var(--purple-400) 100%);
+    border-radius: var(--radius);
+    color: white;
+    padding: 1.5rem 1.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .welcome-banner::after {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 160px;
+    height: 160px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+
+  .banner-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .banner-sub {
+    font-size: 0.875rem;
+    opacity: 0.85;
+    margin-bottom: 1.25rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Stat Cards ── */
+  .stat-card {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+    color: white;
+    flex: 1;
+    min-width: 0;
+    transition: transform 0.2s, background 0.2s;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stat-card:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    opacity: 0.75;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.35rem;
+  }
+
+  .stat-value {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+
+  .stat-trend {
+    font-size: 0.7rem;
+    opacity: 0.7;
+    margin-top: 0.25rem;
+  }
+
+  /* ── Quick Action Cards ── */
+  .action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .action-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    text-decoration: none;
+    display: block;
+  }
+
+  .action-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--blue-600);
+  }
+
+  .action-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    margin: 0 auto 0.6rem;
+  }
+
+  .action-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--gray-900);
+    margin-bottom: 0.15rem;
+  }
+
+  .action-sub {
+    font-size: 0.75rem;
+    color: var(--gray-400);
+  }
+
+  /* ── Search & Filter ── */
+  .toolbar {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    box-shadow: var(--shadow);
+  }
+
+  .search-box {
+    flex: 1;
+    min-width: 250px;
+    max-width: 400px;
+    position: relative;
+  }
+
+  .search-box input {
+    width: 100%;
+    padding: 0.65rem 1rem 0.65rem 2.5rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.875rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .search-box input:focus {
+    outline: none;
+    border-color: var(--blue-600);
+    box-shadow: 0 0 0 3px rgba(55,138,221,0.12);
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray-400);
+  }
+
+  .filter-group {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-select {
+    padding: 0.65rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.875rem;
+    background: white;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background: var(--blue-600);
+    color: white;
+    padding: 0.65rem 1.25rem;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-primary:hover {
+    background: var(--blue-800);
+    transform: translateY(-1px);
+  }
+
+  /* ── Client Grid ── */
+  .client-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .client-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .client-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .client-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 1rem;
+  }
+
+  .client-info {
+    flex: 1;
+  }
+
+  .client-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--blue-400), var(--teal-400));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 1.125rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .client-name {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--gray-900);
+    margin-bottom: 0.25rem;
+  }
+
+  .client-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--gray-400);
+  }
+
+  .client-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .badge-enterprise { background: var(--purple-50); color: var(--purple-400); }
+  .badge-business { background: var(--blue-50); color: var(--blue-600); }
+  .badge-starter { background: var(--teal-50); color: var(--teal-600); }
+
+  .client-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .client-stat {
+    background: var(--gray-50);
+    border-radius: 8px;
+    padding: 0.65rem 0.85rem;
+  }
+
+  .client-stat-label {
+    font-size: 0.7rem;
+    color: var(--gray-400);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+  }
+
+  .client-stat-value {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--gray-900);
+  }
+
+  .client-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .client-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--gray-400);
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .status-dot.active { background: var(--teal-400); }
+  .status-dot.inactive { background: var(--gray-400); }
+  .status-dot.warning { background: var(--amber-400); }
+
+  .client-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .btn-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: none;
+    background: var(--gray-50);
+    color: var(--gray-800);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-icon:hover {
+    background: var(--blue-50);
+    color: var(--blue-600);
+  }
+
+  /* ── Overview Charts ── */
+  .chart-card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .chart-header {
+    padding: 1.5rem 1.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .chart-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--gray-900);
+  }
+
+  .chart-body {
+    padding: 1.5rem 1.75rem;
+  }
+
+  .chart-container {
+    position: relative;
+    height: 300px;
+  }
+
+  @media (max-width: 768px) {
+    .nav-center {
+      display: none;
+    }
+
+    .client-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+
+<body>
+<!-- ── Top Navigation ── -->
+<nav class="top-nav">
+  <a href="#" class="logo">
+    <div class="logo-icon">TC</div>
+    <div>Tax<span>Copilot</span></div>
+  </a>
+  
+  <div class="nav-center">
+    <a href="{{ url_for('admin_bp.dashboard') }}" class="nav-link active">Clients</a>
+    <a href="{{ url_for('admin_bp.analytics') }}" class="nav-link">Analytics</a>
+    <a href="{{ url_for('admin_bp.billing') }}" class="nav-link">Billing</a>
+    <a href="{{ url_for('admin_bp.settings') }}" class="nav-link">Settings</a>
+  </div>
+  
+  <div class="nav-right">
+    <span class="admin-badge">Admin</span>
+    <div class="user-menu">
+      <div class="user-avatar">{{admin.initials}}</div>
+      <span style="font-size: 0.875rem; font-weight: 500;">{{admin.name}}</span>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid px-3 py-3" style="max-width:1400px">
+
+  <!-- ── Welcome Banner + Stats ── -->
+  <div class="welcome-banner mb-3">
+    <div class="banner-title">Welcome, {{admin.name}}! 🚀</div>
+    <div class="banner-sub">Multi-tenant management dashboard - Monitor all your client organizations</div>
+    <div class="d-flex gap-2 flex-wrap">
+      <div class="stat-card">
+        <div class="stat-label">Total Clients</div>
+        <div class="stat-value">{{admin.total_clients}}</div>
+        <div class="stat-trend">{{admin.active_clients}} active</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Employees</div>
+        <div class="stat-value">{{admin.total_employees}}</div>
+        <div class="stat-trend">Across all clients</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Savings</div>
+        <div class="stat-value">₹{{admin.total_savings}}</div>
+        <div class="stat-trend">YTD tax savings</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">MRR</div>
+        <div class="stat-value">₹{{admin.mrr}}</div>
+        <div class="stat-trend">Monthly recurring revenue</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Quick Actions ── -->
+  <div class="action-grid">
+    <a href="{{ url_for('admin_bp.add_client') }}" class="action-card">
+      <div class="action-icon" style="background: var(--blue-50)">➕</div>
+      <div class="action-title">Add New Client</div>
+      <div class="action-sub">Onboard company</div>
+    </a>
+    <a href="{{ url_for('admin_bp.analytics') }}" class="action-card">
+      <div class="action-icon" style="background: var(--teal-50)">📊</div>
+      <div class="action-title">Global Analytics</div>
+      <div class="action-sub">Cross-client insights</div>
+    </a>
+    <a href="{{ url_for('admin_bp.billing_overview') }}" class="action-card">
+      <div class="action-icon" style="background: var(--purple-50)">💰</div>
+      <div class="action-title">Revenue Dashboard</div>
+      <div class="action-sub">Financial overview</div>
+    </a>
+    <a href="{{ url_for('admin_bp.support') }}" class="action-card">
+      <div class="action-icon" style="background: var(--amber-50)">🎧</div>
+      <div class="action-title">Support Tickets</div>
+      <div class="action-sub">{{admin.open_tickets}} open</div>
+    </a>
+  </div>
+
+  <!-- ── Search & Filter Toolbar ── -->
+  <div class="toolbar">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search clients by name, ID, or contact...">
+    </div>
+    
+    <div class="filter-group">
+      <select class="filter-select" id="planFilter">
+        <option value="">All Plans</option>
+        <option value="enterprise">Enterprise</option>
+        <option value="business">Business</option>
+        <option value="starter">Starter</option>
+      </select>
+      
+      <select class="filter-select" id="statusFilter">
+        <option value="">All Status</option>
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+        <option value="trial">Trial</option>
+      </select>
+
+      <select class="filter-select" id="sortFilter">
+        <option value="name">Sort by Name</option>
+        <option value="employees">Employees</option>
+        <option value="revenue">Revenue</option>
+        <option value="date">Join Date</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ── Client Grid ── -->
+  <div class="client-grid" id="clientGrid">
+    {% for client in clients %}
+    <a href="{{ url_for('company_bp.dashboard', company_id=client.id) }}" class="client-card" data-plan="{{client.plan_type}}" data-status="{{client.status}}">
+      <div class="client-header">
+        <div class="client-info">
+          <div class="client-logo">{{client.logo_initials}}</div>
+          <div class="client-name">{{client.name}}</div>
+          <div class="client-id">ID: {{client.client_id}}</div>
+        </div>
+        <span class="client-badge badge-{{client.plan_type}}">{{client.plan}}</span>
+      </div>
+
+      <div class="client-stats">
+        <div class="client-stat">
+          <div class="client-stat-label">Employees</div>
+          <div class="client-stat-value">{{client.total_employees}}</div>
+        </div>
+        <div class="client-stat">
+          <div class="client-stat-label">Filed</div>
+          <div class="client-stat-value">{{client.filed_count}}</div>
+        </div>
+        <div class="client-stat">
+          <div class="client-stat-label">Savings</div>
+          <div class="client-stat-value" style="color: var(--teal-600);">₹{{client.savings}}</div>
+        </div>
+        <div class="client-stat">
+          <div class="client-stat-label">MRR</div>
+          <div class="client-stat-value">₹{{client.mrr}}</div>
+        </div>
+      </div>
+
+      <div class="client-footer">
+        <div class="client-status">
+          <span class="status-dot {{client.status}}"></span>
+          <span>{{client.status_text}} • {{client.last_activity}}</span>
+        </div>
+        <div class="client-actions" onclick="event.preventDefault(); event.stopPropagation();">
+          <button class="btn-icon" title="Settings" onclick="openSettings('{{client.id}}')">⚙️</button>
+          <button class="btn-icon" title="Analytics" onclick="viewAnalytics('{{client.id}}')">📊</button>
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+
+  <!-- ── Overview Charts ── -->
+  <div class="row g-3 mt-3">
+    <div class="col-lg-8">
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">📈 Revenue Growth Trend</div>
+        </div>
+        <div class="chart-body">
+          <div class="chart-container">
+            <canvas id="revenueChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">🎯 Client Distribution</div>
+        </div>
+        <div class="chart-body">
+          <div class="chart-container">
+            <canvas id="distributionChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Search functionality
+document.getElementById('searchInput').addEventListener('input', function(e) {
+  const searchTerm = e.target.value.toLowerCase();
+  const cards = document.querySelectorAll('.client-card');
+  
+  cards.forEach(card => {
+    const text = card.textContent.toLowerCase();
+    card.style.display = text.includes(searchTerm) ? '' : 'none';
+  });
+});
+
+// Filter functionality
+document.getElementById('planFilter').addEventListener('change', filterClients);
+document.getElementById('statusFilter').addEventListener('change', filterClients);
+
+function filterClients() {
+  const planFilter = document.getElementById('planFilter').value;
+  const statusFilter = document.getElementById('statusFilter').value;
+  const cards = document.querySelectorAll('.client-card');
+  
+  cards.forEach(card => {
+    const plan = card.getAttribute('data-plan');
+    const status = card.getAttribute('data-status');
+    
+    const planMatch = !planFilter || plan === planFilter;
+    const statusMatch = !statusFilter || status === statusFilter;
+    
+    card.style.display = (planMatch && statusMatch) ? '' : 'none';
+  });
+}
+
+// Revenue Chart
+const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+new Chart(revenueCtx, {
+  type: 'line',
+  data: {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    datasets: [{
+      label: 'Revenue (₹ Lakhs)',
+      data: [45, 52, 58, 65, 72, 78, 85, 92, 98, 105, 112, 120],
+      borderColor: '#185FA5',
+      backgroundColor: 'rgba(24, 95, 165, 0.1)',
+      tension: 0.4,
+      fill: true,
+      pointRadius: 4,
+      pointBackgroundColor: '#185FA5'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false }
+    },
+    scales: {
+      y: { beginAtZero: true }
+    }
+  }
+});
+
+// Distribution Chart
+const distCtx = document.getElementById('distributionChart').getContext('2d');
+new Chart(distCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Enterprise', 'Business', 'Starter'],
+    datasets: [{
+      data: [{{admin.distribution.enterprise}}, {{admin.distribution.business}}, {{admin.distribution.starter}}],
+      backgroundColor: ['#9333EA', '#185FA5', '#1D9E75'],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          padding: 15,
+          font: { family: "'DM Sans', sans-serif", size: 12 },
+          usePointStyle: true
+        }
+      }
+    },
+    cutout: '65%'
+  }
+});
+
+function openSettings(clientId) {
+  window.location.href = `/admin/clients/${clientId}/settings`;
+}
+
+function viewAnalytics(clientId) {
+  window.location.href = `/admin/clients/${clientId}/analytics`;
+}
+</script>
+
+</body>
+</html>

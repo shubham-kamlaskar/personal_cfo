@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<title>Admin Dashboard | TaxCopilot</title>
+<style>
+  :root {
+    --primary: #1a56db;
+    --primary-light: #e8f0fe;
+    --primary-dark: #1e40af;
+    --accent: #16a34a;
+    --accent-light: #dcfce7;
+    --warning: #d97706;
+    --warning-light: #fef3c7;
+    --danger: #dc2626;
+    --danger-light: #fee2e2;
+    --surface: #ffffff;
+    --surface-2: #f8fafc;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 32px rgba(26,86,219,0.15);
+  }
+ 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f1f5f9;
+    color: var(--text);
+    line-height: 1.6;
+  }
+ 
+  h1, h2, h3, h4, .heading { font-family: 'Sora', sans-serif; }
+
+  /* ── Page Container ── */
+  .admin-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 2rem;
+  }
+
+  /* ── Admin Header ── */
+  .admin-header {
+    background: linear-gradient(135deg, #1a56db 0%, #1e40af 100%);
+    border-radius: var(--radius);
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .admin-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: pulse-slow 8s infinite ease-in-out;
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+  }
+
+  .admin-header-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .admin-title-section {
+    color: white;
+  }
+
+  .admin-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.3rem;
+  }
+
+  .admin-subtitle {
+    font-size: 0.95rem;
+    opacity: 0.9;
+    font-weight: 500;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .header-btn {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 0.65rem 1.3rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .header-btn:hover {
+    background: rgba(255,255,255,0.3);
+    transform: translateY(-2px);
+  }
+
+  /* ── Quick Stats Bar ── */
+  .quick-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--primary);
+    transform: scaleY(0);
+    transition: transform 0.3s;
+    transform-origin: bottom;
+  }
+
+  .stat-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+  }
+
+  .stat-card:hover::before {
+    transform: scaleY(1);
+  }
+
+  .stat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  .stat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    background: var(--primary-light);
+  }
+
+  .stat-icon.success { background: var(--accent-light); }
+  .stat-icon.warning { background: var(--warning-light); }
+  .stat-icon.danger { background: var(--danger-light); }
+
+  .stat-trend {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.25rem 0.6rem;
+    border-radius: 99px;
+  }
+
+  .stat-trend.up {
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+
+  .stat-trend.down {
+    background: var(--danger-light);
+    color: var(--danger);
+  }
+
+  .stat-trend.neutral {
+    background: var(--surface-2);
+    color: var(--text-muted);
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.4rem;
+  }
+
+  .stat-value {
+    font-family: 'Sora', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .stat-subtext {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── Section Headers ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .section-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: 0 4px 16px rgba(26,86,219,0.25);
+  }
+
+  .section-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .section-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-left: auto;
+    font-style: italic;
+  }
+
+  /* ── Metric Sections ── */
+  .metrics-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .metric-item {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    transition: all 0.2s;
+  }
+
+  .metric-item:hover {
+    background: var(--primary-light);
+    border-color: var(--primary);
+    transform: translateX(4px);
+  }
+
+  .metric-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .metric-formula {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    background: white;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    margin-bottom: 0.75rem;
+    border: 1px solid var(--border);
+  }
+
+  .metric-value-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+
+  .metric-current {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .metric-target {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding: 0.2rem 0.6rem;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+
+  .metric-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.25rem 0.6rem;
+    border-radius: 99px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .metric-badge.good {
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+
+  .metric-badge.warning {
+    background: var(--warning-light);
+    color: var(--warning);
+  }
+
+  .metric-badge.critical {
+    background: var(--danger-light);
+    color: var(--danger);
+  }
+
+  .metric-badge.info {
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+
+  /* ── Charts Container ── */
+  .charts-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+  }
+
+  .chart-header {
+    margin-bottom: 1.25rem;
+  }
+
+  .chart-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+
+  .chart-subtitle {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .chart-canvas-wrapper {
+    position: relative;
+    height: 280px;
+  }
+
+  /* ── Data Table ── */
+  .data-table-wrapper {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    margin-top: 1.5rem;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .data-table thead {
+    background: var(--surface-2);
+  }
+
+  .data-table th {
+    padding: 1rem 1.25rem;
+    text-align: left;
+    font-family: 'Sora', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .data-table td {
+    padding: 1rem 1.25rem;
+    font-size: 0.875rem;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .data-table tbody tr {
+    transition: background 0.15s;
+  }
+
+  .data-table tbody tr:hover {
+    background: var(--surface-2);
+  }
+
+  .data-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* ── Progress Rings ── */
+  .progress-ring-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--surface-2);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  .progress-ring {
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+
+  .progress-ring svg {
+    transform: rotate(-90deg);
+  }
+
+  .progress-ring-bg {
+    fill: none;
+    stroke: var(--border);
+    stroke-width: 8;
+  }
+
+  .progress-ring-fill {
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.6s ease;
+  }
+
+  .progress-ring-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Sora', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .progress-ring-info {
+    flex: 1;
+  }
+
+  .progress-ring-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+
+  .progress-ring-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  /* ── Alerts ── */
+  .alert-box {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    border: 1px solid;
+  }
+
+  .alert-box.info {
+    background: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--primary-dark);
+  }
+
+  .alert-box.warning {
+    background: var(--warning-light);
+    border-color: var(--warning);
+    color: #92400e;
+  }
+
+  .alert-box.success {
+    background: var(--accent-light);
+    border-color: var(--accent);
+    color: #14532d;
+  }
+
+  .alert-icon {
+    font-size: 1.5rem;
+  }
+
+  .alert-content {
+    flex: 1;
+  }
+
+  .alert-title {
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .alert-text {
+    font-size: 0.8rem;
+    opacity: 0.9;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 991.98px) {
+    .charts-row {
+      grid-template-columns: 1fr;
+    }
+    .quick-stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 767.98px) {
+    .admin-container {
+      padding: 1rem 0.75rem;
+    }
+    .admin-header {
+      padding: 1.25rem 1rem;
+    }
+    .admin-title {
+      font-size: 1.5rem;
+    }
+    .header-actions {
+      flex-direction: column;
+      width: 100%;
+      margin-top: 1rem;
+    }
+    .admin-header-content {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .quick-stats {
+      grid-template-columns: 1fr;
+    }
+    .metrics-section {
+      padding: 1.25rem;
+    }
+    .metrics-grid {
+      grid-template-columns: 1fr;
+    }
+    .charts-row {
+      grid-template-columns: 1fr;
+    }
+    .section-header {
+      flex-wrap: wrap;
+    }
+    .section-desc {
+      margin-left: 0;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+  }
+
+  /* ── Loading State ── */
+  .skeleton {
+    background: linear-gradient(90deg, var(--surface-2) 25%, var(--border) 50%, var(--surface-2) 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 6px;
+  }
+
+  @keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+</style>
+</head>
+
+<body>
+{% include 'admin/header.html' %}
+
+<div class="admin-container">
+
+  <!-- ── Admin Header ── -->
+  <div class="admin-header">
+    <div class="admin-header-content">
+      <div class="admin-title-section">
+        <h1 class="admin-title">📊 TaxCopilot Analytics</h1>
+        <p class="admin-subtitle">Real-time insights into acquisition, revenue, retention & product health</p>
+      </div>
+      <div class="header-actions">
+        <button class="header-btn">
+          <span>📥</span>
+          <span>Export Data</span>
+        </button>
+        <button class="header-btn">
+          <span>⚙️</span>
+          <span>Settings</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Quick Stats ── -->
+  <div class="quick-stats">
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon">💰</div>
+        <div class="stat-trend up">↑ 24%</div>
+      </div>
+      <div class="stat-label">Monthly Recurring Revenue</div>
+      <div class="stat-value">₹8.4L</div>
+      <div class="stat-subtext">ARR: ₹1.01Cr</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon">💰</div>
+        <div class="stat-trend up">↑ 24%</div>
+      </div>
+      <div class="stat-label">Monthly Recurring Expenses</div>
+      <div class="stat-value">₹8.4L</div>
+      <div class="stat-subtext">ARR: ₹1.01Cr</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon success">👥</div>
+        <div class="stat-trend up">↑ 18%</div>
+      </div>
+      <div class="stat-label">Active Users</div>
+      <div class="stat-value">1,247</div>
+      <div class="stat-subtext">342 paid · 905 free</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon success">👥</div>
+        <div class="stat-trend up">↑ 18%</div>
+      </div>
+      <div class="stat-label">Active Clients</div>
+      <div class="stat-value">1,247</div>
+      <div class="stat-subtext">342 paid · 905 free</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon success">👥</div>
+        <div class="stat-trend up">↑ 18%</div>
+      </div>
+      <div class="stat-label">Active CA</div>
+      <div class="stat-value">1,247</div>
+      <div class="stat-subtext">342 paid · 905 free</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon warning">📈</div>
+        <div class="stat-trend neutral">→ 0%</div>
+      </div>
+      <div class="stat-label">Conversion Rate</div>
+      <div class="stat-value">27.4%</div>
+      <div class="stat-subtext">Free → Paid</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon danger">💸</div>
+        <div class="stat-trend down">↓ 3%</div>
+      </div>
+      <div class="stat-label">Monthly Churn</div>
+      <div class="stat-value">4.2%</div>
+      <div class="stat-subtext">Target: <3%</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-trend up">↑ 12%</div>
+      </div>
+      <div class="stat-label">LTV:CAC Ratio</div>
+      <div class="stat-value">3.8:1</div>
+      <div class="stat-subtext">Target: 3:1</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon success">😊</div>
+        <div class="stat-trend up">↑ 8%</div>
+      </div>
+      <div class="stat-label">Net Promoter Score</div>
+      <div class="stat-value">62</div>
+      <div class="stat-subtext">Excellent</div>
+    </div>
+  </div>
+
+  <!-- ══ ACQUISITION METRICS ══ -->
+  <div class="metrics-section">
+    <div class="section-header">
+      <div class="section-icon">🚀</div>
+      <div>
+        <div class="section-title">Acquisition Metrics</div>
+      </div>
+      <div class="section-desc">Are people finding you?</div>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>💵</span>
+          <span>Customer Acquisition Cost (CAC)</span>
+        </div>
+        <div class="metric-formula">Total Marketing Spend ÷ New Customers</div>
+        <div class="metric-value-row">
+          <div class="metric-current">₹3,240</div>
+          <span class="metric-badge good">↓ 12% MoM</span>
+        </div>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>📊</span>
+          <span>Organic vs Paid Split</span>
+        </div>
+        <div class="metric-formula">Traffic Source Distribution</div>
+        <div class="metric-value-row">
+          <div class="metric-current">68% / 32%</div>
+          <span class="metric-badge good">LinkedIn/Reddit-first ✓</span>
+        </div>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>✅</span>
+          <span>Signup → Activated Ratio</span>
+        </div>
+        <div class="metric-formula">Completed Onboarding ÷ Total Signups</div>
+        <div class="metric-value-row">
+          <div class="metric-current">76%</div>
+          <span class="metric-badge warning">Target: 80%</span>
+        </div>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>🌐</span>
+          <span>Traffic Sources</span>
+        </div>
+        <div class="metric-formula">Top Acquisition Channels</div>
+        <div style="margin-top: 0.5rem;">
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.35rem;">
+            LinkedIn: 42% • Reddit: 26% • Meta Ads: 22% • Direct: 10%
+          </div>
+          <span class="metric-badge info">Organic-dominant</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alert -->
+    <div class="alert-box success" style="margin-top: 1.5rem;">
+      <div class="alert-icon">✅</div>
+      <div class="alert-content">
+        <div class="alert-title">Acquisition Performance: Strong</div>
+        <div class="alert-text">CAC trending down while maintaining high organic acquisition. LinkedIn & Reddit outperforming paid channels.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ REVENUE & MONETIZATION ══ -->
+  <div class="metrics-section">
+    <div class="section-header">
+      <div class="section-icon">💰</div>
+      <div>
+        <div class="section-title">Revenue & Monetization</div>
+      </div>
+      <div class="section-desc">Is the business model working?</div>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>💵</span>
+          <span>MRR / ARR</span>
+        </div>
+        <div class="metric-formula">Monthly & Annual Recurring Revenue</div>
+        <div class="metric-value-row">
+          <div class="metric-current">₹8.4L</div>
+          <div class="metric-target">ARR: ₹1.01Cr</div>
+        </div>
+        <span class="metric-badge good">↑ 24% MoM</span>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>👤</span>
+          <span>ARPU (Average Revenue Per User)</span>
+        </div>
+        <div class="metric-formula">Total Revenue ÷ Active Users</div>
+        <div class="metric-value-row">
+          <div class="metric-current">₹2,456</div>
+        </div>
+        <div style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-muted);">
+          Free: ₹0 • Paid: ₹8,920/yr
+        </div>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>🎯</span>
+          <span>Free → Paid Conversion</span>
+        </div>
+        <div class="metric-formula">Paid Users ÷ Total Users</div>
+        <div class="metric-value-row">
+          <div class="metric-current">27.4%</div>
+          <span class="metric-badge warning">Target: 30%</span>
+        </div>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>⏱️</span>
+          <span>CAC Payback Period</span>
+        </div>
+        <div class="metric-formula">Months to Recover CAC</div>
+        <div class="metric-value-row">
+          <div class="metric-current">4.4 mo</div>
+          <span class="metric-badge good">Healthy</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Revenue Chart -->
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">MRR Growth Trend</div>
+          <div class="chart-subtitle">Last 6 months</div>
+        </div>
+        <div class="chart-canvas-wrapper">
+          <canvas id="mrrChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">Revenue Breakdown</div>
+          <div class="chart-subtitle">By plan type</div>
+        </div>
+        <div class="chart-canvas-wrapper">
+          <canvas id="revenuePieChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ RETENTION METRICS ══ -->
+  <div class="metrics-section">
+    <div class="section-header">
+      <div class="section-icon">🔁</div>
+      <div>
+        <div class="section-title">Retention Metrics</div>
+      </div>
+      <div class="section-desc">Your most important metric</div>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>📉</span>
+          <span>Monthly Churn Rate</span>
+        </div>
+        <div class="metric-formula">Cancelled Users ÷ Total Users (Monthly)</div>
+        <div class="metric-value-row">
+          <div class="metric-current">4.2%</div>
+          <span class="metric-badge warning">Target: <3%</span>
+        </div>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>📅</span>
+          <span>Annual Churn Rate</span>
+        </div>
+        <div class="metric-formula">Tax Tools are Seasonal</div>
+        <div class="metric-value-row">
+          <div class="metric-current">38%</div>
+          <span class="metric-badge info">Seasonal Impact</span>
+        </div>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>💎</span>
+          <span>Net Revenue Retention (NRR)</span>
+        </div>
+        <div class="metric-formula">Revenue from Existing Users (Expansions - Churn)</div>
+        <div class="metric-value-row">
+          <div class="metric-current">112%</div>
+          <span class="metric-badge good">Expanding ✓</span>
+        </div>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>🔄</span>
+          <span>Year-2 Retention</span>
+        </div>
+        <div class="metric-formula">Users Returning Next Filing Season</div>
+        <div class="metric-value-row">
+          <div class="metric-current">64%</div>
+          <span class="metric-badge good">Strong loyalty</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Retention Alert -->
+    <div class="alert-box warning" style="margin-top: 1.5rem;">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-content">
+        <div class="alert-title">Action Required: Monthly Churn Above Target</div>
+        <div class="alert-text">Monthly churn at 4.2% exceeds the 3% target. Focus on year-round engagement features (AI chat, investment tracking) to reduce seasonality.</div>
+      </div>
+    </div>
+
+    <!-- Cohort Retention Chart -->
+    <div class="charts-row" style="margin-top: 1.5rem;">
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">Cohort Retention by Month</div>
+          <div class="chart-subtitle">Monthly cohorts (Jan - Jun 2025)</div>
+        </div>
+        <div class="chart-canvas-wrapper">
+          <canvas id="retentionChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">Churn Reasons</div>
+          <div class="chart-subtitle">Top exit reasons</div>
+        </div>
+        <div class="chart-canvas-wrapper">
+          <canvas id="churnReasonsChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PRODUCT ENGAGEMENT ══ -->
+  <div class="metrics-section">
+    <div class="section-header">
+      <div class="section-icon">🎯</div>
+      <div>
+        <div class="section-title">Product Engagement</div>
+      </div>
+      <div class="section-desc">How sticky is the product?</div>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>📄</span>
+          <span>ITR Completion Rate</span>
+        </div>
+        <div class="metric-formula">Submitted ITRs ÷ Started Filings</div>
+        <div class="metric-value-row">
+          <div class="metric-current">82%</div>
+          <span class="metric-badge good">High completion</span>
+        </div>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>🤖</span>
+          <span>AI Chat Interactions/User</span>
+        </div>
+        <div class="metric-formula">Avg Monthly Conversations</div>
+        <div class="metric-value-row">
+          <div class="metric-current">8.4</div>
+          <span class="metric-badge good">Year-round sticky</span>
+        </div>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>📎</span>
+          <span>Document Upload Rate</span>
+        </div>
+        <div class="metric-formula">Form 16, AIS Uploads per User</div>
+        <div class="metric-value-row">
+          <div class="metric-current">3.2</div>
+          <span class="metric-badge info">docs/user</span>
+        </div>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>⚖️</span>
+          <span>Regime Optimizer Usage</span>
+        </div>
+        <div class="metric-formula">Key Differentiator Feature</div>
+        <div class="metric-value-row">
+          <div class="metric-current">67%</div>
+          <span class="metric-badge good">High adoption</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Rings -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+      <div class="progress-ring-wrapper">
+        <div class="progress-ring">
+          <svg width="80" height="80">
+            <circle class="progress-ring-bg" cx="40" cy="40" r="32"></circle>
+            <circle class="progress-ring-fill" cx="40" cy="40" r="32" 
+              stroke-dasharray="201" stroke-dashoffset="40"></circle>
+          </svg>
+          <div class="progress-ring-text">82%</div>
+        </div>
+        <div class="progress-ring-info">
+          <div class="progress-ring-label">ITR Completion</div>
+          <div class="progress-ring-desc">1,024 of 1,247 users filed successfully</div>
+        </div>
+      </div>
+
+      <div class="progress-ring-wrapper">
+        <div class="progress-ring">
+          <svg width="80" height="80">
+            <circle class="progress-ring-bg" cx="40" cy="40" r="32"></circle>
+            <circle class="progress-ring-fill" cx="40" cy="40" r="32" 
+              stroke-dasharray="201" stroke-dashoffset="66" style="stroke: var(--accent);"></circle>
+          </svg>
+          <div class="progress-ring-text" style="color: var(--accent);">67%</div>
+        </div>
+        <div class="progress-ring-info">
+          <div class="progress-ring-label">Feature Adoption</div>
+          <div class="progress-ring-desc">Regime optimizer actively used</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Engagement Chart -->
+    <div class="charts-row" style="margin-top: 1.5rem;">
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">Feature Usage Over Time</div>
+          <div class="chart-subtitle">Monthly active usage by feature</div>
+        </div>
+        <div class="chart-canvas-wrapper">
+          <canvas id="featureUsageChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">User Activity Heatmap</div>
+          <div class="chart-subtitle">Filing season vs year-round</div>
+        </div>
+        <div class="chart-canvas-wrapper">
+          <canvas id="activityHeatmapChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CUSTOMER QUALITY ══ -->
+  <div class="metrics-section">
+    <div class="section-header">
+      <div class="section-icon">😊</div>
+      <div>
+        <div class="section-title">Customer Quality</div>
+      </div>
+      <div class="section-desc">Happy customers = sustainable growth</div>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>🎯</span>
+          <span>Net Promoter Score (NPS)</span>
+        </div>
+        <div class="metric-formula">"Would you recommend TaxCopilot?"</div>
+        <div class="metric-value-row">
+          <div class="metric-current">62</div>
+          <span class="metric-badge good">Excellent (Target: 50+)</span>
+        </div>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>🎫</span>
+          <span>Support Ticket Rate</span>
+        </div>
+        <div class="metric-formula">Tickets per 100 Users</div>
+        <div class="metric-value-row">
+          <div class="metric-current">12.4</div>
+          <span class="metric-badge warning">Product confusion signal</span>
+        </div>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>⚠️</span>
+          <span>Refund/Notice Rate</span>
+        </div>
+        <div class="metric-formula">IT Notices Triggered (Accuracy Proxy)</div>
+        <div class="metric-value-row">
+          <div class="metric-current">0.8%</div>
+          <span class="metric-badge good">High accuracy ✓</span>
+        </div>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>⭐</span>
+          <span>Average Rating</span>
+        </div>
+        <div class="metric-formula">App Store & Play Store Combined</div>
+        <div class="metric-value-row">
+          <div class="metric-current">4.6/5</div>
+          <span class="metric-badge good">1,247 reviews</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- NPS Breakdown -->
+    <div class="data-table-wrapper" style="margin-top: 1.5rem;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Count</th>
+            <th>Percentage</th>
+            <th>Trend</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Promoters (9-10)</strong></td>
+            <td>786</td>
+            <td>63%</td>
+            <td><span class="metric-badge good">↑ 5%</span></td>
+          </tr>
+          <tr>
+            <td><strong>Passives (7-8)</strong></td>
+            <td>349</td>
+            <td>28%</td>
+            <td><span class="metric-badge info">→ 0%</span></td>
+          </tr>
+          <tr>
+            <td><strong>Detractors (0-6)</strong></td>
+            <td>112</td>
+            <td>9%</td>
+            <td><span class="metric-badge warning">↓ 2%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ UNIT ECONOMICS ══ -->
+  <div class="metrics-section">
+    <div class="section-header">
+      <div class="section-icon">📈</div>
+      <div>
+        <div class="section-title">Unit Economics</div>
+      </div>
+      <div class="section-desc">For fundraising readiness</div>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>💰</span>
+          <span>LTV (Lifetime Value)</span>
+        </div>
+        <div class="metric-formula">ARPU × Average Years Retained</div>
+        <div class="metric-value-row">
+          <div class="metric-current">₹12,280</div>
+          <span class="metric-badge info">Based on 5yr avg</span>
+        </div>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>🎯</span>
+          <span>LTV:CAC Ratio</span>
+        </div>
+        <div class="metric-formula">Target 3:1 or Better</div>
+        <div class="metric-value-row">
+          <div class="metric-current">3.8:1</div>
+          <span class="metric-badge good">Excellent ✓</span>
+        </div>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>📊</span>
+          <span>Gross Margin</span>
+        </div>
+        <div class="metric-formula">Revenue - Direct Costs</div>
+        <div class="metric-value-row">
+          <div class="metric-current">78%</div>
+          <span class="metric-badge good">SaaS Target: 70%+</span>
+        </div>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-name">
+          <span>💸</span>
+          <span>CA-Assisted Plan Costs</span>
+        </div>
+        <div class="metric-formula">Cost to Serve Premium Users</div>
+        <div class="metric-value-row">
+          <div class="metric-current">₹1,840</div>
+          <span class="metric-badge warning">Watch closely</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Unit Economics Chart -->
+    <div class="charts-row" style="margin-top: 1.5rem;">
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">LTV vs CAC Over Time</div>
+          <div class="chart-subtitle">Quarterly trends</div>
+        </div>
+        <div class="chart-canvas-wrapper">
+          <canvas id="ltvCacChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">Cost Structure Breakdown</div>
+          <div class="chart-subtitle">Where the money goes</div>
+        </div>
+        <div class="chart-canvas-wrapper">
+          <canvas id="costBreakdownChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Alert -->
+    <div class="alert-box success" style="margin-top: 1.5rem;">
+      <div class="alert-icon">🎉</div>
+      <div class="alert-content">
+        <div class="alert-title">Fundraising Ready: Unit Economics Strong</div>
+        <div class="alert-text">LTV:CAC ratio of 3.8:1 and 78% gross margin indicate healthy unit economics. CAC payback in 4.4 months is excellent for a SaaS business.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /admin-container -->
+
+<script>
+  const client_id = "{{client_id}}"
+  const employee_id = "{{employee_id}}"
+  // ── Chart.js Configuration ──
+  const chartConfig = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        labels: {
+          font: { family: "'DM Sans', sans-serif", size: 12 },
+          color: '#0f172a'
+        }
+      }
+    },
+    scales: {
+      y: {
+        ticks: { font: { family: "'JetBrains Mono', monospace", size: 11 } }
+      },
+      x: {
+        ticks: { font: { family: "'DM Sans', sans-serif", size: 11 } }
+      }
+    }
+  };
+
+  // MRR Growth Chart
+  new Chart(document.getElementById('mrrChart'), {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      datasets: [{
+        label: 'MRR (₹L)',
+        data: [3.2, 4.1, 5.3, 6.2, 7.4, 8.4],
+        borderColor: '#1a56db',
+        backgroundColor: 'rgba(26, 86, 219, 0.1)',
+        tension: 0.4,
+        fill: true
+      }]
+    },
+    options: chartConfig
+  });
+
+  // Revenue Pie Chart
+  new Chart(document.getElementById('revenuePieChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Free Plan', 'Basic (₹999)', 'Pro (₹2999)', 'CA-Assisted (₹9999)'],
+      datasets: [{
+        data: [0, 35, 42, 23],
+        backgroundColor: ['#e2e8f0', '#3b82f6', '#1a56db', '#1e40af']
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+
+  // Retention Chart
+  new Chart(document.getElementById('retentionChart'), {
+    type: 'line',
+    data: {
+      labels: ['Month 1', 'Month 2', 'Month 3', 'Month 4', 'Month 5', 'Month 6'],
+      datasets: [
+        {
+          label: 'Jan Cohort',
+          data: [100, 94, 88, 84, 80, 76],
+          borderColor: '#1a56db',
+          tension: 0.3
+        },
+        {
+          label: 'Feb Cohort',
+          data: [100, 96, 90, 86, 82, null],
+          borderColor: '#3b82f6',
+          tension: 0.3
+        },
+        {
+          label: 'Mar Cohort',
+          data: [100, 95, 89, 85, null, null],
+          borderColor: '#60a5fa',
+          tension: 0.3
+        }
+      ]
+    },
+    options: chartConfig
+  });
+
+  // Churn Reasons Chart
+  new Chart(document.getElementById('churnReasonsChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Price too high', 'Filing season over', 'Switched to CA', 'Missing features', 'Poor UX'],
+      datasets: [{
+        label: 'Exit Reason (%)',
+        data: [28, 34, 18, 12, 8],
+        backgroundColor: ['#ef4444', '#f59e0b', '#3b82f6', '#8b5cf6', '#64748b']
+      }]
+    },
+    options: {
+      ...chartConfig,
+      indexAxis: 'y'
+    }
+  });
+
+  // Feature Usage Chart
+  new Chart(document.getElementById('featureUsageChart'), {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      datasets: [
+        {
+          label: 'ITR Filing',
+          data: [850, 920, 1050, 980, 890, 820],
+          borderColor: '#1a56db',
+          tension: 0.3
+        },
+        {
+          label: 'AI Chat',
+          data: [420, 480, 550, 620, 680, 740],
+          borderColor: '#16a34a',
+          tension: 0.3
+        },
+        {
+          label: 'Tax Calculator',
+          data: [680, 720, 780, 820, 860, 900],
+          borderColor: '#d97706',
+          tension: 0.3
+        }
+      ]
+    },
+    options: chartConfig
+  });
+
+  // Activity Heatmap (using bar chart as proxy)
+  new Chart(document.getElementById('activityHeatmapChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      datasets: [{
+        label: 'Active Users',
+        data: [1240, 1180, 980, 420, 380, 340, 380, 420, 680, 840, 1020, 1180],
+        backgroundColor: '#1a56db'
+      }]
+    },
+    options: chartConfig
+  });
+
+  // LTV vs CAC Chart
+  new Chart(document.getElementById('ltvCacChart'), {
+    type: 'line',
+    data: {
+      labels: ['Q1 2024', 'Q2 2024', 'Q3 2024', 'Q4 2024', 'Q1 2025', 'Q2 2025'],
+      datasets: [
+        {
+          label: 'LTV (₹)',
+          data: [9800, 10200, 10800, 11400, 11800, 12280],
+          borderColor: '#16a34a',
+          tension: 0.3,
+          yAxisID: 'y'
+        },
+        {
+          label: 'CAC (₹)',
+          data: [4200, 3980, 3740, 3520, 3380, 3240],
+          borderColor: '#dc2626',
+          tension: 0.3,
+          yAxisID: 'y'
+        }
+      ]
+    },
+    options: {
+      ...chartConfig,
+      scales: {
+        y: {
+          type: 'linear',
+          position: 'left',
+          ticks: { font: { family: "'JetBrains Mono', monospace" } }
+        }
+      }
+    }
+  });
+
+  // Cost Breakdown Chart
+  new Chart(document.getElementById('costBreakdownChart'), {
+    type: 'pie',
+    data: {
+      labels: ['Infrastructure (Azure)', 'CA Partner Fees', 'Marketing', 'Salaries', 'Operations'],
+      datasets: [{
+        data: [8, 14, 28, 42, 8],
+        backgroundColor: ['#3b82f6', '#1a56db', '#d97706', '#16a34a', '#64748b']
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TaxCopilot AI Assistant</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&amp;family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-tint": "#b4c5ff",
+                    "outline-variant": "#434655",
+                    "text-on-dark": "#e8edf5",
+                    "on-error": "#690005",
+                    "tertiary": "#ffb596",
+                    "secondary": "#4cd7f6",
+                    "muted-text": "#7a8aa8",
+                    "surface-container-high": "#282a32",
+                    "secondary-container": "#03b5d3",
+                    "accent-blue-light": "#3b82f6",
+                    "ink-surface": "#1a2236",
+                    "ink-elevated": "#3d4d6a",
+                    "text-pure": "#ffffff",
+                    "outline": "#8d90a0",
+                    "on-tertiary-fixed-variant": "#7d2d00",
+                    "surface-container-lowest": "#0c0e16",
+                    "surface-container-highest": "#32343d",
+                    "status-success": "#10b981",
+                    "inverse-on-surface": "#2e3039",
+                    "on-secondary": "#003640",
+                    "on-background": "#e1e2ed",
+                    "card-base": "#0f1929",
+                    "surface-variant": "#32343d",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "on-tertiary-container": "#ffede6",
+                    "status-warning": "#f59e0b",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "surface-dim": "#11131b",
+                    "primary": "#b4c5ff",
+                    "on-tertiary": "#581e00",
+                    "tertiary-fixed": "#ffdbcd",
+                    "on-surface": "#e1e2ed",
+                    "inverse-surface": "#e1e2ed",
+                    "on-primary-container": "#eeefff",
+                    "tertiary-container": "#bc4800",
+                    "surface-bright": "#373942",
+                    "inverse-primary": "#0053db",
+                    "ink-base": "#05080f",
+                    "secondary-fixed-dim": "#4cd7f6",
+                    "error": "#ffb4ab",
+                    "on-primary-fixed": "#00174b",
+                    "card-hover": "#131f32",
+                    "status-error": "#f43f5e",
+                    "primary-fixed": "#dbe1ff",
+                    "on-secondary-container": "#00424e",
+                    "surface-container": "#1d1f27",
+                    "on-tertiary-fixed": "#360f00",
+                    "on-error-container": "#ffdad6",
+                    "background-main": "#0b1120",
+                    "surface": "#11131b",
+                    "on-primary": "#002a78",
+                    "primary-container": "#2563eb",
+                    "error-container": "#93000a",
+                    "border-subtle": "rgba(255,255,255,0.08)",
+                    "on-secondary-fixed": "#001f26",
+                    "secondary-fixed": "#acedff",
+                    "on-secondary-fixed-variant": "#004e5c",
+                    "on-surface-variant": "#c3c6d7",
+                    "background": "#11131b",
+                    "surface-container-low": "#191b23"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "2rem",
+                    "sm": "0.5rem",
+                    "xxxl": "4rem",
+                    "xxl": "3rem",
+                    "xs": "0.25rem",
+                    "lg": "1.5rem",
+                    "md": "1rem"
+            },
+            "fontFamily": {
+                    "h1": ["Bricolage Grotesque"],
+                    "body-md": ["DM Sans"],
+                    "label-sm": ["DM Sans"],
+                    "accent": ["DM Sans"],
+                    "h2": ["Bricolage Grotesque"],
+                    "display": ["Bricolage Grotesque"],
+                    "body-lg": ["DM Sans"]
+            },
+            "fontSize": {
+                    "h1": ["2.5rem", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["1rem", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-sm": ["0.875rem", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "accent": ["1rem", {"lineHeight": "1.6", "fontWeight": "500"}],
+                    "h2": ["1.75rem", {"lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display": ["3.5rem", {"lineHeight": "1.05", "letterSpacing": "-0.03em", "fontWeight": "800"}],
+                    "body-lg": ["1.125rem", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+    display: inline-block;
+    line-height: 1
+    }
+.noise-bg {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuAPZZO_3ULLjJr4Loikvdjd3_8Z_rcWoYgJKfYgTPJN1_K8jpuRcW3VJ9HnyGQ4RZf-einAOpQgX5HN51babW-UzeljQbjJXDuEZNrH2kBCQ4Y8FSvHffZg-4SOg7QUGjJgHn5Qf5ndhY4xo0GSpy6-DxFGEgwXzgS1nXchbOIOrX5TE5jlFXx5mEtPEFi_AQ01-AFDwqDD3_kO7jWYj5S9zpUPcaCLpad99dSrMtwKQ5gwLDGKFdPxsD42Um_fN-oAko3SV37CrVw);
+    opacity: 0.05;
+    pointer-events: none
+    }
+.ai-glow {
+    box-shadow: 0 0 20px rgba(76, 215, 246, 0.15)
+    }
+.glass-panel {
+    background: rgba(15, 25, 41, 0.7);
+    backdrop-filter: blur(12px)
+    }</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-main font-body-md text-on-surface min-h-screen relative overflow-hidden">
+<!-- Noise grain overlay -->
+<div class="fixed inset-0 noise-bg z-[60]"></div>
+<!-- Top Navigation Bar -->
+<header class="bg-slate-950/80 backdrop-blur-md text-blue-500 font-sans antialiased tracking-tight fixed top-0 w-full z-50 border-b border-white/5 shadow-[0_4px_20px_-2px_rgba(37,99,235,0.1)] flex items-center justify-between px-6 h-16">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-blue-400" data-icon="account_balance">account_balance</span>
+<span class="text-xl font-bold tracking-tighter text-white">TaxCopilot</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<nav class="flex gap-6">
+<a class="text-slate-400 hover:bg-blue-500/10 transition-colors px-3 py-1 rounded-md" href="#">Compliance</a>
+<a class="text-slate-400 hover:bg-blue-500/10 transition-colors px-3 py-1 rounded-md" href="#">Invoices</a>
+<a class="text-blue-400 font-semibold px-3 py-1 rounded-md bg-blue-600/10" href="#">AI Assistant</a>
+<a class="text-slate-400 hover:bg-blue-500/10 transition-colors px-3 py-1 rounded-md" href="#">Clients</a>
+</nav>
+<div class="w-10 h-10 rounded-full border border-blue-500/30 overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="professional user avatar with a clean business casual appearance and a friendly confident expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2Fa8Dm50ue-G5O7auynKtfUF0x5ZaYfIGsoNxby2zlqX_1UuGwpGgRExY9khyeK3RzgpYFz080Jp0Yalp6kuy4YXqBKzp94ybrMFP1-z2O2q42J6VFn6nCoinwLJRa7pppKulm-sVuWREuktoSGhHBdVfnbdvBas2fnQiNUl6UZyKtUr3ADsqETKR8lG9lgEtk0xgJkgc6rER322sMjHtrckk9DBfWEcy5qzd2Z_EMuQY1cfkGGhG7QS6tQLe7HTmUn_YgniVM_o"/>
+</div>
+</div>
+<div class="md:hidden">
+<span class="material-symbols-outlined text-slate-400">menu</span>
+</div>
+</header>
+<!-- Sidebar Navigation (Desktop) -->
+<aside class="hidden md:flex fixed left-0 top-16 bottom-0 w-64 bg-slate-950 border-r border-white/5 flex-col gap-2 p-4 z-40">
+<div class="flex items-center gap-3 p-3 mb-4 rounded-xl bg-slate-900/50">
+<img alt="Professional User Avatar" class="w-10 h-10 rounded-full bg-blue-500/20" data-alt="close-up portrait of a professional tax advisor with a helpful and knowledgeable smile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4Zr9ygTJf_7S4rvWe1vwT8bGbQj-IMCXz2jXGPzbm5lK8XggTuk3w7WU07fyCrJ9HSyI5PvOA1eY1w7TtDYdvNwUEYm1altt6gsdvkF6QM1mmvRRF57NRF6tQnKdRnGLVfyWw0YkXSiZDWVKRquKZP056JrCnMYjgAKzCOajePBOAavi-TZxAG6RvyyKr6EA2cu0nXW94E7sRGWq35v-1aLvtkgxiqJgK_RrHyhfXh-gcYg0OF-J_b9-svkyv0sop3UhNTp0VWEM"/>
+<div class="overflow-hidden">
+<p class="text-sm font-bold text-white truncate">Tax Professional</p>
+<p class="text-xs text-slate-500 truncate">Verified CA</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-900 transition-all duration-300 rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="fact_check">fact_check</span>
+<span class="text-sm font-medium">Compliance</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-900 transition-all duration-300 rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span class="text-sm font-medium">Invoices</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-blue-600/10 text-blue-400 border-r-2 border-blue-500 transition-all duration-300 rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="text-sm font-medium">AI Assistant</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-900 transition-all duration-300 rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="text-sm font-medium">Clients</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-900 transition-all duration-300 rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<div class="mt-auto p-4 bg-secondary/10 border border-secondary/20 rounded-xl ai-glow">
+<p class="text-xs font-bold text-secondary uppercase tracking-widest mb-2">AI Efficiency</p>
+<div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-3/4"></div>
+</div>
+<p class="text-[10px] text-slate-400 mt-2">75% Tax tasks automated</p>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pt-16 md:pl-64 pb-20 md:pb-0 h-screen flex flex-col">
+<!-- Chat Interface -->
+<div class="flex-1 flex flex-col max-w-5xl mx-auto w-full relative h-full">
+<!-- Chat History Area -->
+<div class="flex-1 overflow-y-auto p-6 space-y-8">
+<!-- Date Divider -->
+<div class="flex justify-center">
+<span class="px-4 py-1 rounded-full bg-surface-container-low border border-white/5 text-[10px] text-muted-text font-bold uppercase tracking-widest">Today</span>
+</div>
+<!-- Bot Message -->
+<div class="flex items-start gap-4 max-w-[85%]">
+<div class="w-10 h-10 rounded-xl bg-secondary/20 flex items-center justify-center border border-secondary/30 shrink-0 ai-glow">
+<span class="material-symbols-outlined text-secondary" data-icon="smart_toy">smart_toy</span>
+</div>
+<div class="space-y-2">
+<div class="glass-panel p-5 rounded-2xl rounded-tl-none border border-white/5 shadow-xl">
+<p class="text-on-surface font-body-md">Hello! I'm your <span class="text-secondary font-bold">TaxCopilot</span>. I can help you analyze deductions, cross-reference compliance logs, or prepare quarterly estimates. How can I assist you today?</p>
+</div>
+<p class="text-[10px] text-slate-500 ml-1">09:41 AM</p>
+</div>
+</div>
+<!-- User Message -->
+<div class="flex flex-row-reverse items-start gap-4 max-w-[85%] ml-auto">
+<div class="w-10 h-10 rounded-xl bg-primary-container/20 flex items-center justify-center border border-primary-container/30 shrink-0">
+<span class="material-symbols-outlined text-primary" data-icon="person">person</span>
+</div>
+<div class="space-y-2 text-right">
+<div class="bg-primary-container p-5 rounded-2xl rounded-tr-none border border-white/10 shadow-lg text-left">
+<p class="text-white font-body-md">Can you review my Q3 compliance status for the Northeast regional clients?</p>
+</div>
+<p class="text-[10px] text-slate-500 mr-1">09:42 AM</p>
+</div>
+</div>
+<!-- Bot Message with Data -->
+<div class="flex items-start gap-4 max-w-[85%]">
+<div class="w-10 h-10 rounded-xl bg-secondary/20 flex items-center justify-center border border-secondary/30 shrink-0 ai-glow">
+<span class="material-symbols-outlined text-secondary" data-icon="smart_toy">smart_toy</span>
+</div>
+<div class="space-y-2 w-full">
+<div class="glass-panel p-5 rounded-2xl rounded-tl-none border border-white/5 shadow-xl space-y-4">
+<p class="text-on-surface font-body-md">I've analyzed the Northeast region. Here is the summary of the Q3 status:</p>
+<!-- Asymmetric Info Grid -->
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-ink-surface p-3 rounded-xl border border-secondary/10">
+<p class="text-[10px] text-secondary font-bold uppercase tracking-widest mb-1">Total Clients</p>
+<p class="text-h2 font-h2 text-white">42</p>
+</div>
+<div class="bg-ink-surface p-3 rounded-xl border border-status-success/20">
+<p class="text-[10px] text-status-success font-bold uppercase tracking-widest mb-1">Compliant</p>
+<p class="text-h2 font-h2 text-white">38</p>
+</div>
+<div class="col-span-2 bg-ink-surface p-3 rounded-xl border border-status-warning/20 flex items-center justify-between">
+<div>
+<p class="text-[10px] text-status-warning font-bold uppercase tracking-widest mb-1">Pending Actions</p>
+<p class="text-body-md font-bold text-white">4 Filings Overdue</p>
+</div>
+<span class="material-symbols-outlined text-status-warning" data-icon="warning">warning</span>
+</div>
+</div>
+<p class="text-on-surface font-body-md">Would you like me to draft notification emails for the 4 pending clients?</p>
+</div>
+<p class="text-[10px] text-slate-500 ml-1">09:43 AM</p>
+</div>
+</div>
+<!-- Suggested Prompts -->
+<div class="flex flex-wrap gap-2 pt-4 justify-center">
+<button class="bg-card-base hover:bg-card-hover border border-secondary/30 text-secondary text-label-sm px-4 py-2 rounded-full transition-all flex items-center gap-2 ai-glow">
+<span class="material-symbols-outlined text-sm" data-icon="mail">mail</span>
+                        Draft emails for pending
+                    </button>
+<button class="bg-card-base hover:bg-card-hover border border-white/10 text-on-surface-variant text-label-sm px-4 py-2 rounded-full transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="bar_chart">bar_chart</span>
+                        Export Q3 Report
+                    </button>
+<button class="bg-card-base hover:bg-card-hover border border-white/10 text-on-surface-variant text-label-sm px-4 py-2 rounded-full transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="search">search</span>
+                        Identify Tax Credits
+                    </button>
+</div>
+</div>
+<!-- Input Area -->
+<div class="p-6 bg-background-main/50 backdrop-blur-xl border-t border-white/5">
+<div class="max-w-4xl mx-auto relative group">
+<div class="absolute inset-0 bg-secondary/5 rounded-2xl blur-xl group-focus-within:bg-secondary/10 transition-all"></div>
+<div class="relative bg-card-base border border-white/10 rounded-2xl p-2 flex items-center gap-2 focus-within:border-secondary/50 transition-all shadow-2xl">
+<button class="p-2 text-slate-500 hover:text-secondary transition-colors">
+<span class="material-symbols-outlined" data-icon="attach_file">attach_file</span>
+</button>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-on-surface placeholder-slate-600 text-body-md py-3" placeholder="Ask TaxCopilot anything about your tax compliance..." type="text"/>
+<div class="flex items-center gap-1 px-2">
+<button class="p-2 text-slate-500 hover:text-secondary transition-colors">
+<span class="material-symbols-outlined" data-icon="mic">mic</span>
+</button>
+<button class="bg-secondary text-on-secondary p-2.5 rounded-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg ai-glow">
+<span class="material-symbols-outlined font-bold" data-icon="send">send</span>
+</button>
+</div>
+</div>
+</div>
+<p class="text-center text-[10px] text-slate-600 mt-4 uppercase tracking-[0.2em] font-bold">TaxCopilot AI may provide inaccurate data. Please verify all filings.</p>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile) -->
+<footer class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-4 bg-slate-950/90 backdrop-blur-lg border-t border-white/10 rounded-t-2xl shadow-[0_-8px_30px_rgba(37,99,235,0.15)]">
+<a class="flex flex-col items-center justify-center text-slate-500" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] uppercase tracking-widest font-bold mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500" href="#">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+<span class="text-[10px] uppercase tracking-widest font-bold mt-1">Compliance</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="text-[10px] uppercase tracking-widest font-bold mt-1">Invoices</span>
+</a>
+<a class="flex flex-col items-center justify-center text-blue-40 scale-110" href="#">
+<span class="material-symbols-outlined text-secondary" data-icon="forum">forum</span>
+<span class="text-[10px] uppercase tracking-widest font-bold mt-1 text-secondary">AI Chat</span>
+</a>
+</footer>
+<!-- Global Decoration -->
+<div class="fixed top-0 right-0 -mr-32 -mt-32 w-96 h-96 bg-blue-600/10 blur-[120px] rounded-full z-0"></div>
+<div class="fixed bottom-0 left-0 -ml-32 -mb-32 w-96 h-96 bg-secondary/5 blur-[120px] rounded-full z-0"></div>
+</body></html>

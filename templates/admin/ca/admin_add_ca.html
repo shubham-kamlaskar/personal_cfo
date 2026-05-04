@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<title>CA Onboarding | TaxCopilot</title>
+<style>
+  :root {
+    --blue-50: #E6F1FB;
+    --blue-100: #B5D4F4;
+    --blue-400: #378ADD;
+    --blue-600: #185FA5;
+    --blue-800: #0C447C;
+    --teal-50: #E1F5EE;
+    --teal-400: #1D9E75;
+    --teal-600: #0F6E56;
+    --amber-50: #FAEEDA;
+    --amber-400: #BA7517;
+    --coral-50: #FAECE7;
+    --coral-400: #D85A30;
+    --purple-50: #F3E8FF;
+    --purple-400: #9333EA;
+    --gray-50: #F1EFE8;
+    --gray-100: #D3D1C7;
+    --gray-400: #888780;
+    --gray-800: #444441;
+    --gray-900: #2C2C2A;
+    --surface: #ffffff;
+    --border: #e2e8f0;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f1f5f9;
+    color: var(--gray-900);
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, .heading {
+    font-family: 'Sora', sans-serif;
+  }
+
+  /* ── Navigation ── */
+  .top-nav {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--blue-800);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--blue-600), var(--blue-400));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  .logo span { color: var(--teal-400); }
+
+  /* ── Progress Stepper ── */
+  .stepper-container {
+    background: white;
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+  }
+
+  .stepper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  .step::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    right: -50%;
+    height: 2px;
+    background: var(--border);
+    z-index: 0;
+  }
+
+  .step:last-child::after {
+    display: none;
+  }
+
+  .step.active::after,
+  .step.completed::after {
+    background: var(--blue-600);
+  }
+
+  .step-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gray-100);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: var(--gray-400);
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .step.active .step-circle {
+    background: var(--blue-600);
+    border-color: var(--blue-600);
+    color: white;
+  }
+
+  .step.completed .step-circle {
+    background: var(--teal-600);
+    border-color: var(--teal-600);
+    color: white;
+  }
+
+  .step-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--gray-400);
+    text-align: center;
+  }
+
+  .step.active .step-label {
+    color: var(--blue-600);
+  }
+
+  .step.completed .step-label {
+    color: var(--teal-600);
+  }
+
+  /* ── Form Container ── */
+  .form-container {
+    background: white;
+    border-radius: var(--radius);
+    padding: 2rem 2.5rem;
+    box-shadow: var(--shadow);
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .form-step {
+    display: none;
+  }
+
+  .form-step.active {
+    display: block;
+  }
+
+  .form-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 0.5rem;
+  }
+
+  .form-subtitle {
+    font-size: 0.9rem;
+    color: var(--gray-400);
+    margin-bottom: 2rem;
+  }
+
+  .form-label {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--gray-800);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .form-label-optional {
+    font-weight: 400;
+    color: var(--gray-400);
+    font-size: 0.75rem;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.875rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: var(--blue-600);
+    box-shadow: 0 0 0 3px rgba(55,138,221,0.12);
+  }
+
+  .form-control::placeholder {
+    color: var(--gray-400);
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-help {
+    font-size: 0.75rem;
+    color: var(--gray-400);
+    margin-top: 0.35rem;
+  }
+
+  /* ── Checkbox Grid ── */
+  .checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .checkbox-item:hover {
+    background: var(--blue-50);
+    border-color: var(--blue-400);
+  }
+
+  .checkbox-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }
+
+  .checkbox-item label {
+    font-size: 0.85rem;
+    cursor: pointer;
+    margin: 0;
+  }
+
+  /* ── Info Card ── */
+  .info-card {
+    background: var(--blue-50);
+    border-left: 4px solid var(--blue-600);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .info-card-title {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--gray-900);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .info-card-text {
+    font-size: 0.8rem;
+    color: var(--gray-800);
+    line-height: 1.6;
+  }
+
+  /* ── File Upload Area ── */
+  .upload-area {
+    border: 2px dashed var(--border);
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .upload-area:hover {
+    border-color: var(--blue-600);
+    background: var(--blue-50);
+  }
+
+  .upload-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .upload-text {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--gray-900);
+    margin-bottom: 0.5rem;
+  }
+
+  .upload-subtext {
+    font-size: 0.75rem;
+    color: var(--gray-400);
+  }
+
+  .file-list {
+    margin-top: 1rem;
+  }
+
+  .file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+  }
+
+  .file-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .file-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--blue-50);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+  }
+
+  .file-name {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--gray-900);
+  }
+
+  .file-size {
+    font-size: 0.7rem;
+    color: var(--gray-400);
+  }
+
+  .btn-remove {
+    background: var(--coral-50);
+    color: var(--coral-400);
+    border: none;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* ── Form Navigation ── */
+  .form-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+
+  .btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+  }
+
+  .btn-secondary {
+    background: var(--gray-50);
+    color: var(--gray-800);
+  }
+
+  .btn-secondary:hover {
+    background: var(--gray-100);
+  }
+
+  .btn-primary {
+    background: var(--blue-600);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: var(--blue-800);
+    transform: translateY(-1px);
+  }
+
+  .btn-success {
+    background: var(--teal-600);
+    color: white;
+  }
+
+  .btn-success:hover {
+    background: var(--teal-400);
+  }
+
+  /* ── Summary Card ── */
+  .summary-card {
+    background: var(--blue-50);
+    border: 1px solid var(--blue-400);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .summary-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--gray-900);
+    margin-bottom: 1rem;
+  }
+
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--blue-100);
+  }
+
+  .summary-item:last-child {
+    border-bottom: none;
+  }
+
+  .summary-label {
+    font-size: 0.85rem;
+    color: var(--gray-800);
+  }
+
+  .summary-value {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--gray-900);
+  }
+
+  @media (max-width: 768px) {
+    .stepper {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .step::after {
+      display: none;
+    }
+
+    .checkbox-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+
+<body>
+<!-- ── Top Navigation ── -->
+{% include 'admin/header.html' %}
+
+<div class="container-fluid px-3 py-4" style="max-width:1200px">
+
+  <!-- ── Progress Stepper ── -->
+  <div class="stepper-container">
+    <div class="stepper">
+      <div class="step active" id="step1">
+        <div class="step-circle">1</div>
+        <div class="step-label">Personal Details</div>
+      </div>
+      <div class="step" id="step2">
+        <div class="step-circle">2</div>
+        <div class="step-label">Professional Info</div>
+      </div>
+      <div class="step" id="step3">
+        <div class="step-circle">3</div>
+        <div class="step-label">Specialization</div>
+      </div>
+      <div class="step" id="step4">
+        <div class="step-circle">4</div>
+        <div class="step-label">Documents</div>
+      </div>
+      <div class="step" id="step5">
+        <div class="step-circle">5</div>
+        <div class="step-label">Service Agreement</div>
+      </div>
+      <div class="step" id="step6">
+        <div class="step-circle">6</div>
+        <div class="step-label">Review</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Onboarding Form ── -->
+  <div class="form-container">
+    <form id="caOnboardingForm">
+      
+      <!-- Step 1: Personal Details -->
+      <div class="form-step active" data-step="1">
+        <div class="form-title">Personal Information</div>
+        <div class="form-subtitle">Basic details about the Chartered Accountant</div>
+
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">Title</label>
+              <select class="form-control" name="title" required>
+                <option value="">Select</option>
+                <option value="CA">CA</option>
+                <option value="Dr">Dr</option>
+                <option value="Mr">Mr</option>
+                <option value="Ms">Ms</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="form-group">
+              <label class="form-label">Full Name *</label>
+              <input type="text" class="form-control" name="full_name" required placeholder="As per ICAI records">
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Email Address *</label>
+              <input type="email" class="form-control" name="email" required placeholder="professional@example.com">
+              <div class="form-help">Primary contact email for platform access</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Alternate Email</label>
+              <input type="email" class="form-control" name="alternate_email" placeholder="alternate@example.com">
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Primary Phone *</label>
+              <input type="tel" class="form-control" name="phone" required placeholder="+91 9876543210">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">WhatsApp Number</label>
+              <input type="tel" class="form-control" name="whatsapp" placeholder="+91 9876543210">
+              <div class="form-help">For quick client communication</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Date of Birth *</label>
+              <input type="date" class="form-control" name="dob" required>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Gender</label>
+              <select class="form-control" name="gender">
+                <option value="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Residential Address *</label>
+          <textarea class="form-control" name="address" rows="2" required placeholder="Building, Street, Locality"></textarea>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">City *</label>
+              <input type="text" class="form-control" name="city" required>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">State *</label>
+              <select class="form-control" name="state" required>
+                <option value="">Select State</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Tamil Nadu">Tamil Nadu</option>
+                <option value="Gujarat">Gujarat</option>
+                <option value="Telangana">Telangana</option>
+                <option value="West Bengal">West Bengal</option>
+                <!-- Add more states -->
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">PIN Code *</label>
+              <input type="text" class="form-control" name="pincode" required placeholder="411001" maxlength="6">
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">PAN Number *</label>
+              <input type="text" class="form-control" name="pan" required placeholder="ABCDE1234F" maxlength="10" style="text-transform: uppercase;">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Aadhaar Number *</label>
+              <input type="text" class="form-control" name="aadhaar" required placeholder="1234 5678 9012" maxlength="14">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Professional Information -->
+      <div class="form-step" data-step="2">
+        <div class="form-title">Professional Credentials</div>
+        <div class="form-subtitle">ICAI registration and practice details</div>
+
+        <div class="info-card">
+          <div class="info-card-title">
+            <span>📋</span>
+            <span>ICAI Verification</span>
+          </div>
+          <div class="info-card-text">
+            All details will be cross-verified with ICAI records. Ensure accuracy to avoid delays in approval.
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">ICAI Membership Number *</label>
+              <input type="text" class="form-control" name="icai_number" required placeholder="123456" maxlength="6">
+              <div class="form-help">6-digit ICAI membership number</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Membership Type *</label>
+              <select class="form-control" name="membership_type" required>
+                <option value="">Select Type</option>
+                <option value="Associate">Associate (ACA)</option>
+                <option value="Fellow">Fellow (FCA)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Date of Qualification *</label>
+              <input type="date" class="form-control" name="qualification_date" required>
+              <div class="form-help">When you became a CA</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Years of Experience *</label>
+              <input type="number" class="form-control" name="experience_years" required placeholder="5" min="0">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Certificate of Practice Number</label>
+          <input type="text" class="form-control" name="cop_number" placeholder="Optional if not in practice">
+          <div class="form-help">Required only for practicing CAs</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Firm Name <span class="form-label-optional">(if applicable)</span></label>
+          <input type="text" class="form-control" name="firm_name" placeholder="e.g., ABC & Associates">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Firm Registration Number <span class="form-label-optional">(if applicable)</span></label>
+          <input type="text" class="form-control" name="firm_registration" placeholder="FRN">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Practice/Office Address</label>
+          <textarea class="form-control" name="office_address" rows="2" placeholder="Professional practice address"></textarea>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">Office City</label>
+              <input type="text" class="form-control" name="office_city">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">Office State</label>
+              <select class="form-control" name="office_state">
+                <option value="">Select State</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Karnataka">Karnataka</option>
+                <!-- Add more states -->
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label">Office PIN</label>
+              <input type="text" class="form-control" name="office_pincode" maxlength="6">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Professional Bio</label>
+          <textarea class="form-control" name="bio" rows="4" placeholder="Brief professional background and expertise (will be shown to clients)"></textarea>
+          <div class="form-help">Max 500 characters</div>
+        </div>
+      </div>
+
+      <!-- Step 3: Specialization & Services -->
+      <div class="form-step" data-step="3">
+        <div class="form-title">Specialization & Services</div>
+        <div class="form-subtitle">Areas of expertise and services you'll provide</div>
+
+        <div class="form-group">
+          <label class="form-label">Primary Specialization *</label>
+          <select class="form-control" name="primary_specialization" required>
+            <option value="">Select Primary Area</option>
+            <option value="Taxation">Taxation</option>
+            <option value="Audit & Assurance">Audit & Assurance</option>
+            <option value="Corporate Finance">Corporate Finance</option>
+            <option value="Management Consulting">Management Consulting</option>
+            <option value="Insolvency & Bankruptcy">Insolvency & Bankruptcy</option>
+            <option value="Forensic Accounting">Forensic Accounting</option>
+            <option value="GST">GST Compliance</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Tax Services Offered *</label>
+          <div class="form-help" style="margin-top: 0; margin-bottom: 0.5rem;">Select all services you can provide</div>
+          <div class="checkbox-grid">
+            <div class="checkbox-item">
+              <input type="checkbox" name="tax_services" id="service_itr" value="ITR Filing">
+              <label for="service_itr">ITR Filing</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="tax_services" id="service_tax_planning" value="Tax Planning">
+              <label for="service_tax_planning">Tax Planning</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="tax_services" id="service_tds" value="TDS Returns">
+              <label for="service_tds">TDS Returns</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="tax_services" id="service_gst" value="GST Filing">
+              <label for="service_gst">GST Filing</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="tax_services" id="service_advance_tax" value="Advance Tax">
+              <label for="service_advance_tax">Advance Tax</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="tax_services" id="service_assessment" value="Tax Assessment">
+              <label for="service_assessment">Tax Assessment</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="tax_services" id="service_refund" value="Tax Refund">
+              <label for="service_refund">Tax Refund</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="tax_services" id="service_notice" value="Notice Handling">
+              <label for="service_notice">Notice Handling</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Additional Services</label>
+          <div class="checkbox-grid">
+            <div class="checkbox-item">
+              <input type="checkbox" name="additional_services" id="service_audit" value="Statutory Audit">
+              <label for="service_audit">Statutory Audit</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="additional_services" id="service_bookkeeping" value="Bookkeeping">
+              <label for="service_bookkeeping">Bookkeeping</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="additional_services" id="service_roc" value="ROC Compliance">
+              <label for="service_roc">ROC Compliance</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="additional_services" id="service_payroll" value="Payroll Services">
+              <label for="service_payroll">Payroll Services</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="additional_services" id="service_cfo" value="Virtual CFO">
+              <label for="service_cfo">Virtual CFO</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="additional_services" id="service_valuation" value="Business Valuation">
+              <label for="service_valuation">Business Valuation</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Industry Expertise</label>
+          <div class="form-help" style="margin-top: 0; margin-bottom: 0.5rem;">Industries you have experience with</div>
+          <div class="checkbox-grid">
+            <div class="checkbox-item">
+              <input type="checkbox" name="industry_expertise" id="industry_it" value="IT/Software">
+              <label for="industry_it">IT/Software</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="industry_expertise" id="industry_manufacturing" value="Manufacturing">
+              <label for="industry_manufacturing">Manufacturing</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="industry_expertise" id="industry_retail" value="Retail/E-commerce">
+              <label for="industry_retail">Retail/E-commerce</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="industry_expertise" id="industry_finance" value="BFSI">
+              <label for="industry_finance">BFSI</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="industry_expertise" id="industry_healthcare" value="Healthcare">
+              <label for="industry_healthcare">Healthcare</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="industry_expertise" id="industry_realestate" value="Real Estate">
+              <label for="industry_realestate">Real Estate</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="industry_expertise" id="industry_hospitality" value="Hospitality">
+              <label for="industry_hospitality">Hospitality</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="industry_expertise" id="industry_education" value="Education">
+              <label for="industry_education">Education</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Preferred Client Size</label>
+              <select class="form-control" name="client_size">
+                <option value="">Select</option>
+                <option value="Individual">Individual Taxpayers</option>
+                <option value="Small">Small Business (< 50 employees)</option>
+                <option value="Medium">Medium Business (50-500 employees)</option>
+                <option value="Large">Large Enterprise (500+ employees)</option>
+                <option value="All">All Sizes</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Languages Spoken</label>
+              <input type="text" class="form-control" name="languages" placeholder="e.g., English, Hindi, Marathi">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Documents Upload -->
+      <div class="form-step" data-step="4">
+        <div class="form-title">Document Verification</div>
+        <div class="form-subtitle">Upload required documents for verification</div>
+
+        <div class="info-card">
+          <div class="info-card-title">
+            <span>📄</span>
+            <span>Required Documents</span>
+          </div>
+          <div class="info-card-text">
+            • ICAI Membership Certificate<br>
+            • Certificate of Practice (if applicable)<br>
+            • PAN Card<br>
+            • Aadhaar Card<br>
+            • Professional Resume/CV<br>
+            • Passport-size Photograph
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">ICAI Membership Certificate *</label>
+          <div class="upload-area" onclick="document.getElementById('icai_cert').click()">
+            <div class="upload-icon">📄</div>
+            <div class="upload-text">Click to upload ICAI Certificate</div>
+            <div class="upload-subtext">PDF or Image • Max 5MB</div>
+            <input type="file" id="icai_cert" name="icai_cert" style="display: none;" accept=".pdf,.jpg,.jpeg,.png" required>
+          </div>
+          <div class="file-list" id="icai_cert_list"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Certificate of Practice</label>
+          <div class="upload-area" onclick="document.getElementById('cop_cert').click()">
+            <div class="upload-icon">📄</div>
+            <div class="upload-text">Click to upload COP Certificate</div>
+            <div class="upload-subtext">PDF or Image • Max 5MB</div>
+            <input type="file" id="cop_cert" name="cop_cert" style="display: none;" accept=".pdf,.jpg,.jpeg,.png">
+          </div>
+          <div class="file-list" id="cop_cert_list"></div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">PAN Card *</label>
+              <div class="upload-area" onclick="document.getElementById('pan_doc').click()">
+                <div class="upload-icon">🆔</div>
+                <div class="upload-text">Upload PAN Card</div>
+                <div class="upload-subtext">PDF or Image • Max 2MB</div>
+                <input type="file" id="pan_doc" name="pan_doc" style="display: none;" accept=".pdf,.jpg,.jpeg,.png" required>
+              </div>
+              <div class="file-list" id="pan_doc_list"></div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Aadhaar Card *</label>
+              <div class="upload-area" onclick="document.getElementById('aadhaar_doc').click()">
+                <div class="upload-icon">🆔</div>
+                <div class="upload-text">Upload Aadhaar Card</div>
+                <div class="upload-subtext">PDF or Image • Max 2MB</div>
+                <input type="file" id="aadhaar_doc" name="aadhaar_doc" style="display: none;" accept=".pdf,.jpg,.jpeg,.png" required>
+              </div>
+              <div class="file-list" id="aadhaar_doc_list"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Professional Resume/CV *</label>
+          <div class="upload-area" onclick="document.getElementById('resume').click()">
+            <div class="upload-icon">📋</div>
+            <div class="upload-text">Upload Resume</div>
+            <div class="upload-subtext">PDF or DOCX • Max 5MB</div>
+            <input type="file" id="resume" name="resume" style="display: none;" accept=".pdf,.doc,.docx" required>
+          </div>
+          <div class="file-list" id="resume_list"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Professional Photograph *</label>
+          <div class="upload-area" onclick="document.getElementById('photo').click()">
+            <div class="upload-icon">📷</div>
+            <div class="upload-text">Upload Passport-size Photo</div>
+            <div class="upload-subtext">JPG or PNG • Max 1MB</div>
+            <input type="file" id="photo" name="photo" style="display: none;" accept=".jpg,.jpeg,.png" required>
+          </div>
+          <div class="file-list" id="photo_list"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Additional Certifications <span class="form-label-optional">(Optional)</span></label>
+          <div class="upload-area" onclick="document.getElementById('certs').click()">
+            <div class="upload-icon">🏆</div>
+            <div class="upload-text">Upload Additional Certificates</div>
+            <div class="upload-subtext">Multiple files allowed • Max 5MB each</div>
+            <input type="file" id="certs" name="certs" style="display: none;" accept=".pdf,.jpg,.jpeg,.png" multiple>
+          </div>
+          <div class="file-list" id="certs_list"></div>
+        </div>
+      </div>
+
+      <!-- Step 5: Service Agreement -->
+      <div class="form-step" data-step="5">
+        <div class="form-title">Service Agreement & Rates</div>
+        <div class="form-subtitle">Define your service terms and compensation</div>
+
+        <div class="info-card">
+          <div class="info-card-title">
+            <span>💼</span>
+            <span>Engagement Model</span>
+          </div>
+          <div class="info-card-text">
+            Choose how you want to work with our clients and set your compensation structure.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Engagement Type *</label>
+          <select class="form-control" name="engagement_type" required>
+            <option value="">Select Type</option>
+            <option value="Retainer">Retainer Basis</option>
+            <option value="PerCase">Per Case/Project</option>
+            <option value="Hybrid">Hybrid (Retainer + Per Case)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Service Fee Structure</label>
+          <div class="form-help" style="margin-top: 0; margin-bottom: 0.75rem;">Set your rates for different services</div>
+          
+          <div class="row g-3 mb-3">
+            <div class="col-md-8">
+              <label style="font-size: 0.8rem; color: var(--gray-800);">ITR Filing - Individual</label>
+            </div>
+            <div class="col-md-4">
+              <input type="number" class="form-control" name="rate_itr_individual" placeholder="₹ 500">
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-8">
+              <label style="font-size: 0.8rem; color: var(--gray-800);">ITR Filing - Business</label>
+            </div>
+            <div class="col-md-4">
+              <input type="number" class="form-control" name="rate_itr_business" placeholder="₹ 2000">
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-8">
+              <label style="font-size: 0.8rem; color: var(--gray-800);">Tax Planning Consultation (per hour)</label>
+            </div>
+            <div class="col-md-4">
+              <input type="number" class="form-control" name="rate_consultation" placeholder="₹ 1500">
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-8">
+              <label style="font-size: 0.8rem; color: var(--gray-800);">GST Return Filing (monthly)</label>
+            </div>
+            <div class="col-md-4">
+              <input type="number" class="form-control" name="rate_gst" placeholder="₹ 3000">
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Revenue Sharing %</label>
+              <input type="number" class="form-control" name="revenue_share" placeholder="e.g., 70" min="0" max="100">
+              <div class="form-help">Your share of the service fee collected</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Payment Terms</label>
+              <select class="form-control" name="payment_terms">
+                <option value="Immediate">Immediate</option>
+                <option value="Weekly">Weekly</option>
+                <option value="Biweekly">Bi-weekly</option>
+                <option value="Monthly">Monthly</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Availability & Capacity</label>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label style="font-size: 0.8rem; color: var(--gray-800); margin-bottom: 0.5rem;">Max Clients per Month</label>
+              <input type="number" class="form-control" name="max_clients" placeholder="e.g., 20">
+            </div>
+            <div class="col-md-6">
+              <label style="font-size: 0.8rem; color: var(--gray-800); margin-bottom: 0.5rem;">Response Time (hours)</label>
+              <input type="number" class="form-control" name="response_time" placeholder="e.g., 24">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Working Hours</label>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label style="font-size: 0.8rem; color: var(--gray-800); margin-bottom: 0.5rem;">From</label>
+              <input type="time" class="form-control" name="work_hours_from">
+            </div>
+            <div class="col-md-6">
+              <label style="font-size: 0.8rem; color: var(--gray-800); margin-bottom: 0.5rem;">To</label>
+              <input type="time" class="form-control" name="work_hours_to">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Working Days</label>
+          <div class="checkbox-grid">
+            <div class="checkbox-item">
+              <input type="checkbox" name="working_day" id="day_monday" value="Monday" checked>
+              <label for="day_monday">Monday</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="working_day" id="day_tuesday" value="Tuesday" checked>
+              <label for="day_tuesday">Tuesday</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="working_day" id="day_wednesday" value="Wednesday" checked>
+              <label for="day_wednesday">Wednesday</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="working_day" id="day_thursday" value="Thursday" checked>
+              <label for="day_thursday">Thursday</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="working_day" id="day_friday" value="Friday" checked>
+              <label for="day_friday">Friday</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="working_day" id="day_saturday" value="Saturday">
+              <label for="day_saturday">Saturday</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="working_day" id="day_sunday" value="Sunday">
+              <label for="day_sunday">Sunday</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Bank Account Details</label>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label style="font-size: 0.8rem; color: var(--gray-800); margin-bottom: 0.5rem;">Account Holder Name</label>
+              <input type="text" class="form-control" name="bank_account_name" required>
+            </div>
+            <div class="col-md-6">
+              <label style="font-size: 0.8rem; color: var(--gray-800); margin-bottom: 0.5rem;">Account Number</label>
+              <input type="text" class="form-control" name="bank_account_number" required>
+            </div>
+            <div class="col-md-6">
+              <label style="font-size: 0.8rem; color: var(--gray-800); margin-bottom: 0.5rem;">Bank Name</label>
+              <input type="text" class="form-control" name="bank_name" required>
+            </div>
+            <div class="col-md-6">
+              <label style="font-size: 0.8rem; color: var(--gray-800); margin-bottom: 0.5rem;">IFSC Code</label>
+              <input type="text" class="form-control" name="bank_ifsc" required style="text-transform: uppercase;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 6: Review & Confirm -->
+      <div class="form-step" data-step="6">
+        <div class="form-title">Review & Confirm</div>
+        <div class="form-subtitle">Please verify all details before submission</div>
+
+        <div class="summary-card">
+          <div class="summary-title">👤 Personal Information</div>
+          <div class="summary-item">
+            <span class="summary-label">Full Name:</span>
+            <span class="summary-value" id="summary-name">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Email:</span>
+            <span class="summary-value" id="summary-email">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Phone:</span>
+            <span class="summary-value" id="summary-phone">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Location:</span>
+            <span class="summary-value" id="summary-location">-</span>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-title">🎓 Professional Credentials</div>
+          <div class="summary-item">
+            <span class="summary-label">ICAI Number:</span>
+            <span class="summary-value" id="summary-icai">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Membership Type:</span>
+            <span class="summary-value" id="summary-membership">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Experience:</span>
+            <span class="summary-value" id="summary-experience">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Firm:</span>
+            <span class="summary-value" id="summary-firm">-</span>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-title">💼 Services & Engagement</div>
+          <div class="summary-item">
+            <span class="summary-label">Specialization:</span>
+            <span class="summary-value" id="summary-specialization">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Engagement Type:</span>
+            <span class="summary-value" id="summary-engagement">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Revenue Share:</span>
+            <span class="summary-value" id="summary-revenue">-</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-title">
+            <span>📝</span>
+            <span>Terms & Conditions</span>
+          </div>
+          <div class="info-card-text">
+            By submitting this form, you agree to:<br>
+            • Maintain professional standards as per ICAI Code of Ethics<br>
+            • Respond to client queries within the committed timeframe<br>
+            • Keep all client information strictly confidential<br>
+            • Complete the onboarding verification within 7 days<br>
+            • Abide by the platform's service agreement and fee structure
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem; border: 1px solid var(--border); border-radius: 10px;">
+            <input type="checkbox" name="accept_terms" id="accept_terms" required style="width: 20px; height: 20px;">
+            <label for="accept_terms" style="margin: 0; font-size: 0.875rem;">
+              I confirm that all information provided is accurate and I agree to the <a href="#" style="color: var(--blue-600);">Terms & Conditions</a> and <a href="#" style="color: var(--blue-600);">Privacy Policy</a>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Navigation -->
+      <div class="form-navigation">
+        <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">← Previous</button>
+        <button type="button" class="btn btn-primary" id="nextBtn">Next →</button>
+        <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">✓ Submit Application</button>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+
+<script>
+    const client_id = "{{client_id}}"
+    const employee_id = "{{employee_id}}"
+let currentStep = 1;
+const totalSteps = 6;
+
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const submitBtn = document.getElementById('submitBtn');
+
+function showStep(step) {
+  document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
+  document.querySelector(`[data-step="${step}"]`).classList.add('active');
+
+  document.querySelectorAll('.step').forEach((el, idx) => {
+    el.classList.remove('active', 'completed');
+    if (idx + 1 === step) el.classList.add('active');
+    if (idx + 1 < step) el.classList.add('completed');
+  });
+
+  prevBtn.style.display = step > 1 ? 'block' : 'none';
+  nextBtn.style.display = step < totalSteps ? 'block' : 'none';
+  submitBtn.style.display = step === totalSteps ? 'block' : 'none';
+
+  if (step === totalSteps) {
+    updateSummary();
+  }
+}
+
+nextBtn.addEventListener('click', () => {
+  if (validateStep(currentStep)) {
+    currentStep++;
+    showStep(currentStep);
+    window.scrollTo(0, 0);
+  }
+});
+
+prevBtn.addEventListener('click', () => {
+  currentStep--;
+  showStep(currentStep);
+  window.scrollTo(0, 0);
+});
+
+function validateStep(step) {
+  const currentStepEl = document.querySelector(`[data-step="${step}"]`);
+  const inputs = currentStepEl.querySelectorAll('[required]');
+  let isValid = true;
+
+  inputs.forEach(input => {
+    if (input.type === 'checkbox') {
+      // For checkboxes, check if at least one is checked in groups
+      return;
+    }
+    if (!input.value.trim()) {
+      input.style.borderColor = 'var(--coral-400)';
+      isValid = false;
+    } else {
+      input.style.borderColor = 'var(--border)';
+    }
+  });
+
+  if (!isValid) {
+    alert('Please fill in all required fields');
+  }
+
+  return isValid;
+}
+
+function updateSummary() {
+  const formData = new FormData(document.getElementById('caOnboardingForm'));
+  
+  document.getElementById('summary-name').textContent = (formData.get('title') || '') + ' ' + (formData.get('full_name') || '-');
+  document.getElementById('summary-email').textContent = formData.get('email') || '-';
+  document.getElementById('summary-phone').textContent = formData.get('phone') || '-';
+  document.getElementById('summary-location').textContent = `${formData.get('city') || ''}, ${formData.get('state') || ''}`;
+  
+  document.getElementById('summary-icai').textContent = formData.get('icai_number') || '-';
+  document.getElementById('summary-membership').textContent = formData.get('membership_type') || '-';
+  document.getElementById('summary-experience').textContent = (formData.get('experience_years') || '-') + ' years';
+  document.getElementById('summary-firm').textContent = formData.get('firm_name') || 'Independent';
+  
+  document.getElementById('summary-specialization').textContent = formData.get('primary_specialization') || '-';
+  document.getElementById('summary-engagement').textContent = formData.get('engagement_type') || '-';
+  document.getElementById('summary-revenue').textContent = (formData.get('revenue_share') || '-') + '%';
+}
+
+// File upload handlers
+document.querySelectorAll('input[type="file"]').forEach(input => {
+  input.addEventListener('change', function(e) {
+    const listId = this.id + '_list';
+    const listEl = document.getElementById(listId);
+    listEl.innerHTML = '';
+    
+    Array.from(this.files).forEach((file, idx) => {
+      const fileItem = document.createElement('div');
+      fileItem.className = 'file-item';
+      fileItem.innerHTML = `
+        <div class="file-info">
+          <div class="file-icon">📄</div>
+          <div>
+            <div class="file-name">${file.name}</div>
+            <div class="file-size">${(file.size / 1024).toFixed(1)} KB</div>
+          </div>
+        </div>
+        <button type="button" class="btn-remove" onclick="removeFile('${this.id}', ${idx})">Remove</button>
+      `;
+      listEl.appendChild(fileItem);
+    });
+  });
+});
+
+function removeFile(inputId, fileIndex) {
+  const input = document.getElementById(inputId);
+  const dt = new DataTransfer();
+  const files = Array.from(input.files);
+  
+  files.forEach((file, idx) => {
+    if (idx !== fileIndex) dt.items.add(file);
+  });
+  
+  input.files = dt.files;
+  input.dispatchEvent(new Event('change'));
+}
+
+// Form submission
+document.getElementById('caOnboardingForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  if (!document.getElementById('accept_terms').checked) {
+    alert('Please accept the terms and conditions');
+    return;
+  }
+  
+  const formData = new FormData(e.target);
+  
+  // Collect services
+  const services = [];
+  formData.forEach((value, key) => {
+    if (key.startsWith('service_') && value) {
+      services.push(value);
+    }
+  });
+  
+  // Collect industries
+  const industries = [];
+  formData.forEach((value, key) => {
+    if (key.startsWith('industry_') && value) {
+      industries.push(value);
+    }
+  });
+  
+  // Collect working days
+  const workingDays = [];
+  formData.forEach((value, key) => {
+    if (key.startsWith('day_') && value) {
+      workingDays.push(value);
+    }
+  });
+  
+  try {
+    const response = await fetch(`/${client_id}/${employee_id}/admin/ca/add/confirm`, {
+      method: 'POST',
+      body: formData
+    });
+    
+    const result = await response.json();
+    
+    if (response.ok) {
+      alert('✅ CA application submitted successfully! You will receive a confirmation email shortly.');
+      window.location.href = `/${client_id}/${employee_id}/admin/ca/list`;
+    } else {
+      alert('❌ Error: ' + result.message);
+    }
+  } catch (error) {
+    alert('❌ Failed to submit application. Please try again.');
+  }
+});
+
+showStep(1);
+</script>
+
+</body>
+</html>
